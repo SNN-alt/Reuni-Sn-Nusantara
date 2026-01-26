@@ -18,7 +18,7 @@ body {
 
 /* Header dengan background gambar */
 header {
-  background-image: url('images/Gambar.png');
+  background-image: url('images/sn.png');
   background-position: center;
   background-repeat: no-repeat;
   background-size: 500px 200px;
@@ -346,4 +346,5 @@ footer {
   transform: scale(1.05);
   box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
+
 
