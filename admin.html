@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Scan Kehadiran Panitia</title>
+
+  <!-- Library QR Scanner -->
+  <script src="https://unpkg.com/html5-qrcode"></script>
+
+  <!-- Style sederhana -->
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+      background: #f2f2f2;
+    }
+    input, button {
+      padding: 10px;
+      font-size: 16px;
+    }
+    #reader {
+      width: 300px;
+      margin: auto;
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- ================= LOGIN PANITIA ================= -->
+<h2>Login Panitia</h2>
+
+<div id="loginPanitia">
+  <!-- Input kode rahasia panitia -->
+  <input type="password" id="kodePanitia" placeholder="Masukkan Kode Panitia">
+  <br><br>
+  <button onclick="cekKode()">Masuk</button>
+</div>
+
+
+<!-- ================= SCANNER SECTION ================= -->
+<div id="scannerSection" style="display:none;">
+  <h3>Scan QR Peserta</h3>
+  <div id="reader"></div>
+  <p id="hasilScan"></p>
+</div>
+
+
+<script>
+/* ================= KONFIGURASI ================= */
+
+// Kode rahasia untuk login panitia
+const KODE_BENAR = "PANITIASN";
+
+// URL Google Apps Script (database kehadiran)
+const apiUrl = "https://script.google.com/macros/s/AKfycbwPKCbI09nK6zFWXT7srymZxYcMrOHHQBcnbIGIGWAXhhXsOvy-o-EiGZy-kiJfNM55/exec";
+
+let html5QrCode;
+
+
+/* ================= CEK LOGIN PANITIA ================= */
+function cekKode(){
+  const input = document.getElementById("kodePanitia").value.trim();
+
+  if(input === KODE_BENAR){
+    // Jika benar → tampilkan scanner
+    document.getElementById("loginPanitia").style.display = "none";
+    document.getElementById("scannerSection").style.display = "block";
+    mulaiScan();
+  } else {
+    alert("Kode Panitia Salah!");
+  }
+}
+
+
+/* ================= MULAI SCAN QR ================= */
+function mulaiScan(){
+  html5QrCode = new Html5Qrcode("reader");
+
+  html5QrCode.start(
+    { facingMode: "environment" }, // Kamera belakang HP
+    { fps: 10, qrbox: 250 },       // Pengaturan scan
+
+    // Jika QR berhasil terbaca
+    qrCodeMessage => {
+      html5QrCode.stop(); 
+      prosesHadir(qrCodeMessage);
+    },
+
+    // Error scan diabaikan agar tidak spam console
+    errorMessage => {}
+  );
+}
+
+
+/* ================= PROSES DATA KE SERVER ================= */
+function prosesHadir(kodeQR){
+  fetch(apiUrl + "?mode=scan&kode=" + encodeURIComponent(kodeQR))
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById("hasilScan").innerHTML = data.message;
+
+      // Scan ulang setelah 2 detik
+      setTimeout(() => mulaiScan(), 2000);
+    })
+    .catch(() => {
+      document.getElementById("hasilScan").innerHTML = "❌ Gagal koneksi server";
+      setTimeout(() => mulaiScan(), 2000);
+    });
+}
+</script>
+
+</body>
+</html>

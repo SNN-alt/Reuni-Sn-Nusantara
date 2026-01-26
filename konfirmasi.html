@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Konfirmasi Kehadiran</title>
+
+  <!-- Style sederhana -->
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 40px;
+      background: #f2f2f2;
+    }
+
+    .box {
+      background: white;
+      max-width: 420px;
+      margin: auto;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #ccc;
+    }
+
+    h2 {
+      color: #004aad;
+    }
+
+    #pesan {
+      font-size: 16px;
+      margin-top: 15px;
+    }
+
+    .loading {
+      color: #888;
+      font-style: italic;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="box">
+  <h2>Konfirmasi Kehadiran</h2>
+  <p id="pesan" class="loading">⏳ Memproses konfirmasi...</p>
+</div>
+
+
+<script>
+/* ================= KONFIGURASI ================= */
+
+// URL Google Apps Script (server database)
+const apiUrl = "https://script.google.com/macros/s/AKfycbwPKCbI09nK6zFWXT7srymZxYcMrOHHQBcnbIGIGWAXhhXsOvy-o-EiGZy-kiJfNM55/exec";
+
+// Ambil parameter ?kode= dari URL
+const urlParams = new URLSearchParams(window.location.search);
+const kode = urlParams.get("kode");
+
+// Elemen tempat menampilkan pesan
+const pesanEl = document.getElementById("pesan");
+
+
+/* ================= PROSES KONFIRMASI ================= */
+
+if (!kode) {
+  // Jika parameter kode tidak ada
+  pesanEl.innerHTML = "❌ Kode QR tidak ditemukan.";
+  pesanEl.classList.remove("loading");
+
+} else {
+  // Jika kode ada → kirim ke server
+  fetch(apiUrl + "?mode=konfirmasi&kode=" + encodeURIComponent(kode))
+
+    // Server mengirim balasan berupa HTML text
+    .then(res => res.text())
+
+    // Tampilkan hasil dari server ke halaman
+    .then(html => {
+      pesanEl.innerHTML = html;
+      pesanEl.classList.remove("loading");
+    })
+
+    // Jika koneksi gagal
+    .catch(() => {
+      pesanEl.innerHTML = "❌ Gagal koneksi ke server";
+      pesanEl.classList.remove("loading");
+    });
+}
+</script>
+
+
+</body>
+</html>
