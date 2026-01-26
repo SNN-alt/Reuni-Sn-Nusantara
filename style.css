@@ -17,22 +17,45 @@ body {
 }
 
 /* ===== HEADER BANNER ===== */
+/* ===== HEADER BANNER ===== */
 header {
   background-image: url('images/Gambar.png');
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
-
   width: 100%;
-  height: 180px;     /* tinggi desktop */
-  margin: 0;
-  padding: 0;
+  height: 180px;        /* Tinggi banner desktop */
+  margin: 0 auto;
 }
 
-/* Hilangkan efek teks h1 karena header tanpa tulisan */
-header h1, 
-header p {
-  display: none;
+/* ===== RUNNING TEXT ===== */
+.marquee {
+  width: 100%;
+  overflow: hidden;
+  background: #000;
+  color: #fff;
+  padding: 6px 0;
+  font-size: 14px;
+}
+
+.marquee p {
+  white-space: nowrap;
+  display: inline-block;
+  animation: marquee 12s linear infinite;
+}
+
+/* ===== RESPONSIVE HP ===== */
+@media (max-width: 768px) {
+
+  header {
+    height: 120px;       /* Banner lebih pendek di HP */
+    background-size: contain;
+  }
+
+  .marquee {
+    font-size: 13px;
+    padding: 5px 0;
+  }
 }
 
 
@@ -349,6 +372,7 @@ footer {
   transform: scale(1.05);
   box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
+
 
 
 
