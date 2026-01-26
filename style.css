@@ -1,14 +1,26 @@
 /* ============================= */
 /*        BODY & HEADER          */
 /* ============================= */
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  overflow-x: hidden; /* ⬅️ cegah scroll ke samping */
+  margin: 0;
+  padding: 0;
+}
 
 body {
   font-family: Arial, sans-serif;
   text-align: center;
   margin: 0;
   padding: 0;
+  width: 100%;
+  max-width: 100vw;   /* ⬅️ kunci lebar sesuai layar */
+  overflow-x: hidden;
 
-  /* Background utama halaman */
   background-image: url('images/spon.png');
   background-color: #007bff;
   background-position: center;
@@ -356,6 +368,7 @@ footer {
   transform: scale(1.05);
   box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
+
 
 
 
