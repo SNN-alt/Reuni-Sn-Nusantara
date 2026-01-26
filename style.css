@@ -1,22 +1,18 @@
 /* ============================= */
 /*        BODY & HEADER          */
 /* ============================= */
-/* ===== RESET LEBAR HALAMAN ===== */
-body {
-  font-family: Arial, sans-serif;
-  text-align: center;
-  margin: 0;
-  padding: 0;
-
-  /* Background utama halaman */
-  background-image: url('images/spon.png');
-  background-color: #007bff;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
+/* ===== RESET GLOBAL ===== */
+* {
+  box-sizing: border-box;
 }
 
-/* ===== HEADER BANNER ===== */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;   /* ⬅️ cegah geser horizontal */
+}
+
 /* ===== HEADER BANNER ===== */
 header {
   background-image: url('images/Gambar.png');
@@ -372,6 +368,7 @@ footer {
   transform: scale(1.05);
   box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
+
 
 
 
