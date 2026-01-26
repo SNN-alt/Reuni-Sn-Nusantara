@@ -102,13 +102,30 @@ function tampilkanDashboard(data){
       '<img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' +
       encodeURIComponent(data.qr) + '">';
   } else {
-    // Jika belum konfirmasi
-    document.getElementById("qrCode").innerHTML =
-      `<p style="color:red;font-weight:bold;">
-        QR akan muncul setelah kamu melakukan konfirmasi kehadiran.
-       </p>
-       <p style="font-size:13px;">
-        Silakan klik link konfirmasi yang dikirim panitia.
-       </p>`;
-  }
+  // Jika belum konfirmasi
+  document.getElementById("qrCode").innerHTML = `
+    <p style="color:red;font-weight:bold;">
+      QR akan muncul setelah kamu melakukan konfirmasi kehadiran.
+    </p>
+    <p style="font-size:13px;">
+      Silakan klik tombol konfirmasi di bawah ini.
+    </p>
+
+    <a id="linkKonfirmasi"
+       href="${apiUrl}?mode=konfirmasi&nohp=${encodeURIComponent(data.nohp)}"
+       style="
+         display:inline-block;
+         margin-top:10px;
+         background:#ff9800;
+         color:white;
+         padding:8px 15px;
+         border-radius:8px;
+         text-decoration:none;
+         font-weight:bold;
+       ">
+       Konfirmasi Kehadiran
+    </a>
+  `;
 }
+
+
