@@ -21,11 +21,12 @@ header {
   background-image: url('images/Gambar.png');
   background-position: center;
   background-repeat: no-repeat;
-  background-size: 500px 200px;
-  background-color: #007bff;
-  color: white;
-  padding: 55px 0;
+  background-size: contain;
+
+  height: 200px;   /* ⬅️ Tambahkan tinggi pasti */
+  width: 100%;
 }
+
 
 header h1 {
   margin: 0;
@@ -346,6 +347,7 @@ footer {
   transform: scale(1.05);
   box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
+
 
 
 
