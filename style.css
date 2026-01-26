@@ -1,25 +1,18 @@
 /* ============================= */
 /*        BODY & HEADER          */
 /* ============================= */
-* {
-  box-sizing: border-box;
-}
-
+/* ===== RESET LEBAR HALAMAN ===== */
 html, body {
-  width: 100%;
-  overflow-x: hidden; /* ⬅️ cegah scroll ke samping */
   margin: 0;
   padding: 0;
+  width: 100%;
+  overflow-x: hidden;   /* ⬅️ penting agar tidak geser ke samping */
 }
 
+/* ===== BODY ===== */
 body {
   font-family: Arial, sans-serif;
   text-align: center;
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  max-width: 40vw;   /* ⬅️ kunci lebar sesuai layar */
-  overflow-x: hidden;
 
   background-image: url('images/spon.png');
   background-color: #007bff;
@@ -36,23 +29,20 @@ header {
   background-size: contain;
 
   width: 100%;
-  height: 180px;     /* tinggi desktop */
-  margin: 0;
-  padding: 0;
+  height: 180px;        /* tinggi banner */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-/* Hilangkan efek teks h1 karena header tanpa tulisan */
-header h1, 
-header p {
-  display: none;
-}
-
-/* ===== RESPONSIVE UNTUK HP ===== */
-@media (max-width: 768px) {
-  header {
-    height: 120px;   /* lebih pendek di HP */
-    background-size: contain;
-  }
+/* ===== MARQUEE TEXT ===== */
+.marquee {
+  background: #1a0000;
+  color: white;
+  padding: 8px 0;
+  font-size: 14px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 /* ============================= */
@@ -368,6 +358,7 @@ footer {
   transform: scale(1.05);
   box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
+
 
 
 
