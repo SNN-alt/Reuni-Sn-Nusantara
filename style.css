@@ -205,6 +205,7 @@ footer {
   text-align: center;
   font-size: 14px;
   margin-bottom: 10px;
+  box-sizing: border-box;
 }
 
 /* Tombol login */
@@ -347,6 +348,7 @@ footer {
   transform: scale(1.05);
   box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
+
 
 
 
