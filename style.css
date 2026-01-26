@@ -16,7 +16,16 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
 }
-
+/* ===== AREA KONTEN UTAMA ===== */
+main {
+  width: 100%;
+  min-height: 100vh;  /* agar background selalu penuh tinggi layar */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 20px;
+}
 /* Header dengan background gambar */
 header {
   background-image: url('images/gambar.png');
@@ -346,6 +355,7 @@ footer {
   transform: scale(1.05);
   box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
+
 
 
 
