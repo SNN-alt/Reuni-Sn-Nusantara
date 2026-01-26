@@ -252,14 +252,22 @@ footer {
 
 /* ================= LOGIN BOX ================= */
 
+/* ===== LOGIN BOX ===== */
 .login-box {
-  background: rgba(0,0,0,0.75); /* transparan gelap */
-  color: white;
-  padding: 20px 25px;
-  border-radius: 15px;
-  max-width: 300px;
-  margin: 20px auto;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+  margin-top: 15px;   /* ← kecilkan jarak atas */
+  background: rgba(0,0,0,0.65);
+  padding: 20px;
+  border-radius: 12px;
+  width: 320px;
+  max-width: 90%;
+}
+
+/* Responsive HP */
+@media (max-width: 768px) {
+  .login-box {
+    margin-top: 10px; /* lebih rapat di HP */
+    width: 90%;
+  }
 }
 
 .login-box h3 {
@@ -419,6 +427,7 @@ footer {
   transform: scale(1.05);
   box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
+
 
 
 
