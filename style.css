@@ -16,23 +16,32 @@ body {
   background-size: cover;
 }
 
-/* Header dengan background gambar */
+/* ===== HEADER BANNER ===== */
 header {
   background-image: url('images/Gambar.png');
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
 
-  height: 200px;   /* ⬅️ Tambahkan tinggi pasti */
   width: 100%;
-}
-
-
-header h1 {
+  height: 180px;     /* tinggi desktop */
   margin: 0;
-  font-size: 28px;
+  padding: 0;
 }
 
+/* Hilangkan efek teks h1 karena header tanpa tulisan */
+header h1, 
+header p {
+  display: none;
+}
+
+/* ===== RESPONSIVE UNTUK HP ===== */
+@media (max-width: 768px) {
+  header {
+    height: 120px;   /* lebih pendek di HP */
+    background-size: contain;
+  }
+}
 
 /* ============================= */
 /*        MENU BUTTONS           */
@@ -347,6 +356,7 @@ footer {
   transform: scale(1.05);
   box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
+
 
 
 
