@@ -1,7 +1,85 @@
-// ====== KONFIGURASI ======
+/* ===================== */
+/* MODAL PANDUAN & PROPOSAL */
+/* ===================== */
+
+function bukaPanduan() {
+  document.getElementById("modalPanduan").style.display = "block";
+}
+function tutupPanduan() {
+  document.getElementById("modalPanduan").style.display = "none";
+}
+
+function bukaProposal() {
+  document.getElementById("modalProposal").style.display = "block";
+}
+function tutupProposal() {
+  document.getElementById("modalProposal").style.display = "none";
+}
+
+
+/* ===================== */
+/* MODAL FORM PESERTA, UMKM, CALL CENTER */
+/* ===================== */
+
+const modalPeserta = document.getElementById("modalPeserta");
+const modalUMKM = document.getElementById("modalUMKM");
+const modalCallCenter = document.getElementById("modalCallCenter");
+
+document.getElementById("btnPeserta").onclick = () => {
+  modalPeserta.style.display = "block";
+};
+document.getElementById("btnUMKM").onclick = () => {
+  modalUMKM.style.display = "block";
+};
+document.getElementById("btnCallCenter").onclick = () => {
+  modalCallCenter.style.display = "block";
+};
+
+modalPeserta.querySelector(".close").onclick = () => modalPeserta.style.display = "none";
+modalUMKM.querySelector(".close").onclick = () => modalUMKM.style.display = "none";
+modalCallCenter.querySelector(".close").onclick = () => modalCallCenter.style.display = "none";
+
+
+/* ===================== */
+/* MODAL ZOOM SPONSOR */
+/* ===================== */
+
+const modalSponsor = document.getElementById("modalSponsor");
+const modalImg = document.getElementById("imgModal");
+const closeSponsor = modalSponsor.querySelector(".close");
+
+document.querySelectorAll(".sponsor-img").forEach(img => {
+  img.onclick = () => {
+    modalSponsor.style.display = "block";
+    modalImg.src = img.src;
+  };
+});
+
+closeSponsor.onclick = () => {
+  modalSponsor.style.display = "none";
+};
+
+
+/* ===================== */
+/* TUTUP MODAL JIKA KLIK LUAR */
+/* ===================== */
+
+window.onclick = function(event) {
+  if (event.target === modalPeserta) modalPeserta.style.display = "none";
+  if (event.target === modalUMKM) modalUMKM.style.display = "none";
+  if (event.target === modalCallCenter) modalCallCenter.style.display = "none";
+  if (event.target === modalPanduan) modalPanduan.style.display = "none";
+  if (event.target === modalProposal) modalProposal.style.display = "none";
+  if (event.target === modalSponsor) modalSponsor.style.display = "none";
+};
+
+
+/* ===================== */
+/* LOGIN PESERTA */
+/* ===================== */
+
 const apiUrl = "https://script.google.com/macros/s/AKfycbwPKCbI09nK6zFWXT7srymZxYcMrOHHQBcnbIGIGWAXhhXsOvy-o-EiGZy-kiJfNM55/exec";
 
-// ====== LOGIN PESERTA ======
 function loginPeserta(){
   const nohp = document.getElementById("nohpLogin").value.trim();
   if(nohp === ""){
@@ -18,10 +96,16 @@ function loginPeserta(){
         tampilkanDashboard(data);
       }
     })
-    .catch(() => alert("Gagal koneksi server"));
+    .catch(() => {
+      alert("Gagal koneksi server");
+    });
 }
 
-// ====== DASHBOARD ======
+
+/* ===================== */
+/* DASHBOARD PESERTA */
+/* ===================== */
+
 function tampilkanDashboard(data){
 
   document.getElementById("isiDashboard").innerHTML = `
@@ -41,8 +125,8 @@ function tampilkanDashboard(data){
 
   document.getElementById("popupDashboard").style.display = "flex";
 
-  // ===== LOGIKA QR H-7 =====
-  if (data.qr_aktif === "YA") {
+  // LOGIKA QR H-7
+  if(data.qr_aktif === "YA"){
 
     document.getElementById("qrArea").innerHTML = `
       <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(data.qr)}">
@@ -58,68 +142,27 @@ function tampilkanDashboard(data){
         QR aktif mulai H-7 sebelum acara
       </p>
       <p style="font-size:13px;margin-top:5px;">
-        Silakan klik tombol di bawah ini untuk konfirmasi kehadiran.<br>
-        Tombol akan aktif mulai H-7 sebelum acara.
+        Silakan buka kembali halaman ini mendekati hari acara.
       </p>
     `;
 
   }
 }
 
+
+/* ===================== */
+/* TUTUP DASHBOARD */
+/* ===================== */
+
 function tutupDashboard(){
-  document.getElementById("popupDashboard").style.display="none";
+  document.getElementById("popupDashboard").style.display = "none";
 }
 
-// ====== MODAL MENU ======
-const modalPanduan     = document.getElementById("modalPanduan");
-const modalProposal   = document.getElementById("modalProposal");
-const modalPeserta    = document.getElementById("modalPeserta");
-const modalUMKM       = document.getElementById("modalUMKM");
-const modalCallCenter = document.getElementById("modalCallCenter");
-const modalSponsor    = document.getElementById("modalSponsor");
-const popupDashboard  = document.getElementById("popupDashboard");
 
-// tombol menu
-function bukaPanduan(){ modalPanduan.style.display="block"; }
-function tutupPanduan(){ modalPanduan.style.display="none"; }
+/* ===================== */
+/* BUKA WHATSAPP */
+/* ===================== */
 
-function bukaProposal(){ modalProposal.style.display="block"; }
-function tutupProposal(){ modalProposal.style.display="none"; }
-
-document.getElementById("btnPeserta").onclick = ()=> modalPeserta.style.display="block";
-document.getElementById("btnUMKM").onclick = ()=> modalUMKM.style.display="block";
-document.getElementById("btnCallCenter").onclick = ()=> modalCallCenter.style.display="block";
-
-modalPeserta.querySelector(".close").onclick = ()=> modalPeserta.style.display="none";
-modalUMKM.querySelector(".close").onclick = ()=> modalUMKM.style.display="none";
-modalCallCenter.querySelector(".close").onclick = ()=> modalCallCenter.style.display="none";
-
-// sponsor zoom
-const modalImg = document.getElementById("imgModal");
-document.querySelectorAll(".sponsor-img").forEach(img=>{
-  img.onclick = ()=>{
-    modalSponsor.style.display="block";
-    modalImg.src = img.src;
-  }
-});
-modalSponsor.querySelector(".close").onclick = ()=> modalSponsor.style.display="none";
-
-// tutup jika klik luar
-window.onclick = function(event){
-  if(event.target === modalPanduan) modalPanduan.style.display="none";
-  if(event.target === modalProposal) modalProposal.style.display="none";
-  if(event.target === modalPeserta) modalPeserta.style.display="none";
-  if(event.target === modalUMKM) modalUMKM.style.display="none";
-  if(event.target === modalCallCenter) modalCallCenter.style.display="none";
-  if(event.target === modalSponsor) modalSponsor.style.display="none";
-  if(event.target === popupDashboard) popupDashboard.style.display="none";
-}
-
-// ====== WHATSAPP ======
 function openWhatsApp(nomor){
-  window.open("https://wa.me/"+nomor,"_blank");
+  window.open("https://wa.me/" + nomor, "_blank");
 }
-
-
-
-
