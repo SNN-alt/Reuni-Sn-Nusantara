@@ -135,7 +135,6 @@ function tampilkanDashboard(data){
     `;
 
   } else {
-
     document.getElementById("qrArea").innerHTML = `
   <p style="color:red;font-weight:bold;">
     QR aktif mulai H-7 sebelum acara
@@ -166,6 +165,7 @@ function tutupDashboard(){
 function openWhatsApp(nomor){
   window.open("https://wa.me/" + nomor, "_blank");
 }
+
 
 
 
