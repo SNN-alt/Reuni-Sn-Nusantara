@@ -82,7 +82,7 @@ window.loginPeserta = function(){
 
 /* ================= DASHBOARD ================= */
 
-function tampilkanDashboard(data){
+window.tampilkanDashboard = function(data){
 
   document.getElementById("isiDashboard").innerHTML = `
     <h3>👋 Halo, ${data.nama}</h3>
@@ -142,7 +142,7 @@ const aktif = true;
 /*        KONFIRMASI KEHADIRAN PESERTA               */
 /* ================================================= */
 
-function konfirmasiHadir(nohp){
+window.konfirmasiHadir = function(nohp){
 
   // Tampilkan loading
   document.getElementById("qrArea").innerHTML = `
@@ -193,6 +193,7 @@ window.openWhatsApp = function(nomor){
 }
 
 });
+
 
 
 
