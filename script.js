@@ -1,79 +1,78 @@
 /* ===================== */
-/*  MODAL PANDUAN & PROPOSAL */
+/*  AMBIL SEMUA MODAL */
+/* ===================== */
+
+const modalPanduan     = document.getElementById("modalPanduan");
+const modalProposal   = document.getElementById("modalProposal");
+const modalPeserta    = document.getElementById("modalPeserta");
+const modalUMKM       = document.getElementById("modalUMKM");
+const modalCallCenter = document.getElementById("modalCallCenter");
+const modalSponsor    = document.getElementById("modalSponsor");
+const popupDashboard  = document.getElementById("popupDashboard");
+
+/* ===================== */
+/*  FUNGSI BUKA TUTUP MODAL */
 /* ===================== */
 
 function bukaPanduan() {
-  document.getElementById("modalPanduan").style.display = "block";
+  modalPanduan.style.display = "block";
 }
-
 function tutupPanduan() {
-  document.getElementById("modalPanduan").style.display = "none";
+  modalPanduan.style.display = "none";
 }
 
 function bukaProposal() {
-  document.getElementById("modalProposal").style.display = "block";
+  modalProposal.style.display = "block";
 }
-
 function tutupProposal() {
-  document.getElementById("modalProposal").style.display = "none";
+  modalProposal.style.display = "none";
 }
-
-function tutupDashboard(){
-  document.getElementById("popupDashboard").style.display = "none";
-}
-
-
-/* ===================== */
-/*  MODAL FORM PESERTA, UMKM, CALL CENTER */
-/* ===================== */
-
-const modalPeserta = document.getElementById("modalPeserta");
-const modalUMKM = document.getElementById("modalUMKM");
-const modalCallCenter = document.getElementById("modalCallCenter");
 
 document.getElementById("btnPeserta").onclick = () => modalPeserta.style.display = "block";
-document.getElementById("btnUMKM").onclick = () => modalUMKM.style.display = "block";
+document.getElementById("btnUMKM").onclick    = () => modalUMKM.style.display = "block";
 document.getElementById("btnCallCenter").onclick = () => modalCallCenter.style.display = "block";
 
 modalPeserta.querySelector(".close").onclick = () => modalPeserta.style.display = "none";
 modalUMKM.querySelector(".close").onclick = () => modalUMKM.style.display = "none";
 modalCallCenter.querySelector(".close").onclick = () => modalCallCenter.style.display = "none";
 
-
 /* ===================== */
-/*  MODAL SPONSOR IMAGE */
+/*  MODAL SPONSOR */
 /* ===================== */
 
-const modalSponsor = document.getElementById("modalSponsor");
 const modalImg = document.getElementById("imgModal");
-const closeSponsor = modalSponsor.querySelector(".close");
-
 document.querySelectorAll(".sponsor-img").forEach(img => {
   img.onclick = () => {
     modalSponsor.style.display = "block";
     modalImg.src = img.src;
   };
 });
-
-closeSponsor.onclick = () => modalSponsor.style.display = "none";
-
+modalSponsor.querySelector(".close").onclick = () => modalSponsor.style.display = "none";
 
 /* ===================== */
-/*  TUTUP SEMUA MODAL JIKA KLIK LUAR */
+/*  TUTUP SEMUA MODAL KLIK LUAR */
 /* ===================== */
 
 window.onclick = function(event) {
+  if (event.target === modalPanduan) modalPanduan.style.display = "none";
+  if (event.target === modalProposal) modalProposal.style.display = "none";
   if (event.target === modalPeserta) modalPeserta.style.display = "none";
   if (event.target === modalUMKM) modalUMKM.style.display = "none";
   if (event.target === modalCallCenter) modalCallCenter.style.display = "none";
-  if (event.target === modalPanduan) modalPanduan.style.display = "none";
-  if (event.target === modalProposal) modalProposal.style.display = "none";
   if (event.target === modalSponsor) modalSponsor.style.display = "none";
+  if (event.target === popupDashboard) popupDashboard.style.display = "none";
 };
 
+/* ===================== */
+/*  TUTUP DASHBOARD */
+/* ===================== */
+
+function tutupDashboard(){
+  popupDashboard.style.display = "none";
+}
 
 /* ===================== */
-/*  WHATSAPP FUNCTION */
+/*  OPEN WHATSAPP */
 /* ===================== */
 
 function openWhatsApp(number) {
@@ -81,7 +80,7 @@ function openWhatsApp(number) {
 }
 
 /* ===================== */
-/*  DASBOARD PESERTA */
+/*  DASHBOARD PESERTA */
 /* ===================== */
 
 function tampilkanDashboard(data){
@@ -102,9 +101,9 @@ function tampilkanDashboard(data){
   `;
 
   document.getElementById("isiDashboard").innerHTML = html;
-  document.getElementById("popupDashboard").style.display = "flex";
+  popupDashboard.style.display = "flex";
 
-  // ===== LOGIKA QR H-7 =====
+  /* ===== LOGIKA QR H-7 ===== */
   if(data.qr_aktif === "YA"){
 
     document.getElementById("qrArea").innerHTML = `
@@ -126,8 +125,3 @@ function tampilkanDashboard(data){
     `;
   }
 }
-
-
-
-
-
