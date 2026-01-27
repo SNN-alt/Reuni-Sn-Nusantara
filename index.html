@@ -142,71 +142,9 @@
   &copy; 2026 Reuni SN Nusantara
 </footer>
 
-
-<!-- ================= SCRIPT UTAMA ================= -->
-<script>
-/* ===== KONFIGURASI API GOOGLE SHEET ===== */
-const apiUrl = "https://script.google.com/macros/s/AKfycbwPKCbI09nK6zFWXT7srymZxYcMrOHHQBcnbIGIGWAXhhXsOvy-o-EiGZy-kiJfNM55/exec";
-
-
-/* ===== LOGIN PESERTA ===== */
-function loginPeserta(){
-  const nohp = document.getElementById("nohpLogin").value.trim();
-  if(nohp === ""){
-    alert("Masukkan nomor HP!");
-    return;
-  }
-
-  fetch(apiUrl + "?mode=login&nohp=" + encodeURIComponent(nohp))
-    .then(res => res.json())
-    .then(data => {
-      if(data.status == "NOT_FOUND"){
-        alert("Nomor HP belum terdaftar");
-      } else {
-        tampilkanDashboard(data);
-      }
-    })
-    .catch(() => alert("Gagal koneksi server"));
-}
-
-
-/* ===== TAMPILKAN DASHBOARD PESERTA ===== */
-function tampilkanDashboard(data){
-  document.getElementById("isiDashboard").innerHTML = `
-    <h3>Halo, ${data.nama}</h3>
-    <p>No HP: ${data.nohp}</p>
-    <p>Status Kehadiran: ${data.statusHadir || "TIDAK HADIR"}</p>
-    <div id="qrCode" class="center"></div>
-  `;
-
-  document.getElementById("popupDashboard").style.display="flex";
-
-  if(data.qr_aktif == "YA"){
-    document.getElementById("qrCode").innerHTML =
-      '<img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data='+
-      encodeURIComponent(data.qr)+'">';
-  } else {
-    document.getElementById("qrCode").innerHTML =
-      '<p style="color:red;">QR aktif H-7 sebelum acara</p>';
-  }
-}
-
-
-/* ===== TUTUP DASHBOARD ===== */
-function tutupDashboard(){
-  document.getElementById("popupDashboard").style.display="none";
-}
-
-
-/* ===== BUKA WHATSAPP ===== */
-function openWhatsApp(nomor){
-  window.open("https://wa.me/" + nomor, "_blank");
-}
-</script>
-
-
 <!-- File JavaScript tambahan -->
 <script src="script.js"></script>
 
 </body>
 </html>
+
