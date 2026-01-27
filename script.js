@@ -32,7 +32,7 @@ function tampilkanDashboard(data){
       <tr><td><b>Datang bersama keluarga</b></td><td>: ${data.keluarga}</td></tr>
       <tr><td><b>Jumlah anggota</b></td><td>: ${data.jumlah}</td></tr>
       <tr><td><b>Kebutuhan parkir</b></td><td>: ${data.parkir}</td></tr>
-      <tr><td><b>Status Kehadiran</b></td><td>: ${data.statusHadir}</td></tr>
+      <tr><td><b>Status Kehadiran</b></td><td>: ${data.statushadir || "BELUM KONFIRMASI"}</td></tr>
     </table>
 
     <div id="qrArea" style="margin-top:15px;text-align:center;"></div>
@@ -105,3 +105,4 @@ window.onclick = function(event){
 function openWhatsApp(nomor){
   window.open("https://wa.me/"+nomor,"_blank");
 }
+
