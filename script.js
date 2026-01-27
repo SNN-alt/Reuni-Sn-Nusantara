@@ -61,7 +61,7 @@ window.onclick = function(event){
 
 /* ================= LOGIN PESERTA ================= */
 
-const apiUrl = "https://script.google.com/macros/s/AKfycbyVcq2k6zAUrd96XRGwKzCYSRqtow7hTFkTrn-VTVPtuL2irCoGZ9SKFP0medtoy-VE/exec";
+const apiUrl = "https://script.google.com/macros/s/AKfycbz3vDXt_2bdMREvfLwGYYpouEU2jBGxeacsXvWrPT9fi1SvDCDMZH7mBCmKnrorawSt/exec";
 
 window.loginPeserta = function(){
   const nohp = document.getElementById("nohpLogin").value.trim();
@@ -174,6 +174,7 @@ window.openWhatsApp = function(nomor){
 }
 
 });
+
 
 
 
