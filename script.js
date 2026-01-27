@@ -100,7 +100,6 @@ function loginPeserta(){
     .catch(() => alert("Gagal koneksi server"));
 }
 
-
 /* ================================================= */
 /*                DASHBOARD PESERTA                  */
 /* ================================================= */
@@ -124,56 +123,58 @@ function tampilkanDashboard(data){
 
   document.getElementById("popupDashboard").style.display = "flex";
 
-// ===== LOGIKA QR =====
-if (String(data.qr_aktif).toUpperCase() === "YA") {
+  // ===== LOGIKA QR =====
+  if (String(data.qr_aktif).toUpperCase() === "YA") {
 
-  document.getElementById("qrArea").innerHTML = `
-    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(data.qr)}">
-    <p style="font-size:13px;margin-top:8px;">
-      Tunjukkan QR ini saat registrasi ulang
-    </p>
-  `;
+    document.getElementById("qrArea").innerHTML = `
+      <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(data.qr)}">
+      <p style="font-size:13px;margin-top:8px;">
+        Tunjukkan QR ini saat registrasi ulang
+      </p>
+    `;
 
-} else {
+  } else {
 
-  const hariIni = new Date();
-  const tanggalAcara = new Date("2026-04-11"); 
-  const h7 = new Date(tanggalAcara);
-  h7.setDate(tanggalAcara.getDate() - 7);
+    const hariIni = new Date();
+    const tanggalAcara = new Date("2026-04-11"); 
+    const h7 = new Date(tanggalAcara);
+    h7.setDate(tanggalAcara.getDate() - 7);
 
-  const aktif = (hariIni >= h7);
+    const aktif = (hariIni >= h7);
 
-  document.getElementById("qrArea").innerHTML = `
-    <p style="color:red;font-weight:bold;">
-      QR aktif mulai H-7 sebelum acara
-    </p>
+    document.getElementById("qrArea").innerHTML = `
+      <p style="color:red;font-weight:bold;">
+        QR aktif mulai H-7 sebelum acara
+      </p>
 
-    <p style="font-size:13px;margin-top:5px;">
-      Silakan klik tombol di bawah untuk konfirmasi kehadiran.
-    </p>
+      <p style="font-size:13px;margin-top:5px;">
+        Silakan klik tombol di bawah untuk konfirmasi kehadiran.
+      </p>
 
-    <button 
-      onclick="konfirmasiHadir('${data.nohp}')"
-      ${aktif ? "" : "disabled"}
-      style="
-        margin-top:8px;
-        padding:8px 16px;
-        border:none;
-        border-radius:6px;
-        background:${aktif ? "#28a745" : "#999"};
-        color:white;
-        cursor:${aktif ? "pointer" : "not-allowed"};
-      ">
-      ${aktif ? "Konfirmasi Kehadiran" : "Tombol aktif mulai H-7"}
-    </button>
-  `;
-}
+      <button 
+        onclick="konfirmasiHadir('${data.nohp}')"
+        ${aktif ? "" : "disabled"}
+        style="
+          margin-top:8px;
+          padding:8px 16px;
+          border:none;
+          border-radius:6px;
+          background:${aktif ? "#28a745" : "#999"};
+          color:white;
+          cursor:${aktif ? "pointer" : "not-allowed"};
+        ">
+        ${aktif ? "Konfirmasi Kehadiran" : "Tombol aktif mulai H-7"}
+      </button>
+    `;
+  }
 
-// ===== FUNGSI KONFIRMASI (sementara) =====
+} // <-- INI penutup fungsi yang tadi kurang
+
+
+/* ===== Fungsi sementara konfirmasi ===== */
 function konfirmasiHadir(nohp){
   alert("Fitur konfirmasi akan aktif mulai H-7 sebelum acara");
 }
-
 
 /* ================================================= */
 /*                TUTUP DASHBOARD                    */
@@ -191,6 +192,7 @@ function tutupDashboard(){
 function openWhatsApp(nomor){
   window.open("https://wa.me/" + nomor, "_blank");
 }
+
 
 
 
