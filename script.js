@@ -99,39 +99,41 @@ function tampilkanDashboard(data){
   document.getElementById("isiDashboard").innerHTML = html;
   document.getElementById("popupDashboard").style.display = "flex";
 
-// ===== LOGIKA QR =====
+// ===== LOGIKA QR & INFO PESERTA =====
 if (data.qr_aktif === "YA") {
 
-  // Jika sudah konfirmasi → tampilkan QR
-  document.getElementById("qrCode").innerHTML =
-    '<img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' +
-    encodeURIComponent(data.qr) + 
-    '" style="margin-top:10px;">';
+  // Jika sudah H-7 dan sudah konfirmasi → QR muncul
+  document.getElementById("qrCode").innerHTML = `
+    <p style="font-weight:bold;margin-bottom:10px;">
+      Status Kehadiran : ${data.statushadir}
+    </p>
+    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(data.qr)}">
+    <p style="font-size:12px;margin-top:8px;">
+      Tunjukkan QR ini saat registrasi ulang
+    </p>
+  `;
 
 } else {
 
-  // Jika belum konfirmasi → tampilkan info + tombol
+  // Jika belum masuk masa H-7
   document.getElementById("qrCode").innerHTML = `
-    <p style="color:#000;font-weight:bold;">
-      Klik tombol Konfirmasi Kehadiran di bawah ini.
+    <p><b>No HP</b> : ${data.nohp}</p>
+    <p><b>Jenis Kelamin</b> : ${data.jk}</p>
+    <p><b>Datang bersama keluarga</b> : ${data.keluarga}</p>
+    <p><b>Jumlah anggota</b> : ${data.jumlah}</p>
+    <p><b>Kebutuhan parkir</b> : ${data.parkir}</p>
+    <p><b>Status Kehadiran</b> : ${data.statushadir}</p>
+
+    <hr style="margin:10px 0;">
+
+    <p style="color:red;font-weight:bold;">
+      QR aktif mulai H-7 sebelum acara
     </p>
     <p style="font-size:13px;">
-      Tombol aktif mulai <b>H-7 sebelum acara</b>.<br>
-      Setelah dikonfirmasi, QR Code langsung muncul dan digunakan saat check-in acara.
+      Silakan buka kembali halaman ini saat mendekati hari acara
     </p>
-
-    <button onclick="konfirmasiHadir('${data.id}')"
-      style="
-        margin-top:10px;
-        padding:10px 18px;
-        background:#28a745;
-        color:white;
-        border:none;
-        border-radius:6px;
-        cursor:pointer;
-        font-size:14px;">
-      Konfirmasi Kehadiran
-    </button>
   `;
 }
+
+
 
