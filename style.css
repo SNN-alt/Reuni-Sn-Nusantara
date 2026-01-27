@@ -346,7 +346,7 @@ footer {
 }
 
 .sponsor-section h2 {
-  font-size: 14px;
+  font-size: 10px;
   font-weight: bold;
   padding: 8px 20px;
   background-color: #fff3cd;
@@ -364,7 +364,7 @@ footer {
 
 .sponsor-img {
   width: 10%;
-  max-width: 80px;
+  max-width: 100px;
   height: auto;
   cursor: pointer;
   border-radius: 10px;
@@ -375,6 +375,7 @@ footer {
   transform: scale(1.05);
   box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
+
 
 
 
