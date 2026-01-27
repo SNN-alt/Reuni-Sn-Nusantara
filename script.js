@@ -80,57 +80,53 @@ function openWhatsApp(number) {
   window.open("https://wa.me/" + number, "_blank");
 }
 
+/* ===================== */
+/*  DASBOARD PESERTA */
+/* ===================== */
+
 function tampilkanDashboard(data){
+
   const html = `
     <h3>👋 Halo, ${data.nama}</h3>
 
-    <table style="width:100%;font-size:14px;margin-top:10px;">
+    <table style="width:100%;font-size:14px;margin-top:10px">
       <tr><td><b>No HP</b></td><td>: ${data.nohp}</td></tr>
       <tr><td><b>Jenis Kelamin</b></td><td>: ${data.jk}</td></tr>
       <tr><td><b>Datang bersama keluarga</b></td><td>: ${data.keluarga}</td></tr>
       <tr><td><b>Jumlah anggota</b></td><td>: ${data.jumlah}</td></tr>
       <tr><td><b>Kebutuhan parkir</b></td><td>: ${data.parkir}</td></tr>
-      <tr><td><b>Status Kehadiran</b></td><td>: ${data.statusHadir || "BELUM KONFIRMASI"}</td></tr>
+      <tr><td><b>Status Kehadiran</b></td><td>: ${data.statushadir}</td></tr>
     </table>
 
-    <div id="qrCode" style="text-align:center;margin-top:15px;"></div>
+    <div id="qrArea" style="margin-top:15px;text-align:center;"></div>
   `;
 
   document.getElementById("isiDashboard").innerHTML = html;
   document.getElementById("popupDashboard").style.display = "flex";
 
-// ===== LOGIKA TAMPILKAN DATA PESERTA =====
-document.getElementById("qrCode").innerHTML = `
-  <p><b>No HP</b> : ${data.nohp}</p>
-  <p><b>Jenis Kelamin</b> : ${data.jk}</p>
-  <p><b>Datang bersama keluarga</b> : ${data.keluarga}</p>
-  <p><b>Jumlah anggota</b> : ${data.jumlah}</p>
-  <p><b>Kebutuhan parkir</b> : ${data.parkir}</p>
-  <p><b>Status Kehadiran</b> : ${data.statushadir}</p>
-  <div id="qrArea" style="margin-top:10px;text-align:center;"></div>
-`;
+  // ===== LOGIKA QR H-7 =====
+  if(data.qr_aktif === "YA"){
 
-// ===== LOGIKA AKTIFKAN QR H-7 =====
-if (data.qr_aktif === "YA") {
+    document.getElementById("qrArea").innerHTML = `
+      <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(data.qr)}">
+      <p style="font-size:13px;margin-top:8px;">
+        Tunjukkan QR ini saat registrasi ulang
+      </p>
+    `;
 
-  document.getElementById("qrArea").innerHTML = `
-    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(data.qr)}">
-    <p style="font-size:13px;margin-top:8px;">
-      Tunjukkan QR ini saat registrasi ulang
-    </p>
-  `;
+  } else {
 
-} else {
-
-  document.getElementById("qrArea").innerHTML = `
-    <p style="color:red;font-weight:bold;">
-      QR aktif mulai H-7 sebelum acara
-    </p>
-    <p style="font-size:13px;">
-      Silakan buka kembali halaman ini saat mendekati hari acara
-    </p>
-  `;
+    document.getElementById("qrArea").innerHTML = `
+      <p style="color:red;font-weight:bold;">
+        QR aktif mulai H-7 sebelum acara
+      </p>
+      <p style="font-size:13px;">
+        Silakan buka kembali halaman ini mendekati hari acara
+      </p>
+    `;
+  }
 }
+
 
 
 
