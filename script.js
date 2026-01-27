@@ -110,20 +110,7 @@ function tampilkanDashboard(data){
     `;
 
  } else {
-
-  const hariIni = new Date();
-
-  // === SIMULASI: anggap acara = 7 hari dari hari ini ===
-  const tanggalAcara = new Date();
-  tanggalAcara.setDate(tanggalAcara.getDate() + 7);
-
-  // hitung H-7
-  const h7 = new Date(tanggalAcara);
-  h7.setDate(tanggalAcara.getDate() - 7);
-
-  // apakah tombol aktif
-  const aktif = (hariIni >= h7);
-
+const aktif = true;
   document.getElementById("qrArea").innerHTML = `
     <p style="color:red;font-weight:bold;">
       QR aktif mulai H-7 sebelum acara
@@ -173,6 +160,7 @@ window.openWhatsApp = function(nomor){
 }
 
 });
+
 
 
 
