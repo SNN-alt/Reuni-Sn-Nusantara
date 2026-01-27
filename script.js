@@ -109,34 +109,46 @@ function tampilkanDashboard(data){
       <p style="font-size:13px;margin-top:8px;">Tunjukkan QR ini saat registrasi</p>
     `;
 
-  } else {
+ } else {
 
-    const hariIni = new Date();
-    tanggalAcara.setDate(tanggalAcara.getDate() + 7);
-    const h7 = new Date(tanggalAcara);
-    h7.setDate(tanggalAcara.getDate()-7);
-    const aktif = hariIni >= h7;
+  const hariIni = new Date();
 
-    document.getElementById("qrArea").innerHTML = `
-      <p style="color:red;font-weight:bold;">QR aktif mulai H-7 sebelum acara</p>
-      <p style="font-size:13px;">Silakan klik tombol konfirmasi kehadiran</p>
+  // === SIMULASI: anggap acara = 7 hari dari hari ini ===
+  const tanggalAcara = new Date();
+  tanggalAcara.setDate(tanggalAcara.getDate() + 7);
 
-      <button 
-        ${aktif ? "" : "disabled"}
-        onclick="konfirmasiHadir('${data.nohp}')"
-        style="
-          margin-top:8px;
-          padding:8px 16px;
-          border:none;
-          border-radius:6px;
-          background:${aktif ? "#28a745":"#999"};
-          color:white;
-          cursor:${aktif ? "pointer":"not-allowed"};
-        ">
-        ${aktif ? "Konfirmasi Kehadiran":"Tombol aktif mulai H-7"}
-      </button>
-    `;
-  }
+  // hitung H-7
+  const h7 = new Date(tanggalAcara);
+  h7.setDate(tanggalAcara.getDate() - 7);
+
+  // apakah tombol aktif
+  const aktif = (hariIni >= h7);
+
+  document.getElementById("qrArea").innerHTML = `
+    <p style="color:red;font-weight:bold;">
+      QR aktif mulai H-7 sebelum acara
+    </p>
+
+    <p style="font-size:13px;margin-top:5px;">
+      Silakan klik tombol di bawah untuk konfirmasi kehadiran.
+    </p>
+
+    <button 
+      onclick="konfirmasiHadir('${data.nohp}')"
+      ${aktif ? "" : "disabled"}
+      style="
+        margin-top:8px;
+        padding:8px 16px;
+        border:none;
+        border-radius:6px;
+        background:${aktif ? "#28a745" : "#999"};
+        color:white;
+        cursor:${aktif ? "pointer" : "not-allowed"};
+      ">
+      ${aktif ? "Konfirmasi Kehadiran" : "Tombol aktif mulai H-7"}
+    </button>
+  `;
+}
 }
 
 
@@ -161,6 +173,7 @@ window.openWhatsApp = function(nomor){
 }
 
 });
+
 
 
 
