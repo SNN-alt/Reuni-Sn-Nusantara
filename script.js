@@ -23,38 +23,48 @@ function loginPeserta(){
 
 // ====== DASHBOARD ======
 function tampilkanDashboard(data){
+
   document.getElementById("isiDashboard").innerHTML = `
     <h3>👋 Halo, ${data.nama}</h3>
 
     <table style="width:100%;font-size:14px;margin-top:10px;border-collapse:collapse;">
-  <tr><td><b>No HP</b></td><td>: ${data.nohp || "-"}</td></tr>
-  <tr><td><b>Jenis Kelamin</b></td><td>: ${data.jk || "-"}</td></tr>
-  <tr><td><b>Datang bersama keluarga</b></td><td>: ${data.keluarga || "-"}</td></tr>
-  <tr><td><b>Jumlah anggota</b></td><td>: ${data.jumlah || "-"}</td></tr>
-  <tr><td><b>Kebutuhan parkir</b></td><td>: ${data.parkir || "-"}</td></tr>
-  <tr><td><b>Status Kehadiran</b></td><td>: ${data.statushadir || "BELUM KONFIRMASI"}</td></tr>
-</table>
+      <tr><td><b>No HP</b></td><td>: ${data.nohp || "-"}</td></tr>
+      <tr><td><b>Jenis Kelamin</b></td><td>: ${data.jk || "-"}</td></tr>
+      <tr><td><b>Datang bersama keluarga</b></td><td>: ${data.keluarga || "-"}</td></tr>
+      <tr><td><b>Jumlah anggota</b></td><td>: ${data.jumlah || "-"}</td></tr>
+      <tr><td><b>Kebutuhan parkir</b></td><td>: ${data.parkir || "-"}</td></tr>
+      <tr><td><b>Status Kehadiran</b></td><td>: ${data.statushadir || "BELUM KONFIRMASI"}</td></tr>
+    </table>
 
     <div id="qrArea" style="margin-top:15px;text-align:center;"></div>
   `;
 
-  document.getElementById("popupDashboard").style.display="flex";
+  document.getElementById("popupDashboard").style.display = "flex";
 
-  if(data.qr_aktif === "YA"){
+  // ===== LOGIKA QR H-7 =====
+  if (data.qr_aktif === "YA") {
+
     document.getElementById("qrArea").innerHTML = `
       <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(data.qr)}">
-      <p style="font-size:13px;margin-top:8px;">Tunjukkan QR ini saat registrasi ulang</p>
+      <p style="font-size:13px;margin-top:8px;">
+        Tunjukkan QR ini saat registrasi ulang
+      </p>
     `;
+
   } else {
+
     document.getElementById("qrArea").innerHTML = `
-  <p style="color:red;font-weight:bold;">
-    QR aktif mulai H-7 sebelum acara
-  </p>
-  <p style="font-size:13px;margin-top:5px;">
-    Silakan klik tombol di bawah ini untuk konfirmasi kehadiran.<br>
-    Tombol akan aktif mulai H-7 sebelum acara.
-  </p>
-`;
+      <p style="color:red;font-weight:bold;">
+        QR aktif mulai H-7 sebelum acara
+      </p>
+      <p style="font-size:13px;margin-top:5px;">
+        Silakan klik tombol di bawah ini untuk konfirmasi kehadiran.<br>
+        Tombol akan aktif mulai H-7 sebelum acara.
+      </p>
+    `;
+
+  }
+}
 
 function tutupDashboard(){
   document.getElementById("popupDashboard").style.display="none";
@@ -109,6 +119,7 @@ window.onclick = function(event){
 function openWhatsApp(nomor){
   window.open("https://wa.me/"+nomor,"_blank");
 }
+
 
 
 
