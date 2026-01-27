@@ -125,7 +125,7 @@ function tampilkanDashboard(data){
   document.getElementById("popupDashboard").style.display = "flex";
 
 // ===== LOGIKA QR =====
-if(String(data.qr_aktif).toUpperCase() === "YA"){
+if (String(data.qr_aktif).toUpperCase() === "YA") {
 
   document.getElementById("qrArea").innerHTML = `
     <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(data.qr)}">
@@ -169,9 +169,11 @@ if(String(data.qr_aktif).toUpperCase() === "YA"){
   `;
 }
 
-  function konfirmasiHadir(nohp){
+// ===== FUNGSI KONFIRMASI (sementara) =====
+function konfirmasiHadir(nohp){
   alert("Fitur konfirmasi akan aktif mulai H-7 sebelum acara");
 }
+
 
 /* ================================================= */
 /*                TUTUP DASHBOARD                    */
@@ -189,6 +191,7 @@ function tutupDashboard(){
 function openWhatsApp(nomor){
   window.open("https://wa.me/" + nomor, "_blank");
 }
+
 
 
 
