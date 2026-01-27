@@ -26,14 +26,14 @@ function tampilkanDashboard(data){
   document.getElementById("isiDashboard").innerHTML = `
     <h3>👋 Halo, ${data.nama}</h3>
 
-    <table style="width:100%;font-size:14px;margin-top:10px">
-      <tr><td><b>No HP</b></td><td>: ${data.nohp}</td></tr>
-      <tr><td><b>Jenis Kelamin</b></td><td>: ${data.jk}</td></tr>
-      <tr><td><b>Datang bersama keluarga</b></td><td>: ${data.keluarga}</td></tr>
-      <tr><td><b>Jumlah anggota</b></td><td>: ${data.jumlah}</td></tr>
-      <tr><td><b>Kebutuhan parkir</b></td><td>: ${data.parkir}</td></tr>
-      <tr><td><b>Status Kehadiran</b></td><td>: ${data.statushadir || "BELUM KONFIRMASI"}</td></tr>
-    </table>
+    <table style="width:100%;font-size:14px;margin-top:10px;border-collapse:collapse;">
+  <tr><td><b>No HP</b></td><td>: ${data.nohp || "-"}</td></tr>
+  <tr><td><b>Jenis Kelamin</b></td><td>: ${data.jk || "-"}</td></tr>
+  <tr><td><b>Datang bersama keluarga</b></td><td>: ${data.keluarga || "-"}</td></tr>
+  <tr><td><b>Jumlah anggota</b></td><td>: ${data.jumlah || "-"}</td></tr>
+  <tr><td><b>Kebutuhan parkir</b></td><td>: ${data.parkir || "-"}</td></tr>
+  <tr><td><b>Status Kehadiran</b></td><td>: ${data.statushadir || "BELUM KONFIRMASI"}</td></tr>
+</table>
 
     <div id="qrArea" style="margin-top:15px;text-align:center;"></div>
   `;
@@ -105,4 +105,5 @@ window.onclick = function(event){
 function openWhatsApp(nomor){
   window.open("https://wa.me/"+nomor,"_blank");
 }
+
 
