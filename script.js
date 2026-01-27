@@ -79,7 +79,7 @@ window.onclick = function(event) {
 /*                    LOGIN PESERTA                  */
 /* ================================================= */
 
-const apiUrl = "https://script.google.com/macros/s/AKfycbwPKCbI09nK6zFWXT7srymZxYcMrOHHQBcnbIGIGWAXhhXsOvy-o-EiGZy-kiJfNM55/exec";
+const apiUrl = "https://script.google.com/macros/s/AKfycbwVP0Ioy8UTg06bbJr-5o0FtJn7zOsnXgKExyY7OBcgrxDP8LELGh_0G86HLOxDP_8/exec";
 
 function loginPeserta(){
   const nohp = document.getElementById("nohpLogin").value.trim();
@@ -164,3 +164,4 @@ function tutupDashboard(){
 function openWhatsApp(nomor){
   window.open("https://wa.me/" + nomor, "_blank");
 }
+
