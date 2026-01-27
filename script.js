@@ -112,7 +112,7 @@ function tampilkanDashboard(data){
   } else {
 
     const hariIni = new Date();
-    const tanggalAcara = new Date("2026-04-11");
+    tanggalAcara.setDate(tanggalAcara.getDate() + 7);
     const h7 = new Date(tanggalAcara);
     h7.setDate(tanggalAcara.getDate()-7);
     const aktif = hariIni >= h7;
@@ -161,6 +161,7 @@ window.openWhatsApp = function(nomor){
 }
 
 });
+
 
 
 
