@@ -61,7 +61,7 @@ window.onclick = function(event){
 
 /* ================= LOGIN PESERTA ================= */
 
-const apiUrl = "https://script.google.com/macros/s/AKfycbwxcSDu48TAa7IQCJzZKjmEoWI_5soOGRrOsMBJrqpscfvX7Vcmhx2Y2wqmg94FD87m/exec";
+const apiUrl = "https://script.google.com/macros/s/AKfycbx8detEcSJw3dfHwXEZbk5jRQtAUpsCnfqYGACokEjrS8abVjHHjZ5POLb4SL60RFKP/exec";
 
 window.loginPeserta = function(){
   const nohp = document.getElementById("nohpLogin").value.trim();
@@ -143,30 +143,18 @@ const aktif = true;
 
 function konfirmasiHadir(nohp){
 
-  // Disable tombol supaya tidak diklik dua kali
-  document.getElementById("qrArea").innerHTML = `
-    <p style="color:green;font-weight:bold;">⏳ Mengirim konfirmasi...</p>
-  `;
-
   fetch(apiUrl + "?mode=konfirmasi&nohp=" + encodeURIComponent(nohp))
     .then(res => res.json())
     .then(data => {
+      alert(data.message);
 
       if(data.status == "OK"){
-        alert(data.message);
-
-        // Setelah sukses → reload dashboard supaya QR muncul
-        loginPeserta(); 
-      } else {
-        alert(data.message);
+        // reload data peserta agar QR muncul
+        loginPeserta();
       }
-
     })
-    .catch(() => {
-      alert("❌ Gagal koneksi server");
-    });
+    .catch(() => alert("Gagal koneksi server"));
 }
-
 
 /* ================= TUTUP DASHBOARD ================= */
 
@@ -182,6 +170,7 @@ window.openWhatsApp = function(nomor){
 }
 
 });
+
 
 
 
