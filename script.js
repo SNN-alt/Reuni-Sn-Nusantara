@@ -124,20 +124,20 @@ function tampilkanDashboard(data){
 
   document.getElementById("popupDashboard").style.display = "flex";
 
-  // ===== LOGIKA QR =====
-  if(data.qr_aktif === "YA"){
+// ===== LOGIKA QR =====
+if(String(data.qr_aktif).toUpperCase() === "YA"){
 
-    document.getElementById("qrArea").innerHTML = `
-      <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(data.qr)}">
-      <p style="font-size:13px;margin-top:8px;">
-        Tunjukkan QR ini saat registrasi ulang
-      </p>
-    `;
+  document.getElementById("qrArea").innerHTML = `
+    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(data.qr)}">
+    <p style="font-size:13px;margin-top:8px;">
+      Tunjukkan QR ini saat registrasi ulang
+    </p>
+  `;
 
-  } else {
+} else {
 
   const hariIni = new Date();
-  const tanggalAcara = new Date("2026-04-11");
+  const tanggalAcara = new Date("2026-04-11"); 
   const h7 = new Date(tanggalAcara);
   h7.setDate(tanggalAcara.getDate() - 7);
 
@@ -169,6 +169,10 @@ function tampilkanDashboard(data){
   `;
 }
 
+  function konfirmasiHadir(nohp){
+  alert("Fitur konfirmasi akan aktif mulai H-7 sebelum acara");
+}
+
 /* ================================================= */
 /*                TUTUP DASHBOARD                    */
 /* ================================================= */
@@ -185,6 +189,7 @@ function tutupDashboard(){
 function openWhatsApp(nomor){
   window.open("https://wa.me/" + nomor, "_blank");
 }
+
 
 
 
