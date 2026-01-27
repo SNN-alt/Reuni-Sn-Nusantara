@@ -1,5 +1,3 @@
-alert("SCRIPT.JS TERBACA");
-
 document.addEventListener("DOMContentLoaded", function(){
 
 /* ================= MODAL PANDUAN & PROPOSAL ================= */
@@ -163,4 +161,5 @@ window.openWhatsApp = function(nomor){
 }
 
 });
+
 
