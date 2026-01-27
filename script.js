@@ -99,20 +99,39 @@ function tampilkanDashboard(data){
   document.getElementById("isiDashboard").innerHTML = html;
   document.getElementById("popupDashboard").style.display = "flex";
 
-  // ===== LOGIKA QR =====
-  if(data.qr_aktif === "YA"){
-    // QR baru muncul jika sudah konfirmasi ulang
-    document.getElementById("qrCode").innerHTML =
-      '<img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' +
-      encodeURIComponent(data.qr) + '">';
-  } else {
-    // Jika belum konfirmasi
-    document.getElementById("qrCode").innerHTML =
-      `<p style="color:red;font-weight:bold;">
-        QR akan muncul setelah kamu melakukan konfirmasi kehadiran.
-       </p>
-       <p style="font-size:13px;">
-        Silakan klik link konfirmasi yang dikirim panitia.
-       </p>`;
-  }
+// ===== LOGIKA QR =====
+if (data.qr_aktif === "YA") {
+
+  // Jika sudah konfirmasi → tampilkan QR
+  document.getElementById("qrCode").innerHTML =
+    '<img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' +
+    encodeURIComponent(data.qr) + 
+    '" style="margin-top:10px;">';
+
+} else {
+
+  // Jika belum konfirmasi → tampilkan info + tombol
+  document.getElementById("qrCode").innerHTML = `
+    <p style="color:#000;font-weight:bold;">
+      Klik tombol Konfirmasi Kehadiran di bawah ini.
+    </p>
+    <p style="font-size:13px;">
+      Tombol aktif mulai <b>H-7 sebelum acara</b>.<br>
+      Setelah dikonfirmasi, QR Code langsung muncul dan digunakan saat check-in acara.
+    </p>
+
+    <button onclick="konfirmasiHadir('${data.id}')"
+      style="
+        margin-top:10px;
+        padding:10px 18px;
+        background:#28a745;
+        color:white;
+        border:none;
+        border-radius:6px;
+        cursor:pointer;
+        font-size:14px;">
+      Konfirmasi Kehadiran
+    </button>
+  `;
 }
+
