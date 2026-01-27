@@ -194,6 +194,7 @@ footer {
 /* ============================= */
 
 .login-box {
+  margin-top: 20px;
   background: rgba(0,0,0,0.75); /* transparan gelap */
   color: white;
   padding: 20px 25px;
@@ -374,6 +375,7 @@ footer {
   transform: scale(1.05);
   box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
+
 
 
 
