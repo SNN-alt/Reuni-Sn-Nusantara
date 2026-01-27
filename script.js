@@ -138,23 +138,46 @@ const aktif = true;
 }
 }
 
-
-/* ================= KONFIRMASI ================= */
+/* ================================================= */
+/*        KONFIRMASI KEHADIRAN PESERTA               */
+/* ================================================= */
 
 function konfirmasiHadir(nohp){
+
+  // Tampilkan loading
+  document.getElementById("qrArea").innerHTML = `
+    <p style="color:green;font-weight:bold;">⏳ Memproses konfirmasi...</p>
+  `;
 
   fetch(apiUrl + "?mode=konfirmasi&nohp=" + encodeURIComponent(nohp))
     .then(res => res.json())
     .then(data => {
-      alert(data.message);
 
-      if(data.status == "OK"){
-        // reload data peserta agar QR muncul
-        loginPeserta();
+      if(data.status === "OK"){
+
+        // Tampilkan QR langsung setelah sukses konfirmasi
+        document.getElementById("qrArea").innerHTML = `
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(data.qr)}">
+          <p style="font-size:13px;margin-top:8px;">
+            ${data.message}<br>
+            Tunjukkan QR ini saat registrasi ulang
+          </p>
+        `;
+
+      } else {
+        document.getElementById("qrArea").innerHTML = `
+          <p style="color:red;font-weight:bold;">${data.message}</p>
+        `;
       }
+
     })
-    .catch(() => alert("Gagal koneksi server"));
+    .catch(()=>{
+      document.getElementById("qrArea").innerHTML = `
+        <p style="color:red;font-weight:bold;">❌ Gagal koneksi server</p>
+      `;
+    });
 }
+
 
 /* ================= TUTUP DASHBOARD ================= */
 
@@ -170,6 +193,7 @@ window.openWhatsApp = function(nomor){
 }
 
 });
+
 
 
 
