@@ -99,33 +99,30 @@ function tampilkanDashboard(data){
   document.getElementById("isiDashboard").innerHTML = html;
   document.getElementById("popupDashboard").style.display = "flex";
 
-// ===== LOGIKA QR & INFO PESERTA =====
+// ===== LOGIKA TAMPILKAN DATA PESERTA =====
+document.getElementById("qrCode").innerHTML = `
+  <p><b>No HP</b> : ${data.nohp}</p>
+  <p><b>Jenis Kelamin</b> : ${data.jk}</p>
+  <p><b>Datang bersama keluarga</b> : ${data.keluarga}</p>
+  <p><b>Jumlah anggota</b> : ${data.jumlah}</p>
+  <p><b>Kebutuhan parkir</b> : ${data.parkir}</p>
+  <p><b>Status Kehadiran</b> : ${data.statushadir}</p>
+  <div id="qrArea" style="margin-top:10px;text-align:center;"></div>
+`;
+
+// ===== LOGIKA AKTIFKAN QR H-7 =====
 if (data.qr_aktif === "YA") {
 
-  // Jika sudah H-7 dan sudah konfirmasi → QR muncul
-  document.getElementById("qrCode").innerHTML = `
-    <p style="font-weight:bold;margin-bottom:10px;">
-      Status Kehadiran : ${data.statushadir}
-    </p>
+  document.getElementById("qrArea").innerHTML = `
     <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(data.qr)}">
-    <p style="font-size:12px;margin-top:8px;">
+    <p style="font-size:13px;margin-top:8px;">
       Tunjukkan QR ini saat registrasi ulang
     </p>
   `;
 
 } else {
 
-  // Jika belum masuk masa H-7
-  document.getElementById("qrCode").innerHTML = `
-    <p><b>No HP</b> : ${data.nohp}</p>
-    <p><b>Jenis Kelamin</b> : ${data.jk}</p>
-    <p><b>Datang bersama keluarga</b> : ${data.keluarga}</p>
-    <p><b>Jumlah anggota</b> : ${data.jumlah}</p>
-    <p><b>Kebutuhan parkir</b> : ${data.parkir}</p>
-    <p><b>Status Kehadiran</b> : ${data.statushadir}</p>
-
-    <hr style="margin:10px 0;">
-
+  document.getElementById("qrArea").innerHTML = `
     <p style="color:red;font-weight:bold;">
       QR aktif mulai H-7 sebelum acara
     </p>
@@ -134,6 +131,7 @@ if (data.qr_aktif === "YA") {
     </p>
   `;
 }
+
 
 
 
