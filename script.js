@@ -1,7 +1,7 @@
-/* ================= CONFIG ================= */
+// ====== KONFIGURASI ======
 const apiUrl = "https://script.google.com/macros/s/AKfycbwPKCbI09nK6zFWXT7srymZxYcMrOHHQBcnbIGIGWAXhhXsOvy-o-EiGZy-kiJfNM55/exec";
 
-/* ================= LOGIN ================= */
+// ====== LOGIN PESERTA ======
 function loginPeserta(){
   const nohp = document.getElementById("nohpLogin").value.trim();
   if(nohp === ""){
@@ -21,10 +21,9 @@ function loginPeserta(){
     .catch(() => alert("Gagal koneksi server"));
 }
 
-/* ================= DASHBOARD ================= */
+// ====== DASHBOARD ======
 function tampilkanDashboard(data){
-
-  const html = `
+  document.getElementById("isiDashboard").innerHTML = `
     <h3>👋 Halo, ${data.nama}</h3>
 
     <table style="width:100%;font-size:14px;margin-top:10px">
@@ -39,35 +38,25 @@ function tampilkanDashboard(data){
     <div id="qrArea" style="margin-top:15px;text-align:center;"></div>
   `;
 
-  document.getElementById("isiDashboard").innerHTML = html;
-  document.getElementById("popupDashboard").style.display = "flex";
+  document.getElementById("popupDashboard").style.display="flex";
 
-  /* ===== LOGIKA QR H-7 ===== */
   if(data.qr_aktif === "YA"){
     document.getElementById("qrArea").innerHTML = `
       <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(data.qr)}">
-      <p style="font-size:13px;margin-top:8px;">
-        Tunjukkan QR ini saat registrasi ulang
-      </p>
+      <p style="font-size:13px;margin-top:8px;">Tunjukkan QR ini saat registrasi ulang</p>
     `;
   } else {
     document.getElementById("qrArea").innerHTML = `
-      <p style="color:red;font-weight:bold;">
-        QR aktif mulai H-7 sebelum acara
-      </p>
-      <p style="font-size:13px;">
-        Silakan buka kembali halaman ini mendekati hari acara
-      </p>
+      <p style="color:red;font-weight:bold;">QR aktif mulai H-7 sebelum acara</p>
     `;
   }
 }
 
-/* ================= TUTUP DASHBOARD ================= */
 function tutupDashboard(){
-  document.getElementById("popupDashboard").style.display = "none";
+  document.getElementById("popupDashboard").style.display="none";
 }
 
-/* ================= MODAL MENU ================= */
+// ====== MODAL MENU ======
 const modalPanduan     = document.getElementById("modalPanduan");
 const modalProposal   = document.getElementById("modalProposal");
 const modalPeserta    = document.getElementById("modalPeserta");
@@ -76,7 +65,7 @@ const modalCallCenter = document.getElementById("modalCallCenter");
 const modalSponsor    = document.getElementById("modalSponsor");
 const popupDashboard  = document.getElementById("popupDashboard");
 
-/* Tombol utama */
+// tombol menu
 function bukaPanduan(){ modalPanduan.style.display="block"; }
 function tutupPanduan(){ modalPanduan.style.display="none"; }
 
@@ -91,7 +80,7 @@ modalPeserta.querySelector(".close").onclick = ()=> modalPeserta.style.display="
 modalUMKM.querySelector(".close").onclick = ()=> modalUMKM.style.display="none";
 modalCallCenter.querySelector(".close").onclick = ()=> modalCallCenter.style.display="none";
 
-/* Sponsor zoom */
+// sponsor zoom
 const modalImg = document.getElementById("imgModal");
 document.querySelectorAll(".sponsor-img").forEach(img=>{
   img.onclick = ()=>{
@@ -101,7 +90,7 @@ document.querySelectorAll(".sponsor-img").forEach(img=>{
 });
 modalSponsor.querySelector(".close").onclick = ()=> modalSponsor.style.display="none";
 
-/* Tutup modal jika klik luar */
+// tutup jika klik luar
 window.onclick = function(event){
   if(event.target === modalPanduan) modalPanduan.style.display="none";
   if(event.target === modalProposal) modalProposal.style.display="none";
@@ -112,7 +101,7 @@ window.onclick = function(event){
   if(event.target === popupDashboard) popupDashboard.style.display="none";
 }
 
-/* ================= WHATSAPP ================= */
+// ====== WHATSAPP ======
 function openWhatsApp(nomor){
   window.open("https://wa.me/"+nomor,"_blank");
 }
