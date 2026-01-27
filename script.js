@@ -139,12 +139,23 @@ const aktif = true;
 }
 
 
-/* ================= KONFIRMASI (sementara) ================= */
+/* ================= KONFIRMASI ================= */
 
-window.konfirmasiHadir = function(nohp){
-  alert("Nanti tombol ini akan update Spreadsheet.\nNo HP: "+nohp);
+function konfirmasiHadir(nohp){
+
+  fetch(apiUrl + "?mode=konfirmasi&nohp=" + encodeURIComponent(nohp))
+    .then(res => res.json())
+    .then(data => {
+      alert(data.message);
+
+      // Refresh dashboard setelah update
+      loginPeserta();
+    })
+    .catch(() => {
+      alert("❌ Gagal update ke Spreadsheet");
+    });
+
 }
-
 
 /* ================= TUTUP DASHBOARD ================= */
 
@@ -160,6 +171,7 @@ window.openWhatsApp = function(nomor){
 }
 
 });
+
 
 
 
