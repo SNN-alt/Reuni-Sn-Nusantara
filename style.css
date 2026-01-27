@@ -325,7 +325,7 @@ footer {
 .sponsor-section h2 {
   font-size: 16px;
   font-weight: bold;
-  color: white;      /* tulisan putih */
+  color: black;      /* tulisan putih */
   background: none;  /* hilangkan box */
   padding: 0;
   margin-bottom: 8px;
@@ -364,6 +364,7 @@ footer {
     width: 110px;   /* <<< gambar lebih besar di HP */
   }
 }
+
 
 
 
