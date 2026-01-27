@@ -137,13 +137,15 @@ function tampilkanDashboard(data){
   } else {
 
     document.getElementById("qrArea").innerHTML = `
-      <p style="color:red;font-weight:bold;">
-        QR aktif mulai H-7 sebelum acara
-      </p>
-      <p style="font-size:13px;margin-top:5px;">
-        Silakan buka kembali halaman ini mendekati hari acara.
-      </p>
-    `;
+  <p style="color:red;font-weight:bold;">
+    QR aktif mulai H-7 sebelum acara
+  </p>
+  <p style="font-size:13px;margin-top:5px;">
+    Silakan klik tombol di bawah ini untuk konfirmasi kehadiran.<br>
+    Tombol akan aktif mulai H-7 sebelum acara.
+  </p>
+`;
+    
   }
 }
 
@@ -164,5 +166,6 @@ function tutupDashboard(){
 function openWhatsApp(nomor){
   window.open("https://wa.me/" + nomor, "_blank");
 }
+
 
 
