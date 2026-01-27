@@ -310,48 +310,25 @@ footer {
   color: red;
 }
 
-
-/* ============================= */
-/*        LINK GOOGLE MAPS       */
-/* ============================= */
-
-.lihat-lokasi {
-  margin-top: 10px;
-  font-size: 18px;
-  color: #f7f6f6;
-}
-
-.lihat-lokasi a {
-  color: #00a2ff;
-  text-decoration: none;
-  font-weight: bold;
-  transition: 0.3s;
-}
-
-.lihat-lokasi a:hover {
-  text-decoration: underline;
-  color: #0056b3;
-}
-
-
 /* ============================= */
 /*        SPONSOR SECTION        */
 /* ============================= */
 
 .sponsor-section {
-  margin: 0 auto;
+  margin: 5px auto;
   text-align: center;
-  padding: 10px;
-  background-color: #000305;
+  padding: 8px 0;
+  background: transparent; /* hilangkan box background */
 }
 
+/* Judul Sponsor */
 .sponsor-section h2 {
-  font-size: 10px;
+  font-size: 16px;
   font-weight: bold;
-  padding: 8px 20px;
-  background-color: #fff3cd;
-  display: inline-block;
-  border-radius: 8px;
+  color: white;      /* tulisan putih */
+  background: none;  /* hilangkan box */
+  padding: 0;
+  margin-bottom: 8px;
 }
 
 /* Gallery sponsor */
@@ -359,22 +336,36 @@ footer {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 15px;
+  gap: 12px;
 }
 
+/* Ukuran default (desktop) */
 .sponsor-img {
-  width: 10%;
-  max-width: 100px;
+  width: 80px;
   height: auto;
   cursor: pointer;
-  border-radius: 10px;
-  transition: transform 0.3s, box-shadow 0.3s;
+  border-radius: 8px;
+  transition: transform 0.3s;
 }
 
 .sponsor-img:hover {
   transform: scale(1.05);
-  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
+
+/* ===== Khusus Tampilan HP ===== */
+@media (max-width: 768px) {
+
+  .sponsor-section h2 {
+    font-size: 14px;
+    color: white;
+  }
+
+  .sponsor-img {
+    width: 110px;   /* <<< gambar lebih besar di HP */
+  }
+}
+
+
 
 
 
