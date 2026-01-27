@@ -135,19 +135,39 @@ function tampilkanDashboard(data){
     `;
 
   } else {
-    document.getElementById("qrArea").innerHTML = `
-  <p style="color:red;font-weight:bold;">
-    QR aktif mulai H-7 sebelum acara
-  </p>
-  <p style="font-size:13px;margin-top:5px;">
-    Silakan klik tombol di bawah ini untuk konfirmasi kehadiran.<br>
-    Tombol akan aktif mulai H-7 sebelum acara.
-  </p>
-`;
-    
-  }
-}
 
+  const hariIni = new Date();
+  const tanggalAcara = new Date("2026-04-11");
+  const h7 = new Date(tanggalAcara);
+  h7.setDate(tanggalAcara.getDate() - 7);
+
+  const aktif = (hariIni >= h7);
+
+  document.getElementById("qrArea").innerHTML = `
+    <p style="color:red;font-weight:bold;">
+      QR aktif mulai H-7 sebelum acara
+    </p>
+
+    <p style="font-size:13px;margin-top:5px;">
+      Silakan klik tombol di bawah untuk konfirmasi kehadiran.
+    </p>
+
+    <button 
+      onclick="konfirmasiHadir('${data.nohp}')"
+      ${aktif ? "" : "disabled"}
+      style="
+        margin-top:8px;
+        padding:8px 16px;
+        border:none;
+        border-radius:6px;
+        background:${aktif ? "#28a745" : "#999"};
+        color:white;
+        cursor:${aktif ? "pointer" : "not-allowed"};
+      ">
+      ${aktif ? "Konfirmasi Kehadiran" : "Tombol aktif mulai H-7"}
+    </button>
+  `;
+}
 
 /* ================================================= */
 /*                TUTUP DASHBOARD                    */
@@ -165,6 +185,7 @@ function tutupDashboard(){
 function openWhatsApp(nomor){
   window.open("https://wa.me/" + nomor, "_blank");
 }
+
 
 
 
