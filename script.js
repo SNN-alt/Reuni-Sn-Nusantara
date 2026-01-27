@@ -143,19 +143,30 @@ const aktif = true;
 
 function konfirmasiHadir(nohp){
 
+  // Disable tombol supaya tidak diklik dua kali
+  document.getElementById("qrArea").innerHTML = `
+    <p style="color:green;font-weight:bold;">⏳ Mengirim konfirmasi...</p>
+  `;
+
   fetch(apiUrl + "?mode=konfirmasi&nohp=" + encodeURIComponent(nohp))
     .then(res => res.json())
     .then(data => {
-      alert(data.message);
 
-      // Refresh dashboard setelah update
-      loginPeserta();
+      if(data.status == "OK"){
+        alert(data.message);
+
+        // Setelah sukses → reload dashboard supaya QR muncul
+        loginPeserta(); 
+      } else {
+        alert(data.message);
+      }
+
     })
     .catch(() => {
-      alert("❌ Gagal update ke Spreadsheet");
+      alert("❌ Gagal koneksi server");
     });
-
 }
+
 
 /* ================= TUTUP DASHBOARD ================= */
 
@@ -171,6 +182,7 @@ window.openWhatsApp = function(nomor){
 }
 
 });
+
 
 
 
