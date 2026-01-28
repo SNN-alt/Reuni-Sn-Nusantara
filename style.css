@@ -358,13 +358,14 @@ footer {
 
   .sponsor-section h2 {
     font-size: 14px;
-    color: black;
+    color: black !important;
   }
 
   .sponsor-img {
     width: 110px;   /* <<< gambar lebih besar di HP */
   }
 }
+
 
 
 
