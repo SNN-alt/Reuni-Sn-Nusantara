@@ -415,6 +415,26 @@ footer {
   margin-top: 60px;
 }
 
+/* ===== MAPS BOX ===== */
+.maps-box {
+  margin-top: 5px;
+  background: #000;
+  color: white;
+  padding: 12px 0;
+  text-align: center;
+  font-size: 14px;
+}
+
+.maps-box a {
+  color: #00c3ff;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.maps-box a:hover {
+  text-decoration: underline;
+}
+
 
 
 
