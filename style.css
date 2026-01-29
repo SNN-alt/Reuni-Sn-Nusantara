@@ -21,7 +21,7 @@ body {
 
 /* ===== HEADER BANNER ===== */
 header {
-  background-image: url('images/gambar.png');
+  background-image: url('images/Gambar.png');
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
@@ -365,6 +365,7 @@ footer {
     width: 110px;   /* <<< gambar lebih besar di HP */
   }
 }
+
 
 
 
