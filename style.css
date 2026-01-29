@@ -417,12 +417,12 @@ footer {
 
 /* ===== MAPS BOX ===== */
 .maps-box {
-  margin-top: 5px;
   background: #000;
   color: white;
-  padding: 12px 0;
+  padding: 10px;
   text-align: center;
   font-size: 14px;
+  margin-top: 8px;
 }
 
 .maps-box a {
@@ -434,6 +434,8 @@ footer {
 .maps-box a:hover {
   text-decoration: underline;
 }
+
+
 
 
 
