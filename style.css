@@ -180,7 +180,7 @@ footer {
 .marquee p {
   display: inline-block;
   white-space: nowrap;
-  animation: marquee 15s linear infinite;
+  animation: marquee 25s linear infinite;
   font-weight: bold;
 }
 
@@ -385,6 +385,7 @@ footer {
 .maps-box a:hover {
   text-decoration: underline;
 }
+
 
 
 
