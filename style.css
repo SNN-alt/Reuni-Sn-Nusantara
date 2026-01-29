@@ -395,6 +395,9 @@ footer {
   text-decoration: none;
   font-size: 15px;
   line-height: 1.4;
+  max-width: 260px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .call-item span {
@@ -407,6 +410,11 @@ footer {
 .call-item:hover {
   background: #1ebe5d;
 }
+
+.modal-content.call-box {
+  margin-top: 60px;
+}
+
 
 
 
