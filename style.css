@@ -11,7 +11,7 @@ body {
   max-width: 100vw;   /* ⬅️ kunci lebar sesuai layar */
   overflow-x: hidden;
 
-  background-image: url('images/spon.png');
+  background-image: url('images/12.jpeg');
   background-color: #007bff;
   background-position: center;
   background-repeat: no-repeat;
@@ -434,6 +434,7 @@ footer {
 .maps-box a:hover {
   text-decoration: underline;
 }
+
 
 
 
