@@ -366,6 +366,27 @@ footer {
   }
 }
 
+/* ================= GOOGLE MAPS BOX ================= */
+
+.maps-box {
+  background: #000;          /* warna background */
+  color: white;              /* warna teks */
+  padding: 10px 0;
+  text-align: center;
+  font-size: 14px;
+}
+
+.maps-box a {
+  color: #00c3ff;            /* warna link */
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.maps-box a:hover {
+  text-decoration: underline;
+}
+
+
 
 
 
