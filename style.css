@@ -201,7 +201,7 @@ footer {
   border-radius: 15px;
   max-width: 300px;
   margin: 20px auto;
-  margin-bottom: 5px;
+  margin-bottom: 8px;
   box-shadow: 0 8px 20px rgba(0,0,0,0.4);
 }
 
@@ -369,22 +369,25 @@ footer {
 /* ================= GOOGLE MAPS BOX ================= */
 
 .maps-box {
-  background: #000;          /* warna background */
-  color: white;              /* warna teks */
-  padding: 10px 0;
-  text-align: center;
-  font-size: 14px;
+  background:#000;
+  color:#fff;
+  text-align:center;
+  padding:10px;
+  margin-top:10px;
+  font-size:14px;
 }
 
 .maps-box a {
-  color: #00c3ff;            /* warna link */
-  font-weight: bold;
-  text-decoration: none;
+  color:#00c3ff;
+  font-weight:bold;
+  text-decoration:none;
 }
 
 .maps-box a:hover {
-  text-decoration: underline;
+  text-decoration:underline;
 }
+
+
 
 
 
