@@ -366,7 +366,7 @@ footer {
   }
 }
 
-/* ===== CALL CENTER BOX ===== */
+/* ===== CALL CENTER FINAL ===== */
 
 .call-box {
   text-align: center;
@@ -374,8 +374,7 @@ footer {
 }
 
 .call-box h2 {
-  margin-top: 0;
-  margin-bottom: 5px;
+  margin: 0 0 5px 0;
 }
 
 .call-box p {
