@@ -169,11 +169,13 @@ window.tutupDashboard = function(){
 
 /* ================= WHATSAPP ================= */
 
-window.openWhatsApp = function(nomor){
-  window.open("https://wa.me/"+nomor,"_blank");
+function openWhatsAppPesan(nomor, pesan){
+  const url = "https://wa.me/" + nomor + "?text=" + encodeURIComponent(pesan);
+  window.open(url, "_blank");
 }
 
 });
+
 
 
 
