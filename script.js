@@ -25,16 +25,20 @@ document.getElementById("btnCallCenter").onclick = () => modalCallCenter.style.d
 
 modalCallCenter.querySelector(".close").onclick = () => modalCallCenter.style.display="none";
 
-// ================= DAFTAR PESERTA =================
-function bukaPeserta(){
+/* ============================= */
+/*        DAFTAR PESERTA         */
+/* ============================= */
+function bukaPeserta() {
   window.open(
     "https://forms.gle/VudgYiKRNVWU9zsG8",
     "_blank"
   );
 }
 
-// ================= DAFTAR UMKM =================
-function bukaUMKM(){
+/* ============================= */
+/*          DAFTAR UMKM          */
+/* ============================= */
+function bukaUMKM() {
   window.open(
     "https://forms.gle/sUyoZ34bRnDrp2xW6",
     "_blank"
@@ -184,6 +188,7 @@ function kirimWA(nomor, pesan){
 }
 
 });
+
 
 
 
