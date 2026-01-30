@@ -2,48 +2,29 @@ document.addEventListener("DOMContentLoaded", function(){
 
 /* ================= MODAL PANDUAN & PROPOSAL ================= */
 
-window.bukaPanduan = function() {
+window.bukaPanduan = () =>
   document.getElementById("modalPanduan").style.display = "block";
-}
-window.tutupPanduan = function() {
+
+window.tutupPanduan = () =>
   document.getElementById("modalPanduan").style.display = "none";
-}
 
-window.bukaProposal = function() {
+window.bukaProposal = () =>
   document.getElementById("modalProposal").style.display = "block";
-}
-window.tutupProposal = function() {
+
+window.tutupProposal = () =>
   document.getElementById("modalProposal").style.display = "none";
-}
 
 
-/* ================= MODAL FORM ================= */
+/* ================= CALL CENTER ================= */
 
 const modalCallCenter = document.getElementById("modalCallCenter");
 
-document.getElementById("btnCallCenter").onclick = () => modalCallCenter.style.display="block";
+document.getElementById("btnCallCenter").onclick = () =>
+  modalCallCenter.style.display = "block";
 
-modalCallCenter.querySelector(".close").onclick = () => modalCallCenter.style.display="none";
+modalCallCenter.querySelector(".close").onclick = () =>
+  modalCallCenter.style.display = "none";
 
-/* ============================= */
-/*        DAFTAR PESERTA         */
-/* ============================= */
-function bukaPeserta() {
-  window.open(
-    "https://forms.gle/VudgYiKRNVWU9zsG8",
-    "_blank"
-  );
-}
-
-/* ============================= */
-/*          DAFTAR UMKM          */
-/* ============================= */
-function bukaUMKM() {
-  window.open(
-    "https://forms.gle/sUyoZ34bRnDrp2xW6",
-    "_blank"
-  );
-}
 
 /* ================= MODAL SPONSOR ================= */
 
@@ -52,24 +33,13 @@ const modalImg = document.getElementById("imgModal");
 
 document.querySelectorAll(".sponsor-img").forEach(img => {
   img.onclick = () => {
-    modalSponsor.style.display="block";
+    modalSponsor.style.display = "block";
     modalImg.src = img.src;
-  }
+  };
 });
-modalSponsor.querySelector(".close").onclick = () => modalSponsor.style.display="none";
 
-
-/* ================= TUTUP MODAL KLIK LUAR ================= */
-
-window.onclick = function(event){
-  if(event.target == modalPeserta) modalPeserta.style.display="none";
-  if(event.target == modalUMKM) modalUMKM.style.display="none";
-  if(event.target == modalCallCenter) modalCallCenter.style.display="none";
-  if(event.target == modalSponsor) modalSponsor.style.display="none";
-  if(event.target == document.getElementById("modalPanduan")) tutupPanduan();
-  if(event.target == document.getElementById("modalProposal")) tutupProposal();
-  if(event.target == document.getElementById("popupDashboard")) tutupDashboard();
-};
+modalSponsor.querySelector(".close").onclick = () =>
+  modalSponsor.style.display = "none";
 
 
 /* ================= LOGIN PESERTA ================= */
@@ -78,19 +48,19 @@ const apiUrl = "https://script.google.com/macros/s/AKfycbwbmKqK_JmmcXJECDcGia0jA
 
 window.loginPeserta = function(){
   const nohp = document.getElementById("nohpLogin").value.trim();
-  if(!nohp){ alert("Masukkan nomor HP"); return; }
+  if(!nohp) return alert("Masukkan nomor HP");
 
   fetch(apiUrl+"?mode=login&nohp="+encodeURIComponent(nohp))
     .then(res=>res.json())
     .then(data=>{
-      if(data.status=="NOT_FOUND"){
+      if(data.status==="NOT_FOUND"){
         alert("Nomor HP belum terdaftar");
       } else {
         tampilkanDashboard(data);
       }
     })
     .catch(()=>alert("Gagal koneksi server"));
-}
+};
 
 
 /* ================= DASHBOARD ================= */
@@ -99,7 +69,6 @@ window.tampilkanDashboard = function(data){
 
   document.getElementById("isiDashboard").innerHTML = `
     <h3>👋 Halo, ${data.nama}</h3>
-
     <table style="width:100%;font-size:14px;margin-top:10px">
       <tr><td>No HP</td><td>: ${data.nohp}</td></tr>
       <tr><td>Jenis Kelamin</td><td>: ${data.jk}</td></tr>
@@ -108,112 +77,57 @@ window.tampilkanDashboard = function(data){
       <tr><td>Parkir</td><td>: ${data.parkir}</td></tr>
       <tr><td>Status</td><td>: ${data.statushadir || "BELUM KONFIRMASI"}</td></tr>
     </table>
-
     <div id="qrArea" style="margin-top:15px;text-align:center;"></div>
   `;
 
-  document.getElementById("popupDashboard").style.display="flex";
+  document.getElementById("popupDashboard").style.display = "flex";
 
-  // ===== LOGIKA QR =====
-  if(String(data.qr_aktif).toUpperCase()=="YA"){
-
+  if(String(data.qr_aktif).toUpperCase()==="YA"){
     document.getElementById("qrArea").innerHTML = `
       <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(data.qr)}">
-      <p style="font-size:13px;margin-top:8px;">Tunjukkan QR ini saat registrasi</p>
+      <p style="font-size:13px">Tunjukkan QR ini saat registrasi</p>
     `;
+  } else {
+    document.getElementById("qrArea").innerHTML = `
+      <p style="color:red;font-weight:bold">QR aktif mulai H-7 sebelum acara</p>
+      <button onclick="konfirmasiHadir('${data.nohp}')"
+        style="margin-top:8px;padding:8px 16px;border:none;border-radius:6px;background:#28a745;color:white;">
+        Konfirmasi Kehadiran
+      </button>
+    `;
+  }
+};
 
- } else {
-const aktif = true;
-  document.getElementById("qrArea").innerHTML = `
-    <p style="color:red;font-weight:bold;">
-      QR aktif mulai H-7 sebelum acara
-    </p>
 
-    <p style="font-size:13px;margin-top:5px;">
-      Silakan klik tombol di bawah untuk konfirmasi kehadiran.
-    </p>
+/* ================= KONFIRMASI ================= */
 
-    <button 
-      onclick="konfirmasiHadir('${data.nohp}')"
-      ${aktif ? "" : "disabled"}
-      style="
-        margin-top:8px;
-        padding:8px 16px;
-        border:none;
-        border-radius:6px;
-        background:${aktif ? "#28a745" : "#999"};
-        color:white;
-        cursor:${aktif ? "pointer" : "not-allowed"};
-      ">
-      ${aktif ? "Konfirmasi Kehadiran" : "Tombol aktif mulai H-7"}
-    </button>
-  `;
-}
-}
-
-/* ================================================= */
-/*        KONFIRMASI KEHADIRAN PESERTA               */
-/* ================================================= */
 window.konfirmasiHadir = function(nohp){
+  document.getElementById("qrArea").innerHTML = "<p>⏳ Memproses...</p>";
 
-  document.getElementById("qrArea").innerHTML =
-    "<p>⏳ Memproses...</p>";
-
-  fetch(apiUrl + "?mode=konfirmasi&nohp=" + encodeURIComponent(nohp))
-    .then(res => res.json())
-    .then(data => {
+  fetch(apiUrl+"?mode=konfirmasi&nohp="+encodeURIComponent(nohp))
+    .then(res=>res.json())
+    .then(data=>{
       alert(data.message);
-      if(data.status == "OK"){
-        loginPeserta(); // reload data → QR muncul
-      }
+      if(data.status==="OK") loginPeserta();
     })
-    .catch(err=>{
-      alert("Gagal koneksi Apps Script");
-      console.log(err);
-    });
-}
+    .catch(()=>alert("Gagal koneksi Apps Script"));
+};
+
 
 /* ================= TUTUP DASHBOARD ================= */
 
 window.tutupDashboard = function(){
-  document.getElementById("popupDashboard").style.display="none";
-}
-
-
-/* ================= WHATSAPP ================= */
-
-function kirimWA(nomor, pesan){
-  const link = "https://wa.me/" + nomor + "?text=" + encodeURIComponent(pesan);
-  window.open(link, "_blank");
-}
+  document.getElementById("popupDashboard").style.display = "none";
+};
 
 });
 
+/* ================= DAFTAR PESERTA & UMKM (GLOBAL) ================= */
 
+function bukaPeserta(){
+  window.open("https://forms.gle/VudgYiKRNVWU9zsG8","_blank");
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+function bukaUMKM(){
+  window.open("https://forms.gle/sUyoZ34bRnDrp2xW6","_blank");
+}
