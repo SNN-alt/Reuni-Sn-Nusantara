@@ -30,7 +30,6 @@ const modalSponsor = document.getElementById("modalSponsor");
 const imgModal = document.getElementById("imgModal");
 const closeSponsor = document.getElementById("closeSponsor");
 
-// buka modal
 document.querySelectorAll(".sponsor-img").forEach(img => {
   img.addEventListener("click", () => {
     modalSponsor.style.display = "flex";
@@ -38,20 +37,17 @@ document.querySelectorAll(".sponsor-img").forEach(img => {
   });
 });
 
-// tutup pakai X
-closeSponsor.addEventListener("click", () => {
+closeSponsor.onclick = () => {
   modalSponsor.style.display = "none";
   imgModal.src = "";
-});
+};
 
-// klik luar gambar = tutup
-modalSponsor.addEventListener("click", (e) => {
+modalSponsor.onclick = (e) => {
   if (e.target === modalSponsor) {
     modalSponsor.style.display = "none";
     imgModal.src = "";
   }
-});
-
+};
 
 /* ================= LOGIN PESERTA ================= */
 
@@ -142,5 +138,6 @@ function bukaPeserta(){
 function bukaUMKM(){
   window.open("https://forms.gle/sUyoZ34bRnDrp2xW6","_blank");
 }
+
 
 
