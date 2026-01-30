@@ -355,15 +355,19 @@ footer {
 
 /* ===== OVERLAY ===== */
 .sponsor-overlay {
-  display: none;
+  display: none;              /* ⬅️ WAJIB */
   position: fixed;
   inset: 0;
   background: rgba(0,0,0,0.85);
   z-index: 9999;
 
-  display: flex;
   justify-content: center;
   align-items: center;
+}
+
+/* Tombol X HANYA muncul di dalam overlay */
+.sponsor-overlay .close-inside {
+  position: absolute;
 }
 
 /* ===== MODAL ===== */
@@ -487,6 +491,7 @@ footer {
 .maps-box a:hover {
   text-decoration: underline;
 }
+
 
 
 
