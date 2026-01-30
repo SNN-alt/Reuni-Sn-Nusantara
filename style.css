@@ -353,7 +353,7 @@ footer {
   transform: scale(1.05);
 }
 
-/* ===== OVERLAY ===== */
+/* OVERLAY */
 .modal-sponsor {
   display: none;
   position: fixed;
@@ -366,22 +366,24 @@ footer {
   align-items: center;
 }
 
-/* ===== BOX GAMBAR ===== */
+/* BOX GAMBAR (TANPA BACKGROUND PUTIH) */
 .sponsor-box {
   position: relative;
+  background: transparent !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+/* GAMBAR */
+.sponsor-preview {
   max-width: 90vw;
   max-height: 90vh;
-}
-
-/* ===== GAMBAR ===== */
-.sponsor-preview {
-  max-width: 100%;
-  max-height: 90vh;
-  border-radius: 12px;
   display: block;
+  border-radius: 12px;
 }
 
-/* ===== TOMBOL X (DI DALAM GAMBAR) ===== */
+/* TOMBOL X */
 .close-inside {
   position: absolute;
   top: 10px;
@@ -392,20 +394,20 @@ footer {
   line-height: 36px;
 
   background: rgba(0,0,0,0.7);
-  color: #fff;
+  color: white;
   font-size: 24px;
   font-weight: bold;
   text-align: center;
 
   border-radius: 50%;
   cursor: pointer;
-
   z-index: 10000;
 }
 
 .close-inside:hover {
   background: red;
 }
+
 
 /* ===== Khusus Tampilan HP ===== */
 @media (max-width: 768px) {
@@ -488,6 +490,7 @@ footer {
 .maps-box a:hover {
   text-decoration: underline;
 }
+
 
 
 
