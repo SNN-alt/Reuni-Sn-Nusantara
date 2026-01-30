@@ -353,7 +353,6 @@ footer {
   transform: scale(1.05);
 }
 
-/* ================= MODAL SPONSOR ================= */
 /* ===== OVERLAY ===== */
 .sponsor-overlay {
   display: none;
@@ -361,6 +360,8 @@ footer {
   inset: 0;
   background: rgba(0,0,0,0.85);
   z-index: 9999;
+
+  display: flex;
   justify-content: center;
   align-items: center;
 }
@@ -379,7 +380,6 @@ footer {
   max-height: 85vh;
   border-radius: 12px;
   display: block;
-  pointer-events: none; /* penting */
 }
 
 /* ===== TOMBOL X ===== */
@@ -399,17 +399,12 @@ footer {
   cursor: pointer;
   z-index: 10000;
 
-  /* 🔑 fix HP & PC */
-  pointer-events: auto;
   touch-action: manipulation;
 }
 
 .close-inside:hover {
   background: red;
 }
-
-
-
 
 /* ===== Khusus Tampilan HP ===== */
 @media (max-width: 768px) {
@@ -492,6 +487,7 @@ footer {
 .maps-box a:hover {
   text-decoration: underline;
 }
+
 
 
 
