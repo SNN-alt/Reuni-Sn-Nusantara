@@ -26,29 +26,31 @@ modalCallCenter.querySelector(".close").onclick = () =>
   modalCallCenter.style.display = "none";
 
 /* ================= MODAL SPONSOR ================= */
-const modalSponsor = document.getElementById("modalSponsor");
-const modalImg = document.getElementById("imgModal");
+const sponsorOverlay = document.getElementById("sponsorOverlay");
+const sponsorPreview = document.getElementById("sponsorPreview");
+const closeSponsor = document.getElementById("closeSponsor");
 
-// Klik gambar sponsor → buka modal
 document.querySelectorAll(".sponsor-img").forEach(img => {
-  img.addEventListener("click", function(){
-    modalSponsor.style.display = "flex";
-    modalImg.src = this.src;
+  img.addEventListener("click", () => {
+    sponsorOverlay.style.display = "flex";
+    sponsorPreview.src = img.src;
   });
 });
 
-// Tutup dengan tombol X
-function tutupSponsor(){
-  modalSponsor.style.display = "none";
-  modalImg.src = "";
-}
+// ❌ tombol X
+closeSponsor.addEventListener("click", () => {
+  sponsorOverlay.style.display = "none";
+  sponsorPreview.src = "";
+});
 
-// Tutup jika klik area gelap
-modalSponsor.addEventListener("click", function(e){
-  if(e.target === modalSponsor){
-    tutupSponsor();
+// ❌ klik area gelap (luar gambar)
+sponsorOverlay.addEventListener("click", (e) => {
+  if (e.target === sponsorOverlay) {
+    sponsorOverlay.style.display = "none";
+    sponsorPreview.src = "";
   }
 });
+
 
 /* ================= LOGIN PESERTA ================= */
 
@@ -139,6 +141,7 @@ function bukaPeserta(){
 function bukaUMKM(){
   window.open("https://forms.gle/sUyoZ34bRnDrp2xW6","_blank");
 }
+
 
 
 
