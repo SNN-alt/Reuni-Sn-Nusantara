@@ -25,21 +25,30 @@ document.getElementById("btnCallCenter").onclick = () =>
 modalCallCenter.querySelector(".close").onclick = () =>
   modalCallCenter.style.display = "none";
 
-
 /* ================= MODAL SPONSOR ================= */
-
 const modalSponsor = document.getElementById("modalSponsor");
 const modalImg = document.getElementById("imgModal");
 
+// Klik gambar sponsor → buka modal
 document.querySelectorAll(".sponsor-img").forEach(img => {
-  img.onclick = () => {
-    modalSponsor.style.display = "block";
-    modalImg.src = img.src;
-  };
+  img.addEventListener("click", function(){
+    modalSponsor.style.display = "flex";
+    modalImg.src = this.src;
+  });
 });
 
-modalSponsor.querySelector(".close").onclick = () =>
+// Tutup dengan tombol X
+function tutupSponsor(){
   modalSponsor.style.display = "none";
+  modalImg.src = "";
+}
+
+// Tutup jika klik area gelap
+modalSponsor.addEventListener("click", function(e){
+  if(e.target === modalSponsor){
+    tutupSponsor();
+  }
+});
 
 
 /* ================= LOGIN PESERTA ================= */
@@ -131,3 +140,4 @@ function bukaPeserta(){
 function bukaUMKM(){
   window.open("https://forms.gle/sUyoZ34bRnDrp2xW6","_blank");
 }
+
