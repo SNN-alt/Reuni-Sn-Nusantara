@@ -19,18 +19,27 @@ window.tutupProposal = function() {
 
 /* ================= MODAL FORM ================= */
 
-const modalPeserta   = document.getElementById("modalPeserta");
-const modalUMKM      = document.getElementById("modalUMKM");
 const modalCallCenter = document.getElementById("modalCallCenter");
 
-document.getElementById("btnPeserta").onclick = () => modalPeserta.style.display="block";
-document.getElementById("btnUMKM").onclick   = () => modalUMKM.style.display="block";
 document.getElementById("btnCallCenter").onclick = () => modalCallCenter.style.display="block";
 
-modalPeserta.querySelector(".close").onclick = () => modalPeserta.style.display="none";
-modalUMKM.querySelector(".close").onclick = () => modalUMKM.style.display="none";
 modalCallCenter.querySelector(".close").onclick = () => modalCallCenter.style.display="none";
 
+// ================= DAFTAR PESERTA =================
+function bukaPeserta(){
+  window.open(
+    "https://forms.gle/VudgYiKRNVWU9zsG8",
+    "_blank"
+  );
+}
+
+// ================= DAFTAR UMKM =================
+function bukaUMKM(){
+  window.open(
+    "https://forms.gle/sUyoZ34bRnDrp2xW6",
+    "_blank"
+  );
+}
 
 /* ================= MODAL SPONSOR ================= */
 
@@ -175,6 +184,7 @@ function kirimWA(nomor, pesan){
 }
 
 });
+
 
 
 
