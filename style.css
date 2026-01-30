@@ -407,15 +407,6 @@ footer {
   background: red;
 }
 
-  /* 🔑 PENTING UNTUK HP */
-  pointer-events: auto;
-  touch-action: manipulation;
-}
-
-.sponsor-preview {
-  pointer-events: none; /* 🔑 biar klik tembus ke X */
-}
-
 /* ===== Khusus Tampilan HP ===== */
 @media (max-width: 768px) {
 
@@ -497,6 +488,7 @@ footer {
 .maps-box a:hover {
   text-decoration: underline;
 }
+
 
 
 
