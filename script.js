@@ -51,6 +51,13 @@ sponsorOverlay.addEventListener("click", (e) => {
   }
 });
 
+  document.addEventListener("DOMContentLoaded", () => {
+  const overlay = document.getElementById("sponsorOverlay");
+  if (overlay) {
+    overlay.style.display = "none";
+  }
+});
+
 
 /* ================= LOGIN PESERTA ================= */
 
@@ -141,6 +148,7 @@ function bukaPeserta(){
 function bukaUMKM(){
   window.open("https://forms.gle/sUyoZ34bRnDrp2xW6","_blank");
 }
+
 
 
 
