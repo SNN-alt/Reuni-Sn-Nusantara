@@ -27,26 +27,28 @@ modalCallCenter.querySelector(".close").onclick = () =>
 
 /* ================= MODAL SPONSOR ================= */
 const modalSponsor = document.getElementById("modalSponsor");
-const modalImg = document.getElementById("imgModal");
+const imgModal = document.getElementById("imgModal");
+const closeSponsor = document.getElementById("closeSponsor");
 
-// Klik gambar sponsor → buka modal
+// buka modal
 document.querySelectorAll(".sponsor-img").forEach(img => {
-  img.addEventListener("click", function(){
+  img.addEventListener("click", () => {
     modalSponsor.style.display = "flex";
-    modalImg.src = this.src;
+    imgModal.src = img.src;
   });
 });
 
-// Tutup dengan tombol X
-function tutupSponsor(){
+// tutup pakai X
+closeSponsor.addEventListener("click", () => {
   modalSponsor.style.display = "none";
-  modalImg.src = "";
-}
+  imgModal.src = "";
+});
 
-// Tutup jika klik area gelap
-modalSponsor.addEventListener("click", function(e){
-  if(e.target === modalSponsor){
-    tutupSponsor();
+// klik luar gambar = tutup
+modalSponsor.addEventListener("click", (e) => {
+  if (e.target === modalSponsor) {
+    modalSponsor.style.display = "none";
+    imgModal.src = "";
   }
 });
 
@@ -140,4 +142,5 @@ function bukaPeserta(){
 function bukaUMKM(){
   window.open("https://forms.gle/sUyoZ34bRnDrp2xW6","_blank");
 }
+
 
