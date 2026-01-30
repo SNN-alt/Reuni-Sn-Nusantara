@@ -388,23 +388,27 @@ footer {
 /* Tombol X di dalam gambar */
 .close-inside {
   position: absolute;
-  top: 10px;
-  right: 10px;
-  background: rgba(0,0,0,0.7);
+  top: 12px;
+  right: 12px;
+  background: rgba(0,0,0,0.75);
   color: #fff;
   font-size: 22px;
   font-weight: bold;
-  width: 32px;
-  height: 32px;
-  line-height: 32px;
+  width: 36px;
+  height: 36px;
+  line-height: 36px;
   text-align: center;
   border-radius: 50%;
   cursor: pointer;
-  z-index: 10;
+  z-index: 99999;
+
+  /* 🔑 PENTING UNTUK HP */
+  pointer-events: auto;
+  touch-action: manipulation;
 }
 
-.close-inside:hover {
-  background: red;
+.sponsor-preview {
+  pointer-events: none; /* 🔑 biar klik tembus ke X */
 }
 
 /* ===== Khusus Tampilan HP ===== */
@@ -488,6 +492,7 @@ footer {
 .maps-box a:hover {
   text-decoration: underline;
 }
+
 
 
 
