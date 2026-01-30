@@ -353,40 +353,35 @@ footer {
   transform: scale(1.05);
 }
 
-/* ================= MODAL SPONSOR ================= */
-#modalSponsor {
+/* ===== OVERLAY ===== */
+.modal-sponsor {
   display: none;
   position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
   z-index: 9999;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.7);
+
+  display: flex;
   justify-content: center;
   align-items: center;
 }
 
-/* Box modal */
-.sponsor-modal {
+/* ===== BOX GAMBAR ===== */
+.sponsor-box {
   position: relative;
   max-width: 90vw;
   max-height: 90vh;
-  padding: 0;
-  background: transparent;
-  box-shadow: none;
 }
 
-/* Gambar sponsor */
+/* ===== GAMBAR ===== */
 .sponsor-preview {
   max-width: 100%;
-  max-height: 85vh;
+  max-height: 90vh;
   border-radius: 12px;
   display: block;
-  pointer-events: none; /* 🔥 INI KUNCINYA */
 }
 
-/* Tombol X di dalam gambar */
+/* ===== TOMBOL X (DI DALAM GAMBAR) ===== */
 .close-inside {
   position: absolute;
   top: 10px;
@@ -397,15 +392,15 @@ footer {
   line-height: 36px;
 
   background: rgba(0,0,0,0.7);
-  color: white;
+  color: #fff;
   font-size: 24px;
   font-weight: bold;
   text-align: center;
+
   border-radius: 50%;
   cursor: pointer;
 
-  z-index: 99999;          /* 🔥 PALING PENTING */
-  pointer-events: auto;   /* 🔥 PAKSA BISA DIKLIK */
+  z-index: 10000;
 }
 
 .close-inside:hover {
@@ -493,6 +488,7 @@ footer {
 .maps-box a:hover {
   text-decoration: underline;
 }
+
 
 
 
