@@ -1,538 +1,252 @@
-/* ============================= */
-/*        BODY & HEADER          */
-/* ============================= */
+/* =====================================
+   RESET & GLOBAL
+===================================== */
+* {
+  box-sizing: border-box;
+}
 
 body {
+  margin: 0;
   font-family: Arial, sans-serif;
   text-align: center;
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  max-width: 100vw;   /* ⬅️ kunci lebar sesuai layar */
-  overflow-x: hidden;
-
-  background-image: url('images/12.jpeg');
-  background-color: #007bff;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
+  background: #007bff url("images/12.jpeg") center/cover no-repeat;
+  color: #000;
 }
 
-
-/* ===== HEADER BANNER ===== */
+/* =====================================
+   HEADER
+===================================== */
 header {
-  background-image: url('images/ATAS.png');
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: contain;
-
-  width: 100%;
-  height: 180px;     /* tinggi desktop */
-  margin: 0;
-  padding: 0;
+  background: url("images/ATAS.png") center/contain no-repeat;
+  height: 150px;
 }
 
-/* Hilangkan efek teks h1 karena header tanpa tulisan */
-header h1, 
-header p {
-  display: none;
+/* =====================================
+   RUNNING TEXT
+===================================== */
+.marquee {
+  background: #000;
+  color: #fff;
+  padding: 6px 0;
+  overflow: hidden;
 }
 
-/* ===== RESPONSIVE UNTUK HP ===== */
-@media (max-width: 768px) {
-  header {
-    height: 120px;   /* lebih pendek di HP */
-    background-size: contain;
-  }
+.marquee p {
+  white-space: nowrap;
+  display: inline-block;
+  animation: marquee 15s linear infinite;
 }
 
-/* ============================= */
-/*        MENU BUTTONS           */
-/* ============================= */
+@keyframes marquee {
+  from { transform: translateX(100%); }
+  to { transform: translateX(-100%); }
+}
 
+/* =====================================
+   MENU UTAMA
+===================================== */
 main {
-  padding: 50px 20px;
+  padding: 15px;
 }
 
 .btn {
-  display: block;
-  width: 250px;
-  margin: 15px auto;
-  padding: 15px;
-  font-size: 18px;
-  color: white;
-  text-decoration: none;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.btn:hover {
-  opacity: 0.9;
-}
-
-/* Warna masing-masing tombol */
-.panduan   { background-color: #000702; }
-.proposal  { background-color: #fa1201; }
-.peserta   { background-color: #28a745; }
-.umkm      { background-color: #ffc107; color: black; }
-.callcenter{ background-color: #dc3545; }
-
-
-/* ============================= */
-/*       SUB BUTTON CALL CENTER  */
-/* ============================= */
-
-.sub-btn {
-  display: block;
-  width: 200px;
-  margin: 12px auto;
-  padding: 12px;
-  font-size: 16px;
-  border-radius: 5px;
-  border: none;
-  cursor: pointer;
-  background-color: #17a2b8;
-  color: white;
-  transition: 0.3s;
-}
-
-.sub-btn:hover {
-  opacity: 0.8;
-}
-
-
-/* ============================= */
-/*            FOOTER             */
-/* ============================= */
-
-footer {
-  background-color: #343a40;
-  color: white;
-  padding: 15px 0;
   width: 100%;
+  max-width: 300px;
+  padding: 10px;
+  margin: 6px auto;
+  border: none;
+  border-radius: 6px;
+  font-size: 15px;
+  cursor: pointer;
 }
 
+.panduan { background: #ffc107; }
+.proposal { background: #17a2b8; }
+.peserta { background: #28a745; color:#fff; }
+.umkm { background: #6f42c1; color:#fff; }
+.callcenter { background: #dc3545; color:#fff; }
 
-/* ============================= */
-/*             MODAL             */
-/* ============================= */
+/* =====================================
+   LOGIN BOX
+===================================== */
+.login-box {
+  background: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  max-width: 320px;
+  margin: 15px auto;
+}
 
+.login-box input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+}
+
+.login-box button {
+  background: #28a745;
+  color: #fff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* =====================================
+   GOOGLE MAPS
+===================================== */
+.lihat-lokasi {
+  margin: 10px auto;
+  padding: 8px;
+  background: #fff;
+  border-radius: 6px;
+  width: fit-content;
+}
+
+.lihat-lokasi a {
+  color: #007bff;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+/* =====================================
+   SPONSOR
+===================================== */
+.sponsor-section {
+  margin: 10px auto;
+}
+
+.sponsor-section h2 {
+  color: #000;
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.sponsor-gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  max-width: 300px;
+  margin: auto;
+}
+
+.sponsor-img {
+  width: 100%;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* =====================================
+   SPONSOR MODAL
+===================================== */
+#sponsorOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+#sponsorModal {
+  position: relative;
+}
+
+#sponsorPreview {
+  max-width: 90vw;
+  max-height: 80vh;
+  border-radius: 10px;
+}
+
+#closeSponsor {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(0,0,0,0.7);
+  color: #fff;
+  width: 32px;
+  height: 32px;
+  line-height: 32px;
+  border-radius: 50%;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* =====================================
+   MODAL UMUM
+===================================== */
 .modal {
   display: none;
   position: fixed;
-  z-index: 999;
-  left: 0; top: 0;
-  width: 100%; height: 100%;
-  background-color: rgba(0,0,0,0.5);
-  animation: fadeIn 0.3s;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 9998;
 }
 
 .modal-content {
-  background-color: white;
-  margin: 5% auto;
-  padding: 15px;
-  border-radius: 10px;
-  width: 80%;
+  background: #fff;
+  width: 90%;
   max-width: 500px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-  animation: slideIn 0.3s;
+  margin: 50px auto;
+  padding: 15px;
+  border-radius: 8px;
 }
 
 .close {
   float: right;
-  font-size: 26px;
-  font-weight: bold;
+  font-size: 22px;
   cursor: pointer;
-  color: #aaa;
 }
 
-.close:hover {
-  color: #000;
-}
-
-
-/* Animasi modal */
-@keyframes fadeIn {
-  from {opacity: 0;}
-  to   {opacity: 1;}
-}
-
-@keyframes slideIn {
-  from {transform: translateY(-50px); opacity: 0;}
-  to   {transform: translateY(0); opacity: 1;}
-}
-
-
-/* ============================= */
-/*        RUNNING TEXT           */
-/* ============================= */
-
-.marquee {
-  width: 100%;
-  overflow: hidden;
-  background-color: #080000;
-  color: white;
-  padding: 5px 0;
-}
-
-.marquee p {
-  display: inline-block;
-  white-space: nowrap;
-  animation: marquee 25s linear infinite;
-  font-weight: bold;
-}
-
-@keyframes marquee {
-  0%   { transform: translateX(100%); }
-  100% { transform: translateX(-100%); }
-}
-
-/* ============================= */
-/*        LOGIN BOX              */
-/* ============================= */
-
-.login-box {
-  margin-top: 20px;
-  background: rgba(0,0,0,0.75); /* transparan gelap */
-  color: white;
-  padding: 20px 25px;
-  border-radius: 15px;
-  max-width: 300px;
-  margin: 20px auto;
-  margin-bottom: 8px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
-}
-
-.login-box h3 {
-  margin-top: 0;
-  margin-bottom: 15px;
-  font-size: 18px;
-}
-
-/* Input login */
-.login-box input {
-  width: 100%;
-  padding: 10px;
-  border-radius: 8px;
-  border: none;
-  text-align: center;
-  font-size: 14px;
-  margin-bottom: 10px;
-}
-
-/* Batasi lebar input nomor HP */
-.login-box input {
-  width: 100%;
-  max-width: 260px;   /* ⬅️ BATAS LEBAR */
-  margin: 0 auto 10px auto; 
-  display: block;
-}
-
-
-/* Tombol login */
-.login-box button {
-  width: 100%;
-  padding: 10px;
-  background: #28a745;
-  border: none;
-  border-radius: 8px;
-  color: white;
-  font-size: 15px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.login-box button {
-  width: 100%;
-  max-width: 100px;   /* ⬅️ SAMAKAN */
-  margin: 0 auto;
-  display: block;
-}
-
-.login-box button:hover {
-  background: #1f7f34;
-}
-
-/* ================= POPUP DASHBOARD PESERTA ================= */
-
+/* =====================================
+   DASHBOARD POPUP
+===================================== */
 .popup-overlay {
-  display: none;               /* Awalnya tersembunyi */
+  display: none;
   position: fixed;
-  left: 0; top: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.6); /* Latar gelap transparan */
+  inset: 0;
+  background: rgba(0,0,0,0.6);
   justify-content: center;
   align-items: center;
   z-index: 9999;
 }
 
 .popup-box {
-  background: white;
-  padding: 20px;
-  border-radius: 12px;
-  max-width: 350px;
+  background: #fff;
   width: 90%;
-  text-align: left;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
-
-  position: relative; /* <-- INI PENTING untuk posisi tombol close */
+  max-width: 400px;
+  padding: 15px;
+  border-radius: 8px;
+  position: relative;
 }
 
-
-/* Supaya teks di dalam rapi */
-.popup-box h3 {
-  margin-top: 0;
-}
-
-.center {
-  text-align: center;
-}
 .close-x {
   position: absolute;
-  right: 10px;
   top: 8px;
-  font-size: 20px;
-  font-weight: bold;
-  color: #555;
-  cursor: pointer;
-  background: #f2f2f2;
-  border-radius: 50%;
-  width: 26px;
-  height: 26px;
-  line-height: 26px;
-  text-align: center;
-}
-
-.close-x:hover {
-  background: #ffdddd;
-  color: red;
-}
-
-/* ============================= */
-/*        SPONSOR SECTION        */
-/* ============================= */
-
-.sponsor-section {
-  margin: 5px auto;
-  text-align: center;
-  padding: 8px 0;
-  background: transparent; /* hilangkan box background */
-}
-
-/* Judul Sponsor */
-.sponsor-section h2 {
-  font-size: 16px;
-  font-weight: bold;
-  color: black;   /* <<< tulisan hitam */
-  background: none;
-  padding: 0;
-  margin-bottom: 8px;
-}
-
-/* Gallery sponsor */
-.sponsor-gallery {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-
-/* Ukuran default (desktop) */
-.sponsor-img {
-  width: 80px;
-  height: auto;
-  cursor: pointer;
-  border-radius: 8px;
-  transition: transform 0.3s;
-}
-
-.sponsor-img:hover {
-  transform: scale(1.05);
-}
-
-/* ===== OVERLAY ===== */
-.sponsor-overlay {
-  display: none;              /* ⬅️ WAJIB */
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.85);
-  z-index: 9999;
-
-  justify-content: center;
-  align-items: center;
-}
-
-/* Tombol X HANYA muncul di dalam overlay */
-.sponsor-overlay .close-inside {
-  position: absolute;
-}
-
-/* ===== MODAL ===== */
-.sponsor-modal {
-  position: relative;
-  max-width: 90vw;
-  max-height: 85vh;
-  background: transparent;
-}
-
-/* ===== GAMBAR ===== */
-.sponsor-preview {
-  max-width: 100%;
-  max-height: 85vh;
-  border-radius: 12px;
-  display: block;
-}
-
-/* ===== TOMBOL X ===== */
-.close-inside {
-  position: absolute;
-  top: 10px;
   right: 10px;
-  width: 38px;
-  height: 38px;
-  background: rgba(0,0,0,0.75);
-  color: #fff;
-  font-size: 24px;
-  font-weight: bold;
-  border-radius: 50%;
-  text-align: center;
-  line-height: 38px;
+  font-size: 22px;
   cursor: pointer;
-  z-index: 10000;
-
-  touch-action: manipulation;
 }
 
-.close-inside:hover {
-  background: red;
-}
-
-/* ===== Khusus Tampilan HP ===== */
-@media (max-width: 768px) {
-
-  .sponsor-section h2 {
-    font-size: 14px;
-    color: black !important;
-  }
-
-  .sponsor-img {
-    width: 110px;   /* <<< gambar lebih besar di HP */
-  }
-}
-
-/* ===== CALL CENTER FINAL ===== */
-
-.call-box {
-  text-align: center;
-  max-width: 320px;
-}
-
-.call-box h2 {
-  margin: 0 0 5px 0;
-}
-
-.call-box p {
-  font-size: 14px;
-  margin-bottom: 15px;
-  color: #555;
-}
-
-.call-item {
-  display: block;
-  width: 100%;
-  background: #25D366;
-  color: white;
-  padding: 14px 10px;
-  margin: 10px 0;
-  border-radius: 10px;
-  font-weight: bold;
-  text-decoration: none;
-  font-size: 15px;
-  line-height: 1.4;
-  max-width: 260px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.call-item span {
-  display: block;
+/* =====================================
+   FOOTER
+===================================== */
+footer {
   font-size: 12px;
-  font-weight: normal;
-  opacity: 0.9;
-}
-
-.call-item:hover {
-  background: #1ebe5d;
-}
-
-.modal-content.call-box {
-  margin-top: 60px;
-}
-
-/* ===== MAPS BOX ===== */
-.maps-box {
-  background: #000;
-  color: white;
   padding: 10px;
-  text-align: center;
-  font-size: 14px;
-  margin-top: 8px;
+  color: #fff;
 }
 
-.maps-box a {
-  color: #00c3ff;
-  font-weight: bold;
-  text-decoration: none;
+/* =====================================
+   RESPONSIVE
+===================================== */
+@media (min-width: 768px) {
+  .btn {
+    max-width: 250px;
+  }
+
+  .sponsor-gallery {
+    max-width: 360px;
+  }
 }
-
-.maps-box a:hover {
-  text-decoration: underline;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
