@@ -1,6 +1,6 @@
-/* =====================================
+/* =================================================
    RESET & GLOBAL
-===================================== */
+================================================= */
 * {
   box-sizing: border-box;
 }
@@ -9,21 +9,29 @@ body {
   margin: 0;
   font-family: Arial, sans-serif;
   text-align: center;
-  background: #007bff url("images/12.jpeg") center/cover no-repeat;
   color: #000;
+
+  /* background utama */
+  background-image: url("images/12.jpeg");
+  background-repeat: no-repeat;
+  background-position: center top;
+  background-size: cover;
 }
 
-/* =====================================
+/* =================================================
    HEADER
-===================================== */
+================================================= */
 header {
-  background: url("images/ATAS.png") center/contain no-repeat;
   height: 150px;
+  background-image: url("images/ATAS.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
 }
 
-/* =====================================
+/* =================================================
    RUNNING TEXT
-===================================== */
+================================================= */
 .marquee {
   background: #000;
   color: #fff;
@@ -39,12 +47,12 @@ header {
 
 @keyframes marquee {
   from { transform: translateX(100%); }
-  to { transform: translateX(-100%); }
+  to   { transform: translateX(-100%); }
 }
 
-/* =====================================
+/* =================================================
    MENU UTAMA
-===================================== */
+================================================= */
 main {
   padding: 15px;
 }
@@ -55,26 +63,27 @@ main {
   padding: 10px;
   margin: 6px auto;
   border: none;
-  border-radius: 6px;
+  border-radius: 10px;
   font-size: 15px;
   cursor: pointer;
 }
 
-.panduan { background: #ffc107; }
-.proposal { background: #17a2b8; }
-.peserta { background: #28a745; color:#fff; }
-.umkm { background: #6f42c1; color:#fff; }
-.callcenter { background: #dc3545; color:#fff; }
+.panduan   { background: #ffc107; }
+.proposal  { background: #17a2b8; color: #000; }
+.peserta   { background: #28a745; color: #fff; }
+.umkm      { background: #6f42c1; color: #fff; }
+.callcenter{ background: #dc3545; color: #fff; }
 
-/* =====================================
+/* =================================================
    LOGIN BOX
-===================================== */
+================================================= */
 .login-box {
-  background: #fff;
-  padding: 15px;
-  border-radius: 8px;
-  max-width: 320px;
-  margin: 15px auto;
+  background: rgba(255,255,255,0.95);
+  padding: 16px;
+  border-radius: 14px;
+  max-width: 340px;
+  margin: 16px auto;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.25);
 }
 
 .login-box input {
@@ -87,20 +96,21 @@ main {
   background: #28a745;
   color: #fff;
   border: none;
-  padding: 8px 14px;
-  border-radius: 5px;
+  padding: 8px 16px;
+  border-radius: 6px;
   cursor: pointer;
 }
 
-/* =====================================
+/* =================================================
    GOOGLE MAPS
-===================================== */
+================================================= */
 .lihat-lokasi {
-  margin: 10px auto;
-  padding: 8px;
-  background: #fff;
-  border-radius: 6px;
-  width: fit-content;
+  margin: 14px auto;
+  padding: 10px 14px;
+  background: rgba(255,255,255,0.9);
+  border-radius: 10px;
+  display: inline-block;
+  font-size: 14px;
 }
 
 .lihat-lokasi a {
@@ -109,9 +119,9 @@ main {
   text-decoration: none;
 }
 
-/* =====================================
-   SPONSOR
-===================================== */
+/* =================================================
+   SPONSOR SECTION
+================================================= */
 .sponsor-section {
   margin: 10px auto;
 }
@@ -126,19 +136,21 @@ main {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 10px;
-  max-width: 300px;
-  margin: auto;
+  max-width: 360px;
+  margin: 0 auto 10px auto;
 }
 
 .sponsor-img {
   width: 100%;
-  border-radius: 8px;
+  max-width: 90px;
+  margin: auto;
+  border-radius: 10px;
   cursor: pointer;
 }
 
-/* =====================================
-   SPONSOR MODAL
-===================================== */
+/* =================================================
+   SPONSOR MODAL (ZOOM)
+================================================= */
 #sponsorOverlay {
   position: fixed;
   inset: 0;
@@ -156,26 +168,31 @@ main {
 #sponsorPreview {
   max-width: 90vw;
   max-height: 80vh;
-  border-radius: 10px;
+  border-radius: 12px;
+  display: block;
 }
 
 #closeSponsor {
   position: absolute;
   top: 8px;
   right: 8px;
-  background: rgba(0,0,0,0.7);
+  background: rgba(0,0,0,0.75);
   color: #fff;
-  width: 32px;
-  height: 32px;
-  line-height: 32px;
+  width: 36px;
+  height: 36px;
+  line-height: 36px;
   border-radius: 50%;
   font-size: 20px;
   cursor: pointer;
 }
 
-/* =====================================
+#closeSponsor:hover {
+  background: red;
+}
+
+/* =================================================
    MODAL UMUM
-===================================== */
+================================================= */
 .modal {
   display: none;
   position: fixed;
@@ -190,7 +207,7 @@ main {
   max-width: 500px;
   margin: 50px auto;
   padding: 15px;
-  border-radius: 8px;
+  border-radius: 10px;
 }
 
 .close {
@@ -199,9 +216,9 @@ main {
   cursor: pointer;
 }
 
-/* =====================================
+/* =================================================
    DASHBOARD POPUP
-===================================== */
+================================================= */
 .popup-overlay {
   display: none;
   position: fixed;
@@ -217,7 +234,7 @@ main {
   width: 90%;
   max-width: 400px;
   padding: 15px;
-  border-radius: 8px;
+  border-radius: 10px;
   position: relative;
 }
 
@@ -229,24 +246,25 @@ main {
   cursor: pointer;
 }
 
-/* =====================================
+/* =================================================
    FOOTER
-===================================== */
+================================================= */
 footer {
+  background: rgba(0,0,0,0.6);
+  color: #fff;
   font-size: 12px;
   padding: 10px;
-  color: #fff;
 }
 
-/* =====================================
-   RESPONSIVE
-===================================== */
+/* =================================================
+   RESPONSIVE (PC)
+================================================= */
 @media (min-width: 768px) {
   .btn {
     max-width: 250px;
   }
 
   .sponsor-gallery {
-    max-width: 360px;
+    max-width: 420px;
   }
 }
