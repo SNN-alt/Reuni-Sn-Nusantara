@@ -259,15 +259,16 @@ main {
    FOOTER OSN MOBILE (ABU-ABU)
 ================================ */
 
-footer,
-.osn-mobile {
-  background: rgba(120,120,120,0.75); /* abu-abu transparan */
+/* OSN MOBILE */
+.osn-box {
+  width: 100%;
+  padding: 14px 10px;
+  margin: 0;                   /* NEMPEL */
+  background: rgba(0,0,0,0.65);
   color: #fff;
-}
-
-footer a {
-  color: #eaeaea;
-  text-decoration: none;
+  text-align: center;
+  font-size: 15px;
+  font-weight: bold;
 }
 
 
@@ -326,6 +327,7 @@ footer a {
 .cc-btn:hover {
   opacity: 0.9;
 }
+
 
 
 
