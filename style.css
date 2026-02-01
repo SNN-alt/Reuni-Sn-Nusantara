@@ -22,7 +22,7 @@ body {
    HEADER
 ================================================= */
 header {
-  height: 100px;
+  height: 90px;
   background-image: url("images/ATAS.png");
   background-repeat: no-repeat;
   background-position: center;
@@ -333,6 +333,7 @@ footer a {
 .cc-btn:hover {
   opacity: 0.9;
 }
+
 
 
 
