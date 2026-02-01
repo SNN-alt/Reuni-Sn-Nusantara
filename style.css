@@ -107,7 +107,7 @@ main {
 .maps-box {
   width: 100%;                 /* FULL WIDTH */
   padding: 14px 10px;
-  margin: 0px 0;
+  margin: 5px 0;
 
   background: rgba(0,0,0,0.65); /* hitam transparan */
   color: #fff;
@@ -328,6 +328,7 @@ main {
 .cc-btn:hover {
   opacity: 0.9;
 }
+
 
 
 
