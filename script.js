@@ -176,10 +176,13 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("popupDashboard").style.display = "none";
   };
 
+  /* =========================================
+     LOAD STATISTIK PESERTA (FIX FINAL)
+  ========================================= */
 
-  /* =================================================
-     LOAD STATISTIK PESERTA
-  ================================================= */
+  const statistikBox = document.getElementById("statistikBox");
+  if (!statistikBox) return;
+
   fetch(apiUrl + "?mode=statistik")
     .then(res => res.json())
     .then(data => {
@@ -187,7 +190,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const totalPeserta = data.totalPeserta ?? 0;
       const totalHadir   = data.totalHadir   ?? 0;
 
-      document.getElementById("statistikBox").innerHTML = `
+      statistikBox.innerHTML = `
         <div class="statistik-premium">
           <div>
             <b>Total Pendaftar</b>
@@ -201,31 +204,21 @@ document.addEventListener("DOMContentLoaded", function () {
       `;
     })
     .catch(() => {
-      document.getElementById("statistikBox").innerHTML = `
+      statistikBox.innerHTML = `
         <div class="statistik-premium">
-          <div><b>Total Pendaftar</b><span>0</span></div>
-          <div><b>Sudah Konfirmasi</b><span>0</span></div>
+          <div>
+            <b>Total Pendaftar</b>
+            <span>0</span>
+          </div>
+          <div>
+            <b>Sudah Konfirmasi</b>
+            <span>0</span>
+          </div>
         </div>
       `;
     });
 
 });
-
-const box = document.getElementById("statistikBox");
-if (!box) return;
-
-box.innerHTML = `
-  <div class="statistik-premium">
-    <div>
-      <b>Total Pendaftar</b>
-      <span>${totalPeserta}</span>
-    </div>
-    <div>
-      <b>Sudah Konfirmasi</b>
-      <span>${totalHadir}</span>
-    </div>
-  </div>
-`;
 
 
 /* =================================================
@@ -238,4 +231,5 @@ function bukaPeserta() {
 function bukaUMKM() {
   window.open("https://forms.gle/sUyoZ34bRnDrp2xW6", "_blank");
 }
+
 
