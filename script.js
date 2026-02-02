@@ -215,3 +215,22 @@ function bukaPeserta() {
 function bukaUMKM() {
   window.open("https://forms.gle/sUyoZ34bRnDrp2xW6", "_blank");
 }
+
+/* =================================================
+   LOAD STATISTIK PESERTA
+================================================= */
+
+fetch(apiUrl + "?mode=statistik")
+  .then(res => res.json())
+  .then(data => {
+    document.getElementById("statistikBox").innerHTML = `
+      <strong>📊 INFO PESERTA</strong>
+      Total Pendaftar : <b>${data.totalPeserta}</b> orang<br>
+      Total Keluarga  : <b>${data.totalKeluarga}</b> orang<br>
+      Sudah Konfirmasi: <b>${data.totalHadir}</b> orang
+    `;
+  })
+  .catch(() => {
+    document.getElementById("statistikBox").innerHTML =
+      "❌ Gagal memuat data peserta";
+  });
