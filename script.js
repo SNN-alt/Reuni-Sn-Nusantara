@@ -74,23 +74,38 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
   /* =================================================
-     LOGIN PESERTA
-  ================================================= */
-  window.loginPeserta = function () {
-    const nohp = document.getElementById("nohpLogin").value.trim();
-    if (!nohp) return alert("Masukkan nomor HP");
+   LOGIN PESERTA
+================================================= */
+window.loginPeserta = function () {
+  // Ambil nilai & pastikan hanya angka
+  const nohpInput = document.getElementById("nohpLogin");
+  const nohp = nohpInput.value.replace(/[^0-9]/g, "");
 
-    fetch(`${apiUrl}?mode=login&nohp=${encodeURIComponent(nohp)}`)
-      .then(res => res.json())
-      .then(data => {
-        if (data.status === "NOT_FOUND") {
-          alert("Nomor HP belum terdaftar");
-        } else {
-          tampilkanDashboard(data);
-        }
-      })
-      .catch(() => alert("Gagal koneksi server"));
-  };
+  // Update field (jaga-jaga kalau paste teks)
+  nohpInput.value = nohp;
+
+  // Validasi dasar
+  if (!nohp) {
+    alert("Masukkan nomor HP");
+    return;
+  }
+
+  if (nohp.length < 10) {
+    alert("Nomor HP tidak valid");
+    return;
+  }
+
+  fetch(`${apiUrl}?mode=login&nohp=${encodeURIComponent(nohp)}`)
+    .then(res => res.json())
+    .then(data => {
+      if (data.status === "NOT_FOUND") {
+        alert("Nomor HP belum terdaftar");
+      } else {
+        tampilkanDashboard(data);
+      }
+    })
+    .catch(() => alert("Gagal koneksi server"));
+};
 
 
   /* =================================================
@@ -234,5 +249,6 @@ function bukaPeserta() {
 function bukaUMKM() {
   window.open("https://forms.gle/sUyoZ34bRnDrp2xW6", "_blank");
 }
+
 
 
