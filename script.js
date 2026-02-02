@@ -175,33 +175,41 @@ document.addEventListener("DOMContentLoaded", function () {
   /* =================================================
      LOAD STATISTIK PESERTA (AUTO)
   ================================================= */
-  const statistikBox = document.getElementById("statistikBox");
-  if (statistikBox) {
-    statistikBox.innerHTML = "⏳ Memuat data peserta...";
+fetch(apiUrl + "?mode=statistik")
+  .then(res => res.json())
+  .then(data => {
 
-    fetch(`${apiUrl}?mode=statistik`)
-      .then(res => res.json())
-      .then(data => {
-        statistikBox.innerHTML = `
-          <div class="statistik-premium">
-            <div>
-              👥 <b>Total Pendaftar</b><br>
-              <span>${data.totalPeserta}</span>
-            </div>
-            <div>
-              ✅ <b>Sudah Konfirmasi</b><br>
-              <span>${data.totalKonfirmasi}</span>
-            </div>
-          </div>
-        `;
-      })
-      .catch(() => {
-        statistikBox.innerHTML =
-          "<span style='color:red'>❌ Gagal memuat data</span>";
-      });
-  }
+    // 🔑 fallback aman (anti undefined)
+    const totalPeserta = data.totalPeserta ?? 0;
+    const totalHadir   = data.totalHadir   ?? 0;
 
-});
+    document.getElementById("statistikBox").innerHTML = `
+      <div class="statistik-premium">
+        <div>
+          <b>Total Pendaftar</b>
+          <span>${totalPeserta}</span>
+        </div>
+        <div>
+          <b>Sudah Konfirmasi</b>
+          <span>${totalHadir}</span>
+        </div>
+      </div>
+    `;
+  })
+  .catch(() => {
+    document.getElementById("statistikBox").innerHTML = `
+      <div class="statistik-premium">
+        <div>
+          <b>Total Pendaftar</b>
+          <span>0</span>
+        </div>
+        <div>
+          <b>Sudah Konfirmasi</b>
+          <span>0</span>
+        </div>
+      </div>
+    `;
+  });
 
 
 /* =================================================
@@ -214,3 +222,4 @@ function bukaPeserta() {
 function bukaUMKM() {
   window.open("https://forms.gle/sUyoZ34bRnDrp2xW6", "_blank");
 }
+
