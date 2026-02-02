@@ -121,17 +121,41 @@ document.addEventListener("DOMContentLoaded", function () {
         <p style="font-size:13px">Tunjukkan QR saat registrasi</p>
       `;
     } else {
-      document.getElementById("qrArea").innerHTML = `
-        <p style="color:red;font-weight:bold">
-          QR aktif mulai H-7 sebelum acara
-        </p>
-        <button onclick="konfirmasiHadir('${data.nohp}')"
-          style="margin-top:10px;padding:10px 16px;border:none;border-radius:8px;background:#28a745;color:white;">
-          Konfirmasi Kehadiran
-        </button>
-      `;
-    }
-  };
+
+  // === LOGIKA H-7 (WIB, AMAN) ===
+  const now = new Date();
+  const wibOffset = 7 * 60; // WIB = UTC+7
+  const localOffset = now.getTimezoneOffset();
+  const todayWIB = new Date(now.getTime() + (wibOffset + localOffset) * 60000);
+
+  const eventDate = new Date("2026-04-11T00:00:00+07:00");
+  const h7 = new Date(eventDate);
+  h7.setDate(eventDate.getDate() - 7);
+
+  const aktif = todayWIB >= h7;
+
+  document.getElementById("qrArea").innerHTML = `
+    <p style="color:red;font-weight:bold">
+      QR aktif mulai H-7 sebelum acara
+    </p>
+
+    <button
+      onclick="konfirmasiHadir('${data.nohp}')"
+      ${aktif ? "" : "disabled"}
+      style="
+        margin-top:10px;
+        padding:10px 16px;
+        border:none;
+        border-radius:8px;
+        background:${aktif ? "#28a745" : "#aaa"};
+        color:white;
+        cursor:${aktif ? "pointer" : "not-allowed"};
+      ">
+      ${aktif ? "Konfirmasi Kehadiran" : "Aktif 4 April 2026"}
+    </button>
+  `;
+}
+
 
 
   /* =================================================
@@ -202,5 +226,6 @@ function bukaPeserta() {
 function bukaUMKM() {
   window.open("https://forms.gle/sUyoZ34bRnDrp2xW6", "_blank");
 }
+
 
 
