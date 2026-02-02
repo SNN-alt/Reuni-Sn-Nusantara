@@ -211,6 +211,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 
+const box = document.getElementById("statistikBox");
+if (!box) return;
+
+box.innerHTML = `
+  <div class="statistik-premium">
+    <div>
+      <b>Total Pendaftar</b>
+      <span>${totalPeserta}</span>
+    </div>
+    <div>
+      <b>Sudah Konfirmasi</b>
+      <span>${totalHadir}</span>
+    </div>
+  </div>
+`;
+
 
 /* =================================================
    LINK FORM (GLOBAL – WAJIB DI LUAR)
@@ -222,3 +238,4 @@ function bukaPeserta() {
 function bukaUMKM() {
   window.open("https://forms.gle/sUyoZ34bRnDrp2xW6", "_blank");
 }
+
