@@ -75,7 +75,7 @@ document.addEventListener("DOMContentLoaded", function () {
   ================================================= */
 
   const apiUrl =
-    "https://script.google.com/macros/s/AKfycbwbmKqK_JmmcXJECDcGia0jArqZ8K27fD51EOFPY8QyEPNbQ7LL3sQmxOot-qOHCdbx/exec";
+    "https://script.google.com/macros/s/AKfycbzwV7E0jGzc91GciG4dNYybpIpqFVhl9RpdBdqZyVAn_oS6kykA12_wAtR_lkh5WJWP/exec";
 
   window.loginPeserta = function () {
     const nohp = document.getElementById("nohpLogin").value.trim();
@@ -234,3 +234,4 @@ fetch(apiUrl + "?mode=statistik")
     document.getElementById("statistikBox").innerHTML =
       "❌ Gagal memuat data peserta";
   });
+
