@@ -180,46 +180,45 @@ document.addEventListener("DOMContentLoaded", function () {
      LOAD STATISTIK PESERTA (FIX FINAL)
   ========================================= */
 
-  const statistikBox = document.getElementById("statistikBox");
-  if (!statistikBox) return;
+const statistikBox = document.getElementById("statistikBox");
+if (!statistikBox) return;
 
-  fetch(apiUrl + "?mode=statistik")
-    .then(res => res.json())
-    .then(data => {
+fetch(apiUrl + "?mode=statistik&t=" + Date.now(), {
+  cache: "no-store"
+})
+  .then(res => res.json())
+  .then(data => {
 
-      const totalPeserta = data.totalPeserta ?? 0;
-      const totalHadir   = data.totalHadir   ?? 0;
+    const totalPeserta = data.totalPeserta ?? 0;
+    const totalHadir   = data.totalHadir   ?? 0;
 
-      statistikBox.innerHTML = `
-  <div class="statistik-premium">
-    <div class="stat-item">
-      <small>Total Pendaftar</small>
-      <span>${totalPeserta}</span>
-    </div>
-    <div class="stat-item">
-      <small>Sudah Konfirmasi</small>
-      <span>${totalHadir}</span>
-    </div>
-  </div>
-`;
-
-    })
-    .catch(() => {
-      statistikBox.innerHTML = `
-        <div class="statistik-premium">
-          <div>
-            <b>Total Pendaftar</b>
-            <span>0</span>
-          </div>
-          <div>
-            <b>Sudah Konfirmasi</b>
-            <span>0</span>
-          </div>
+    statistikBox.innerHTML = `
+      <div class="statistik-premium">
+        <div class="stat-item">
+          <small>Total Pendaftar</small>
+          <span>${totalPeserta}</span>
         </div>
-      `;
-    });
-
-});
+        <div class="stat-item">
+          <small>Sudah Konfirmasi</small>
+          <span>${totalHadir}</span>
+        </div>
+      </div>
+    `;
+  })
+  .catch(() => {
+    statistikBox.innerHTML = `
+      <div class="statistik-premium">
+        <div>
+          <b>Total Pendaftar</b>
+          <span>0</span>
+        </div>
+        <div>
+          <b>Sudah Konfirmasi</b>
+          <span>0</span>
+        </div>
+      </div>
+    `;
+  });
 
 
 /* =================================================
@@ -232,6 +231,7 @@ function bukaPeserta() {
 function bukaUMKM() {
   window.open("https://forms.gle/sUyoZ34bRnDrp2xW6", "_blank");
 }
+
 
 
 
