@@ -5,6 +5,9 @@ const apiUrl =
   "https://script.google.com/macros/s/AKfycbwL9y5VPkBybYBMjR13gAq-y9z4uMnh0Q-F0t007frgUVhrgR4SLMQ3n--MAl3nIkew/exec";
 
 
+/* =================================================
+   DOM READY
+================================================= */
 document.addEventListener("DOMContentLoaded", function () {
 
   /* =================================================
@@ -112,41 +115,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
     document.getElementById("popupDashboard").style.display = "flex";
 
-    /* ===== QR & H-7 ===== */
     if (String(data.qr_aktif).toUpperCase() === "YA") {
-
       document.getElementById("qrArea").innerHTML = `
         <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(data.qr)}">
         <p style="font-size:13px">Tunjukkan QR saat registrasi</p>
       `;
-
     } else {
-
-      const today     = new Date();
-      const eventDate = new Date("2026-04-11T00:00:00");
-      const h7        = new Date(eventDate);
-      h7.setDate(eventDate.getDate() - 7);
-
-      const aktif = today >= h7;
-
       document.getElementById("qrArea").innerHTML = `
         <p style="color:red;font-weight:bold">
           QR aktif mulai H-7 sebelum acara
         </p>
-
-        <button
-          onclick="konfirmasiHadir('${data.nohp}')"
-          ${aktif ? "" : "disabled"}
-          style="
-            margin-top:10px;
-            padding:10px 16px;
-            border:none;
-            border-radius:8px;
-            background:${aktif ? "#28a745" : "#aaa"};
-            color:white;
-            cursor:${aktif ? "pointer" : "not-allowed"};
-          ">
-          ${aktif ? "Konfirmasi Kehadiran" : "Aktif 4 April 2026"}
+        <button onclick="konfirmasiHadir('${data.nohp}')"
+          style="margin-top:10px;padding:10px 16px;border:none;border-radius:8px;background:#28a745;color:white;">
+          Konfirmasi Kehadiran
         </button>
       `;
     }
@@ -170,59 +151,33 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
   /* =================================================
-     TUTUP DASHBOARD
+     STATISTIK (NO CACHE)
   ================================================= */
-  window.tutupDashboard = function () {
-    document.getElementById("popupDashboard").style.display = "none";
-  };
+  const statistikBox = document.getElementById("statistikBox");
+  if (statistikBox) {
+    fetch(apiUrl + "?mode=statistik&t=" + Date.now(), { cache: "no-store" })
+      .then(res => res.json())
+      .then(data => {
+        statistikBox.innerHTML = `
+          <div class="statistik-premium">
+            <div class="stat-item">
+              <small>Total Pendaftar</small>
+              <span>${data.totalPeserta ?? 0}</span>
+            </div>
+            <div class="stat-item">
+              <small>Sudah Konfirmasi</small>
+              <span>${data.totalHadir ?? 0}</span>
+            </div>
+          </div>
+        `;
+      });
+  }
 
-  /* =========================================
-     LOAD STATISTIK PESERTA (FIX FINAL)
-  ========================================= */
-
-const statistikBox = document.getElementById("statistikBox");
-if (!statistikBox) return;
-
-fetch(apiUrl + "?mode=statistik&t=" + Date.now(), {
-  cache: "no-store"
-})
-  .then(res => res.json())
-  .then(data => {
-
-    const totalPeserta = data.totalPeserta ?? 0;
-    const totalHadir   = data.totalHadir   ?? 0;
-
-    statistikBox.innerHTML = `
-      <div class="statistik-premium">
-        <div class="stat-item">
-          <small>Total Pendaftar</small>
-          <span>${totalPeserta}</span>
-        </div>
-        <div class="stat-item">
-          <small>Sudah Konfirmasi</small>
-          <span>${totalHadir}</span>
-        </div>
-      </div>
-    `;
-  })
-  .catch(() => {
-    statistikBox.innerHTML = `
-      <div class="statistik-premium">
-        <div>
-          <b>Total Pendaftar</b>
-          <span>0</span>
-        </div>
-        <div>
-          <b>Sudah Konfirmasi</b>
-          <span>0</span>
-        </div>
-      </div>
-    `;
-  });
+}); // ✅ DOMContentLoaded DITUTUP DENGAN BENAR
 
 
 /* =================================================
-   LINK FORM (GLOBAL – WAJIB DI LUAR)
+   LINK FORM (GLOBAL)
 ================================================= */
 function bukaPeserta() {
   window.open("https://forms.gle/VudgYiKRNVWU9zsG8", "_blank");
@@ -231,11 +186,3 @@ function bukaPeserta() {
 function bukaUMKM() {
   window.open("https://forms.gle/sUyoZ34bRnDrp2xW6", "_blank");
 }
-
-
-
-
-
-
-
-
