@@ -162,9 +162,19 @@ document.addEventListener("DOMContentLoaded", function () {
    TUTUP DASHBOARD PESERTA
 ================================================= */
 window.tutupDashboard = function () {
-  document.getElementById("popupDashboard").style.display = "none";
+  const popup = document.getElementById("popupDashboard");
+  if (popup) popup.style.display = "none";
 };
 
+/* === KLIK AREA GELAP UNTUK TUTUP === */
+const popup = document.getElementById("popupDashboard");
+if (popup) {
+  popup.addEventListener("click", function (e) {
+    if (e.target === popup) {
+      popup.style.display = "none";
+    }
+  });
+}
 
   /* =================================================
      KONFIRMASI KEHADIRAN
@@ -224,4 +234,5 @@ function bukaPeserta() {
 function bukaUMKM() {
   window.open("https://forms.gle/sUyoZ34bRnDrp2xW6", "_blank");
 }
+
 
