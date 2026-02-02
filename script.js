@@ -157,6 +157,13 @@ document.addEventListener("DOMContentLoaded", function () {
       </button>
     `;
   };
+   
+/* =================================================
+   TUTUP DASHBOARD PESERTA
+================================================= */
+window.tutupDashboard = function () {
+  document.getElementById("popupDashboard").style.display = "none";
+};
 
 
   /* =================================================
@@ -217,3 +224,4 @@ function bukaPeserta() {
 function bukaUMKM() {
   window.open("https://forms.gle/sUyoZ34bRnDrp2xW6", "_blank");
 }
+
