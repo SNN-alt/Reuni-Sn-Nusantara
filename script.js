@@ -27,10 +27,12 @@ document.addEventListener("DOMContentLoaded", function () {
      CALL CENTER
   ================================================= */
   const modalCallCenter = document.getElementById("modalCallCenter");
-  const btnCallCenter = document.getElementById("btnCallCenter");
+  const btnCallCenter   = document.getElementById("btnCallCenter");
 
   if (btnCallCenter && modalCallCenter) {
-    btnCallCenter.onclick = () => modalCallCenter.style.display = "block";
+    btnCallCenter.onclick = () =>
+      modalCallCenter.style.display = "block";
+
     modalCallCenter.querySelector(".close")
       ?.addEventListener("click", () => {
         modalCallCenter.style.display = "none";
@@ -43,7 +45,7 @@ document.addEventListener("DOMContentLoaded", function () {
   ================================================= */
   const sponsorOverlay = document.getElementById("sponsorOverlay");
   const sponsorPreview = document.getElementById("sponsorPreview");
-  const closeSponsor = document.getElementById("closeSponsor");
+  const closeSponsor   = document.getElementById("closeSponsor");
 
   if (sponsorOverlay) sponsorOverlay.style.display = "none";
 
@@ -54,13 +56,13 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  closeSponsor?.addEventListener("click", (e) => {
+  closeSponsor?.addEventListener("click", e => {
     e.stopPropagation();
     sponsorOverlay.style.display = "none";
     sponsorPreview.src = "";
   });
 
-  sponsorOverlay?.addEventListener("click", (e) => {
+  sponsorOverlay?.addEventListener("click", e => {
     if (e.target === sponsorOverlay) {
       sponsorOverlay.style.display = "none";
       sponsorPreview.src = "";
@@ -120,14 +122,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
     } else {
 
-      const today = new Date();
+      const today     = new Date();
       const eventDate = new Date("2026-04-11T00:00:00");
-      const h7 = new Date(eventDate);
+      const h7        = new Date(eventDate);
       h7.setDate(eventDate.getDate() - 7);
+
       const aktif = today >= h7;
 
       document.getElementById("qrArea").innerHTML = `
-        <p style="color:red;font-weight:bold">QR aktif mulai H-7 sebelum acara</p>
+        <p style="color:red;font-weight:bold">
+          QR aktif mulai H-7 sebelum acara
+        </p>
 
         <button
           onclick="konfirmasiHadir('${data.nohp}')"
@@ -149,7 +154,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
   /* =================================================
-     KONFIRMASI
+     KONFIRMASI KEHADIRAN
   ================================================= */
   window.konfirmasiHadir = function (nohp) {
     document.getElementById("qrArea").innerHTML = "⏳ Memproses...";
@@ -173,47 +178,42 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
   /* =================================================
-     LOAD STATISTIK PESERTA (AUTO)
+     LOAD STATISTIK PESERTA
   ================================================= */
-fetch(apiUrl + "?mode=statistik")
-  .then(res => res.json())
-  .then(data => {
+  fetch(apiUrl + "?mode=statistik")
+    .then(res => res.json())
+    .then(data => {
 
-    // 🔑 fallback aman (anti undefined)
-    const totalPeserta = data.totalPeserta ?? 0;
-    const totalHadir   = data.totalHadir   ?? 0;
+      const totalPeserta = data.totalPeserta ?? 0;
+      const totalHadir   = data.totalHadir   ?? 0;
 
-    document.getElementById("statistikBox").innerHTML = `
-      <div class="statistik-premium">
-        <div>
-          <b>Total Pendaftar</b>
-          <span>${totalPeserta}</span>
+      document.getElementById("statistikBox").innerHTML = `
+        <div class="statistik-premium">
+          <div>
+            <b>Total Pendaftar</b>
+            <span>${totalPeserta}</span>
+          </div>
+          <div>
+            <b>Sudah Konfirmasi</b>
+            <span>${totalHadir}</span>
+          </div>
         </div>
-        <div>
-          <b>Sudah Konfirmasi</b>
-          <span>${totalHadir}</span>
+      `;
+    })
+    .catch(() => {
+      document.getElementById("statistikBox").innerHTML = `
+        <div class="statistik-premium">
+          <div><b>Total Pendaftar</b><span>0</span></div>
+          <div><b>Sudah Konfirmasi</b><span>0</span></div>
         </div>
-      </div>
-    `;
-  })
-  .catch(() => {
-    document.getElementById("statistikBox").innerHTML = `
-      <div class="statistik-premium">
-        <div>
-          <b>Total Pendaftar</b>
-          <span>0</span>
-        </div>
-        <div>
-          <b>Sudah Konfirmasi</b>
-          <span>0</span>
-        </div>
-      </div>
-    `;
-  });
+      `;
+    });
+
+});
 
 
 /* =================================================
-   LINK FORM
+   LINK FORM (GLOBAL – WAJIB DI LUAR)
 ================================================= */
 function bukaPeserta() {
   window.open("https://forms.gle/VudgYiKRNVWU9zsG8", "_blank");
@@ -222,5 +222,3 @@ function bukaPeserta() {
 function bukaUMKM() {
   window.open("https://forms.gle/sUyoZ34bRnDrp2xW6", "_blank");
 }
-
-
