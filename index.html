@@ -5,170 +5,128 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Reuni SN Nusantara 2026</title>
 
-  <!-- File CSS utama -->
+  <!-- CSS Utama -->
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<!-- ================= HEADER ================= -->
-<header>
-  <!-- Judul utama acara -->
-  <h1></h1>
-  <p></p>
-</header>
+  <!-- ================= HEADER ================= -->
+  <header></header>
 
-
-<!-- ================= RUNNING TEXT ================= -->
-<div class="marquee">
-  <p>Selamat Datang di Reuni SN Nusantara 2026 | Jangan lupa daftar Peserta atau UMKM | Hubungi Call Center jika butuh informasi</p>
-</div>
-
-  <!-- ================= SPONSOR SECTION ================= -->
-<section class="sponsor-section">
-  <h2>SPONSORSHIP</h2>
-  <div class="sponsor-gallery">
-    <img src="images/MAG.jpeg" class="sponsor-img">
-    <img src="images/MJ.jpeg" class="sponsor-img">
-    <img src="images/OSN.jpeg" class="sponsor-img">
-
-    <img src="images/OSN.jpeg" class="sponsor-img">
-    <img src="images/OSN.jpeg" class="sponsor-img">
-    <img src="images/OSN.jpeg" class="sponsor-img">
+  <!-- ================= RUNNING TEXT ================= -->
+  <div class="marquee">
+    <p>
+      Selamat Datang di Reuni SN Nusantara 2026 |
+      Jangan lupa daftar Peserta atau UMKM |
+      Hubungi Call Center jika butuh informasi
+    </p>
   </div>
-</section>
 
-<!-- ================= TOMBOL MENU UTAMA ================= -->
-<main>
-  <button class="btn panduan" onclick="bukaPanduan()">PANDUAN PESERTA</button>
-  <button class="btn proposal" onclick="bukaProposal()">PROPOSAL</button>
-  <button class="btn peserta" onclick="bukaPeserta()">DAFTAR PESERTA</button>
-  <button class="btn umkm" onclick="bukaUMKM()">DAFTAR UMKM</button>
-  <button class="btn callcenter" id="btnCallCenter">CALL CENTER</button>
+  <!-- ================= SPONSOR ================= -->
+  <section class="sponsor-section">
+    <h2>SPONSORSHIP</h2>
 
-  <!-- LOGIN DI DALAM MAIN -->
-  <section class="login-box">
-    <h3>Login Peserta</h3>
-    <input type="text" id="nohpLogin" placeholder="Masukkan No HP terdaftar">
-    <button onclick="loginPeserta()">Login</button>
+    <div class="sponsor-gallery">
+      <img src="images/MAG.jpeg" class="sponsor-img" alt="Sponsor MAG">
+      <img src="images/MJ.jpeg" class="sponsor-img" alt="Sponsor MJ">
+      <img src="images/OSN.jpeg" class="sponsor-img" alt="Sponsor OSN">
+
+      <img src="images/OSN.jpeg" class="sponsor-img" alt="Sponsor OSN">
+      <img src="images/OSN.jpeg" class="sponsor-img" alt="Sponsor OSN">
+      <img src="images/OSN.jpeg" class="sponsor-img" alt="Sponsor OSN">
+    </div>
   </section>
-</main>
 
+  <!-- ================= MENU UTAMA ================= -->
+  <main>
 
-<!-- ================= POPUP DASHBOARD PESERTA ================= -->
+    <button class="btn panduan" onclick="bukaPanduan()">PANDUAN PESERTA</button>
+    <button class="btn proposal" onclick="bukaProposal()">PROPOSAL</button>
+    <button class="btn peserta" onclick="bukaPeserta()">DAFTAR PESERTA</button>
+    <button class="btn umkm" onclick="bukaUMKM()">DAFTAR UMKM</button>
+    <button class="btn callcenter" id="btnCallCenter">CALL CENTER</button>
 
-<div id="popupDashboard" class="popup-overlay">
-  <div class="popup-box">
-    
-    <!-- Tombol close X -->
-    <div class="close-x" onclick="tutupDashboard()">×</div>
+    <!-- LOGIN -->
+    <section class="login-box">
+      <h3>Login Peserta</h3>
+      <input type="text" id="nohpLogin" placeholder="Masukkan No HP terdaftar">
+      <button onclick="loginPeserta()">Login</button>
+    </section>
 
-    <!-- Isi data peserta -->
-    <div id="isiDashboard"></div>
+  </main>
 
+  <!-- ================= DASHBOARD PESERTA ================= -->
+  <div id="popupDashboard" class="popup-overlay">
+    <div class="popup-box">
+      <span class="close-x" onclick="tutupDashboard()">×</span>
+      <div id="isiDashboard"></div>
+    </div>
   </div>
-</div>
 
-  <!-- ================= MODAL CALL CENTER ================= -->
-<div id="modalCallCenter" class="modal">
-  <div class="modal-content callcenter-box">
-    <span class="close">&times;</span>
+  <!-- ================= CALL CENTER ================= -->
+  <div id="modalCallCenter" class="modal">
+    <div class="modal-content callcenter-box">
+      <span class="close">&times;</span>
 
-    <h3>📞 Call Center Reuni SN 2026</h3>
-    <p>Silakan pilih bagian yang ingin dihubungi</p>
+      <h3>📞 Call Center Reuni SN 2026</h3>
+      <p>Silakan pilih bagian yang ingin dihubungi</p>
 
-    <a class="cc-btn wa-umum"
-       href="https://wa.me/6287748283935?text=Halo%20Admin,%20saya%20ingin%20informasi%20umum%20Reuni%20SN%202026"
-       target="_blank">
-       💬 Informasi Umum
+      <a class="cc-btn wa-umum"
+         href="https://wa.me/6287748283935?text=Halo%20Admin,%20saya%20ingin%20informasi%20umum%20Reuni%20SN%202026"
+         target="_blank">
+        💬 Informasi Umum
+      </a>
+
+      <a class="cc-btn wa-sponsor"
+         href="https://wa.me/6282312636561?text=Halo%20Admin,%20saya%20ingin%20informasi%20sponsorship%20Reuni%20SN%202026"
+         target="_blank">
+        🤝 Sponsorship
+      </a>
+    </div>
+  </div>
+
+  <!-- ================= ZOOM SPONSOR ================= -->
+  <div id="sponsorOverlay" class="sponsor-overlay">
+    <div class="sponsor-modal">
+      <span class="close-inside" id="closeSponsor">×</span>
+      <img id="sponsorPreview" class="sponsor-preview" alt="Preview Sponsor">
+    </div>
+  </div>
+
+  <!-- ================= MODAL PANDUAN ================= -->
+  <div id="modalPanduan" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="tutupPanduan()">×</span>
+      <h2>Panduan Peserta</h2>
+      <iframe src="files/KETENTUAN.pdf" width="100%" height="500"></iframe>
+    </div>
+  </div>
+
+  <!-- ================= MODAL PROPOSAL ================= -->
+  <div id="modalProposal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="tutupProposal()">×</span>
+      <h2>Proposal Kegiatan</h2>
+      <iframe src="files/PROPOSAL.pdf" width="100%" height="500"></iframe>
+    </div>
+  </div>
+
+  <!-- ================= GOOGLE MAPS ================= -->
+  <div class="maps-box">
+    Lihat lokasi acara di
+    <a href="https://maps.app.goo.gl/Rv4JjxwD6UzkJhwG8" target="_blank">
+      Google Maps
     </a>
-
-    <a class="cc-btn wa-sponsor"
-       href="https://wa.me/6282312636561?text=Halo%20Admin,%20saya%20ingin%20informasi%20sponsorship%20Reuni%20SN%202026"
-       target="_blank">
-       🤝 Sponsorship
-    </a>
-
   </div>
-</div>
 
-
-<!-- ================= MODAL ZOOM SPONSOR ================= -->
-<div id="sponsorOverlay" class="sponsor-overlay">
-  <div class="sponsor-modal">
-    <span class="close-inside" id="closeSponsor">&times;</span>
-    <img id="sponsorPreview" class="sponsor-preview">
+  <!-- ================= FOOTER ================= -->
+  <div class="osn-box">
+    OSN Mobile – Reuni SN Nusantara 2026
   </div>
-</div>
 
-<!-- ================= MODAL PANDUAN ================= -->
-<div id="modalPanduan" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="tutupPanduan()">&times;</span>
-    <h2>Panduan Peserta</h2>
-    <iframe src="files/KETENTUAN.pdf" width="100%" height="500"></iframe>
-  </div>
-</div>
-
-
-<!-- ================= MODAL PROPOSAL ================= -->
-<div id="modalProposal" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="tutupProposal()">&times;</span>
-    <h2>Proposal Kegiatan</h2>
-    <iframe src="files/PROPOSAL.pdf" width="100%" height="500"></iframe>
-  </div>
-</div>
-
-  <!-- ================= LINK GOOGLE MAPS ================= -->
-<div class="maps-box">
-  Lihat lokasi acara di  
-  <a href="https://maps.app.goo.gl/Rv4JjxwD6UzkJhwG8" target="_blank">
-    Google Maps
-  </a>
-</div>
-
-<!-- ================= FOOTER ================= -->
-<div class="osn-box">
-  OSN Mobile – Reuni SN Nusantara 2026
-</div>
-
-<!-- File JavaScript tambahan -->
-<script src="script.js"></script>
+  <!-- JS -->
+  <script src="script.js"></script>
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
