@@ -55,7 +55,14 @@
     <!-- LOGIN -->
     <section class="login-box">
       <h3>Login Peserta</h3>
-      <input type="text" id="nohpLogin" placeholder="Masukkan No HP terdaftar">
+      <input
+  type="text"
+  id="nohpLogin"
+  placeholder="Masukkan No HP terdaftar"
+  inputmode="numeric"
+  pattern="[0-9]*"
+  oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+/>
       <button onclick="loginPeserta()">Login</button>
     </section>
 
@@ -135,6 +142,7 @@
 
 </body>
 </html>
+
 
 
 
