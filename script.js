@@ -153,27 +153,43 @@ document.addEventListener("DOMContentLoaded", function () {
   /* =================================================
      STATISTIK (NO CACHE)
   ================================================= */
+ function loadStatistik() {
   const statistikBox = document.getElementById("statistikBox");
-  if (statistikBox) {
-    fetch(apiUrl + "?mode=statistik&t=" + Date.now(), { cache: "no-store" })
-      .then(res => res.json())
-      .then(data => {
-        statistikBox.innerHTML = `
-          <div class="statistik-premium">
-            <div class="stat-item">
-              <small>Total Pendaftar</small>
-              <span>${data.totalPeserta ?? 0}</span>
-            </div>
-            <div class="stat-item">
-              <small>Sudah Konfirmasi</small>
-              <span>${data.totalHadir ?? 0}</span>
-            </div>
-          </div>
-        `;
-      });
-  }
+  if (!statistikBox) return;
 
-}); // ✅ DOMContentLoaded DITUTUP DENGAN BENAR
+  fetch(apiUrl + "?mode=statistik&t=" + Date.now(), {
+    cache: "no-store"
+  })
+    .then(res => res.json())
+    .then(data => {
+      statistikBox.innerHTML = `
+        <div class="statistik-premium">
+          <div class="stat-item">
+            <small>Total Pendaftar</small>
+            <span>${data.totalPeserta ?? 0}</span>
+          </div>
+          <div class="stat-item">
+            <small>Sudah Konfirmasi</small>
+            <span>${data.totalHadir ?? 0}</span>
+          </div>
+        </div>
+      `;
+    })
+    .catch(() => {
+      statistikBox.innerHTML = `
+        <div class="statistik-premium">
+          <div class="stat-item">
+            <small>Total Pendaftar</small>
+            <span>0</span>
+          </div>
+          <div class="stat-item">
+            <small>Sudah Konfirmasi</small>
+            <span>0</span>
+          </div>
+        </div>
+      `;
+    });
+}
 
 
 /* =================================================
@@ -186,4 +202,5 @@ function bukaPeserta() {
 function bukaUMKM() {
   window.open("https://forms.gle/sUyoZ34bRnDrp2xW6", "_blank");
 }
+
 
