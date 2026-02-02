@@ -102,6 +102,30 @@ main {
   cursor: pointer;
 }
 
+/* ===============================
+   TABEL INFO DASHBOARD
+================================ */
+.info-table {
+  width: 100%;
+  font-size: 14px;
+  margin-top: 10px;
+  border-collapse: collapse;
+}
+
+.info-table td {
+  padding: 4px 6px;
+}
+
+.info-table td:first-child {
+  text-align: left;
+  font-weight: 500;
+}
+
+.info-table .val {
+  text-align: right;     /* 🔑 RATA KANAN */
+  font-weight: bold;
+}
+
 /* ================= GOOGLE MAPS FULL WIDTH ================= */
 
 .maps-box {
@@ -328,6 +352,7 @@ main {
 .cc-btn:hover {
   opacity: 0.9;
 }
+
 
 
 
