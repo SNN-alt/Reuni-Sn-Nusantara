@@ -191,17 +191,18 @@ document.addEventListener("DOMContentLoaded", function () {
       const totalHadir   = data.totalHadir   ?? 0;
 
       statistikBox.innerHTML = `
-        <div class="statistik-premium">
-          <div>
-            <b>Total Pendaftar</b>
-            <span>${totalPeserta}</span>
-          </div>
-          <div>
-            <b>Sudah Konfirmasi</b>
-            <span>${totalHadir}</span>
-          </div>
-        </div>
-      `;
+  <div class="statistik-premium">
+    <div class="stat-item">
+      <small>Total Pendaftar</small>
+      <span>${totalPeserta}</span>
+    </div>
+    <div class="stat-item">
+      <small>Sudah Konfirmasi</small>
+      <span>${totalHadir}</span>
+    </div>
+  </div>
+`;
+
     })
     .catch(() => {
       statistikBox.innerHTML = `
@@ -231,5 +232,6 @@ function bukaPeserta() {
 function bukaUMKM() {
   window.open("https://forms.gle/sUyoZ34bRnDrp2xW6", "_blank");
 }
+
 
 
