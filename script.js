@@ -1,51 +1,49 @@
+/* =================================================
+   GLOBAL API URL
+================================================= */
+const apiUrl =
+  "https://script.google.com/macros/s/AKfycbzwV7E0jGzc91GciG4dNYybpIpqFVhl9RpdBdqZyVAn_oS6kykA12_wAtR_lkh5WJWP/exec";
+
+
 document.addEventListener("DOMContentLoaded", function () {
 
   /* =================================================
      MODAL PANDUAN & PROPOSAL
   ================================================= */
-
-  window.bukaPanduan = () => {
+  window.bukaPanduan = () =>
     document.getElementById("modalPanduan").style.display = "block";
-  };
 
-  window.tutupPanduan = () => {
+  window.tutupPanduan = () =>
     document.getElementById("modalPanduan").style.display = "none";
-  };
 
-  window.bukaProposal = () => {
+  window.bukaProposal = () =>
     document.getElementById("modalProposal").style.display = "block";
-  };
 
-  window.tutupProposal = () => {
+  window.tutupProposal = () =>
     document.getElementById("modalProposal").style.display = "none";
-  };
 
 
   /* =================================================
      CALL CENTER
   ================================================= */
-
   const modalCallCenter = document.getElementById("modalCallCenter");
-  const btnCallCenter   = document.getElementById("btnCallCenter");
+  const btnCallCenter = document.getElementById("btnCallCenter");
 
   if (btnCallCenter && modalCallCenter) {
-    btnCallCenter.onclick = () => {
-      modalCallCenter.style.display = "block";
-    };
-
-    modalCallCenter.querySelector(".close")?.addEventListener("click", () => {
-      modalCallCenter.style.display = "none";
-    });
+    btnCallCenter.onclick = () => modalCallCenter.style.display = "block";
+    modalCallCenter.querySelector(".close")
+      ?.addEventListener("click", () => {
+        modalCallCenter.style.display = "none";
+      });
   }
 
 
   /* =================================================
-     SPONSOR MODAL (HP & PC AMAN)
+     MODAL SPONSOR
   ================================================= */
-
   const sponsorOverlay = document.getElementById("sponsorOverlay");
   const sponsorPreview = document.getElementById("sponsorPreview");
-  const closeSponsor   = document.getElementById("closeSponsor");
+  const closeSponsor = document.getElementById("closeSponsor");
 
   if (sponsorOverlay) sponsorOverlay.style.display = "none";
 
@@ -73,16 +71,9 @@ document.addEventListener("DOMContentLoaded", function () {
   /* =================================================
      LOGIN PESERTA
   ================================================= */
-
-  const apiUrl =
-    "https://script.google.com/macros/s/AKfycbzwV7E0jGzc91GciG4dNYybpIpqFVhl9RpdBdqZyVAn_oS6kykA12_wAtR_lkh5WJWP/exec";
-
   window.loginPeserta = function () {
     const nohp = document.getElementById("nohpLogin").value.trim();
-    if (!nohp) {
-      alert("Masukkan nomor HP");
-      return;
-    }
+    if (!nohp) return alert("Masukkan nomor HP");
 
     fetch(`${apiUrl}?mode=login&nohp=${encodeURIComponent(nohp)}`)
       .then(res => res.json())
@@ -100,7 +91,6 @@ document.addEventListener("DOMContentLoaded", function () {
   /* =================================================
      DASHBOARD PESERTA
   ================================================= */
-
   window.tampilkanDashboard = function (data) {
 
     document.getElementById("isiDashboard").innerHTML = `
@@ -120,52 +110,38 @@ document.addEventListener("DOMContentLoaded", function () {
 
     document.getElementById("popupDashboard").style.display = "flex";
 
-
-    /* ================= QR & H-7 LOGIC ================= */
-
+    /* ===== QR & H-7 ===== */
     if (String(data.qr_aktif).toUpperCase() === "YA") {
 
       document.getElementById("qrArea").innerHTML = `
-        <img
-          src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(data.qr)}"
-          alt="QR Peserta">
-        <p style="font-size:13px;margin-top:6px">
-          Tunjukkan QR ini saat registrasi ulang
-        </p>
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(data.qr)}">
+        <p style="font-size:13px">Tunjukkan QR saat registrasi</p>
       `;
 
     } else {
 
-      const today         = new Date();
-      const eventDate     = new Date("2026-04-11T00:00:00");
-      const h7Date        = new Date(eventDate);
-      h7Date.setDate(eventDate.getDate() - 7);
-
-      const isActive = today >= h7Date;
+      const today = new Date();
+      const eventDate = new Date("2026-04-11T00:00:00");
+      const h7 = new Date(eventDate);
+      h7.setDate(eventDate.getDate() - 7);
+      const aktif = today >= h7;
 
       document.getElementById("qrArea").innerHTML = `
-        <p style="color:red;font-weight:bold">
-          QR aktif mulai H-7 sebelum acara
-        </p>
-
-        <p style="font-size:13px;margin-top:5px">
-          Silakan klik tombol di bawah untuk konfirmasi kehadiran
-        </p>
+        <p style="color:red;font-weight:bold">QR aktif mulai H-7 sebelum acara</p>
 
         <button
           onclick="konfirmasiHadir('${data.nohp}')"
-          ${isActive ? "" : "disabled"}
+          ${aktif ? "" : "disabled"}
           style="
-            margin-top:8px;
-            padding:8px 14px;
+            margin-top:10px;
+            padding:10px 16px;
             border:none;
-            border-radius:6px;
-            background:${isActive ? "#28a745" : "#999"};
+            border-radius:8px;
+            background:${aktif ? "#28a745" : "#aaa"};
             color:white;
-            font-size:14px;
-            cursor:${isActive ? "pointer" : "not-allowed"};
+            cursor:${aktif ? "pointer" : "not-allowed"};
           ">
-          ${isActive ? "Konfirmasi Kehadiran" : "Aktif mulai 4 April 2026"}
+          ${aktif ? "Konfirmasi Kehadiran" : "Aktif 4 April 2026"}
         </button>
       `;
     }
@@ -173,41 +149,64 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
   /* =================================================
-     KONFIRMASI KEHADIRAN
+     KONFIRMASI
   ================================================= */
-
   window.konfirmasiHadir = function (nohp) {
-
-    document.getElementById("qrArea").innerHTML =
-      "<p>⏳ Memproses konfirmasi...</p>";
+    document.getElementById("qrArea").innerHTML = "⏳ Memproses...";
 
     fetch(`${apiUrl}?mode=konfirmasi&nohp=${encodeURIComponent(nohp)}`)
       .then(res => res.json())
       .then(data => {
         alert(data.message);
-        if (data.status === "OK") {
-          loginPeserta(); // refresh data
-        }
+        if (data.status === "OK") loginPeserta();
       })
-      .catch(() => alert("Gagal koneksi Apps Script"));
+      .catch(() => alert("Gagal koneksi server"));
   };
 
 
   /* =================================================
      TUTUP DASHBOARD
   ================================================= */
-
   window.tutupDashboard = function () {
     document.getElementById("popupDashboard").style.display = "none";
   };
+
+
+  /* =================================================
+     LOAD STATISTIK PESERTA (AUTO)
+  ================================================= */
+  const statistikBox = document.getElementById("statistikBox");
+  if (statistikBox) {
+    statistikBox.innerHTML = "⏳ Memuat data peserta...";
+
+    fetch(`${apiUrl}?mode=statistik`)
+      .then(res => res.json())
+      .then(data => {
+        statistikBox.innerHTML = `
+          <div class="statistik-premium">
+            <div>
+              👥 <b>Total Pendaftar</b><br>
+              <span>${data.totalPeserta}</span>
+            </div>
+            <div>
+              ✅ <b>Sudah Konfirmasi</b><br>
+              <span>${data.totalKonfirmasi}</span>
+            </div>
+          </div>
+        `;
+      })
+      .catch(() => {
+        statistikBox.innerHTML =
+          "<span style='color:red'>❌ Gagal memuat data</span>";
+      });
+  }
 
 });
 
 
 /* =================================================
-   DAFTAR PESERTA & UMKM (GLOBAL)
+   LINK FORM
 ================================================= */
-
 function bukaPeserta() {
   window.open("https://forms.gle/VudgYiKRNVWU9zsG8", "_blank");
 }
@@ -215,23 +214,3 @@ function bukaPeserta() {
 function bukaUMKM() {
   window.open("https://forms.gle/sUyoZ34bRnDrp2xW6", "_blank");
 }
-
-/* =================================================
-   LOAD STATISTIK PESERTA
-================================================= */
-
-fetch(apiUrl + "?mode=statistik")
-  .then(res => res.json())
-  .then(data => {
-    document.getElementById("statistikBox").innerHTML = `
-      <strong>📊 INFO PESERTA</strong>
-      Total Pendaftar : <b>${data.totalPeserta}</b> orang<br>
-      Total Keluarga  : <b>${data.totalKeluarga}</b> orang<br>
-      Sudah Konfirmasi: <b>${data.totalHadir}</b> orang
-    `;
-  })
-  .catch(() => {
-    document.getElementById("statistikBox").innerHTML =
-      "❌ Gagal memuat data peserta";
-  });
-
