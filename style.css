@@ -11,7 +11,7 @@ body {
   text-align: center;
   color: #000;
 
-  /* background utama */
+  /* Background utama */
   background-image: url("images/12.jpeg");
   background-repeat: no-repeat;
   background-position: center top;
@@ -68,11 +68,12 @@ main {
   cursor: pointer;
 }
 
-.panduan   { background: #ffc107; }
-.proposal  { background: #17a2b8; color: #000; }
-.peserta   { background: #28a745; color: #fff; }
-.umkm      { background: #6f42c1; color: #fff; }
-.callcenter{ background: #dc3545; color: #fff; }
+/* Warna tombol */
+.panduan    { background: #ffc107; }
+.proposal   { background: #17a2b8; color: #000; }
+.peserta    { background: #28a745; color: #fff; }
+.umkm       { background: #6f42c1; color: #fff; }
+.callcenter { background: #dc3545; color: #fff; }
 
 /* =================================================
    LOGIN BOX
@@ -102,9 +103,9 @@ main {
   cursor: pointer;
 }
 
-/* ===============================
-   TABEL INFO DASHBOARD
-================================ */
+/* =================================================
+   DASHBOARD INFO TABLE (PREMIUM)
+================================================= */
 .info-table {
   width: 100%;
   font-size: 14px;
@@ -122,25 +123,24 @@ main {
 }
 
 .info-table .val {
-  text-align: right;     /* 🔑 RATA KANAN */
+  text-align: right;        /* Rata kanan data */
   font-weight: bold;
 }
 
-/* ================= GOOGLE MAPS FULL WIDTH ================= */
-
+/* =================================================
+   GOOGLE MAPS (FULL WIDTH)
+================================================= */
 .maps-box {
-  width: 100%;                 /* FULL WIDTH */
+  width: 100%;
   padding: 14px 10px;
   margin: 5px 0;
 
-  background: rgba(0,0,0,0.65); /* hitam transparan */
+  background: rgba(0,0,0,0.65);
   color: #fff;
 
   text-align: center;
   font-size: 15px;
   font-weight: bold;
-
-  border-radius: 0;            /* full lebar tanpa sudut */
 }
 
 .maps-box a {
@@ -171,7 +171,7 @@ main {
   grid-template-columns: repeat(3, 1fr);
   gap: 10px;
   max-width: 360px;
-  margin: 0 auto 10px auto;
+  margin: 0 auto 10px;
 }
 
 .sponsor-img {
@@ -210,11 +210,12 @@ main {
   position: absolute;
   top: 8px;
   right: 8px;
-  background: rgba(0,0,0,0.75);
-  color: #fff;
   width: 36px;
   height: 36px;
   line-height: 36px;
+
+  background: rgba(0,0,0,0.75);
+  color: #fff;
   border-radius: 50%;
   font-size: 20px;
   cursor: pointer;
@@ -280,15 +281,13 @@ main {
   cursor: pointer;
 }
 
-/* ===============================
-   FOOTER OSN MOBILE (ABU-ABU)
-================================ */
-
-/* OSN MOBILE */
+/* =================================================
+   FOOTER (OSN MOBILE)
+================================================= */
 .osn-box {
   width: 100%;
   padding: 14px 10px;
-  margin: 0;                   /* NEMPEL */
+  margin: 0;
   background: rgba(0,0,0,0.65);
   color: #fff;
   text-align: center;
@@ -296,31 +295,15 @@ main {
   font-weight: bold;
 }
 
-
 /* =================================================
-   RESPONSIVE (PC)
-================================================= */
-@media (min-width: 768px) {
-  .btn {
-    max-width: 250px;
-  }
-
-  .sponsor-gallery {
-    max-width: 420px;
-  }
-}
-
-/* ===============================
    CALL CENTER MODAL
-================================ */
-
+================================================= */
 .callcenter-box {
   text-align: center;
 }
 
 .callcenter-box h3 {
-  margin-top: 5px;
-  margin-bottom: 5px;
+  margin: 5px 0;
 }
 
 .callcenter-box p {
@@ -336,29 +319,26 @@ main {
   border-radius: 10px;
   text-decoration: none;
   font-weight: bold;
-  color: #fff;
   font-size: 15px;
+  color: #fff;
 }
 
-/* WhatsApp warna */
-.wa-umum {
-  background: #25D366;
-}
-
-.wa-sponsor {
-  background: #128C7E;
-}
+.wa-umum    { background: #25D366; }
+.wa-sponsor { background: #128C7E; }
 
 .cc-btn:hover {
   opacity: 0.9;
 }
 
+/* =================================================
+   RESPONSIVE (DESKTOP)
+================================================= */
+@media (min-width: 768px) {
+  .btn {
+    max-width: 250px;
+  }
 
-
-
-
-
-
-
-
-
+  .sponsor-gallery {
+    max-width: 420px;
+  }
+}
