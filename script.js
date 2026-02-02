@@ -115,47 +115,48 @@ document.addEventListener("DOMContentLoaded", function () {
 
     document.getElementById("popupDashboard").style.display = "flex";
 
+    // === JIKA QR SUDAH AKTIF ===
     if (String(data.qr_aktif).toUpperCase() === "YA") {
       document.getElementById("qrArea").innerHTML = `
         <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(data.qr)}">
         <p style="font-size:13px">Tunjukkan QR saat registrasi</p>
       `;
-    } else {
+      return;
+    }
 
-  // === LOGIKA H-7 (WIB, AMAN) ===
-  const now = new Date();
-  const wibOffset = 7 * 60; // WIB = UTC+7
-  const localOffset = now.getTimezoneOffset();
-  const todayWIB = new Date(now.getTime() + (wibOffset + localOffset) * 60000);
+    // === LOGIKA H-7 (WIB, AMAN) ===
+    const now = new Date();
+    const todayWIB = new Date(
+      now.getTime() + (7 * 60 + now.getTimezoneOffset()) * 60000
+    );
 
-  const eventDate = new Date("2026-04-11T00:00:00+07:00");
-  const h7 = new Date(eventDate);
-  h7.setDate(eventDate.getDate() - 7);
+    const eventDate = new Date("2026-04-11T00:00:00+07:00");
+    const h7 = new Date(eventDate);
+    h7.setDate(eventDate.getDate() - 7);
 
-  const aktif = todayWIB >= h7;
+    const aktif = todayWIB >= h7;
 
-  document.getElementById("qrArea").innerHTML = `
-    <p style="color:red;font-weight:bold">
-      QR aktif mulai H-7 sebelum acara
-    </p>
+    document.getElementById("qrArea").innerHTML = `
+      <p style="color:red;font-weight:bold">
+        QR aktif mulai H-7 sebelum acara
+      </p>
 
-    <button
-      onclick="konfirmasiHadir('${data.nohp}')"
-      ${aktif ? "" : "disabled"}
-      style="
-        margin-top:10px;
-        padding:10px 16px;
-        border:none;
-        border-radius:8px;
-        background:${aktif ? "#28a745" : "#aaa"};
-        color:white;
-        cursor:${aktif ? "pointer" : "not-allowed"};
-      ">
-      ${aktif ? "Konfirmasi Kehadiran" : "Aktif 4 April 2026"}
-    </button>
-  `;
-}
-
+      <button
+        onclick="konfirmasiHadir('${data.nohp}')"
+        ${aktif ? "" : "disabled"}
+        style="
+          margin-top:10px;
+          padding:10px 16px;
+          border:none;
+          border-radius:8px;
+          background:${aktif ? "#28a745" : "#aaa"};
+          color:white;
+          cursor:${aktif ? "pointer" : "not-allowed"};
+        ">
+        ${aktif ? "Konfirmasi Kehadiran" : "Aktif 4 April 2026"}
+      </button>
+    `;
+  };
 
 
   /* =================================================
@@ -175,45 +176,35 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
   /* =================================================
-     STATISTIK (NO CACHE)
+     STATISTIK (AUTO UPDATE)
   ================================================= */
- function loadStatistik() {
-  const statistikBox = document.getElementById("statistikBox");
-  if (!statistikBox) return;
+  function loadStatistik() {
+    const statistikBox = document.getElementById("statistikBox");
+    if (!statistikBox) return;
 
-  fetch(apiUrl + "?mode=statistik&t=" + Date.now(), {
-    cache: "no-store"
-  })
-    .then(res => res.json())
-    .then(data => {
-      statistikBox.innerHTML = `
-        <div class="statistik-premium">
-          <div class="stat-item">
-            <small>Total Pendaftar</small>
-            <span>${data.totalPeserta ?? 0}</span>
+    fetch(apiUrl + "?mode=statistik&t=" + Date.now(), { cache: "no-store" })
+      .then(res => res.json())
+      .then(data => {
+        statistikBox.innerHTML = `
+          <div class="statistik-premium">
+            <div class="stat-item">
+              <small>Total Pendaftar</small>
+              <span>${data.totalPeserta ?? 0}</span>
+            </div>
+            <div class="stat-item">
+              <small>Sudah Konfirmasi</small>
+              <span>${data.totalHadir ?? 0}</span>
+            </div>
           </div>
-          <div class="stat-item">
-            <small>Sudah Konfirmasi</small>
-            <span>${data.totalHadir ?? 0}</span>
-          </div>
-        </div>
-      `;
-    })
-    .catch(() => {
-      statistikBox.innerHTML = `
-        <div class="statistik-premium">
-          <div class="stat-item">
-            <small>Total Pendaftar</small>
-            <span>0</span>
-          </div>
-          <div class="stat-item">
-            <small>Sudah Konfirmasi</small>
-            <span>0</span>
-          </div>
-        </div>
-      `;
-    });
-}
+        `;
+      });
+  }
+
+  // load pertama + auto refresh
+  loadStatistik();
+  setInterval(loadStatistik, 10000);
+
+}); // ✅ DOMContentLoaded TERTUTUP DENGAN BENAR
 
 
 /* =================================================
@@ -226,6 +217,3 @@ function bukaPeserta() {
 function bukaUMKM() {
   window.open("https://forms.gle/sUyoZ34bRnDrp2xW6", "_blank");
 }
-
-
-
