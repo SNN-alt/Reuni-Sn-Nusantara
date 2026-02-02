@@ -2,7 +2,7 @@
    GLOBAL API URL
 ================================================= */
 const apiUrl =
-  "https://script.google.com/macros/s/AKfycbx4Kq73LANx0U6gxnOKiy6jTxmzk4Sn-vXxd1tiZCKfrVX7C3L8bizWQxEBqdocLXtW/exec";
+  "https://script.google.com/macros/s/AKfycbx0tPeHs4mq-GrvtCwLdKnY1RmnXr74FaQRtwUV8eigGp7gtpL7MbssVKRPQPM6tnqE/exec";
 
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -232,6 +232,7 @@ function bukaPeserta() {
 function bukaUMKM() {
   window.open("https://forms.gle/sUyoZ34bRnDrp2xW6", "_blank");
 }
+
 
 
 
