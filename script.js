@@ -222,6 +222,25 @@ window.tampilkanDashboard = function (data) {
   }
 
 };
+
+   // ======================
+// TAMPILKAN KUOTA TENDA
+// ======================
+
+fetch(`${apiUrl}?mode=ambilKuotaTenda&t=` + Date.now())
+  .then(res => res.json())
+  .then(kuota => {
+
+    const kuotaInfo = document.createElement("p");
+    kuotaInfo.style.marginTop = "8px";
+    kuotaInfo.style.fontSize = "13px";
+    kuotaInfo.style.fontWeight = "bold";
+
+    kuotaInfo.innerHTML =
+      `Sisa Kuota Tenda: ${kuota.sisa} / 200`;
+
+    tendaArea.appendChild(kuotaInfo);
+  });
    
 /* =================================================
    TUTUP DASHBOARD PESERTA
@@ -316,6 +335,7 @@ function toggleTenda(nohp) {
     })
     .catch(() => alert("Gagal koneksi server"));
 }
+
 
 
 
