@@ -175,7 +175,6 @@ window.tampilkanDashboard = function (data) {
       </button>
     `;
   }
-
   /* =========================
      TOMBOL TENDA
   ========================== */
@@ -188,7 +187,6 @@ window.tampilkanDashboard = function (data) {
       <p style="font-weight:bold;color:#28a745;">
         🏕 Anda sudah memesan tenda
       </p>
-
       <button
         onclick="toggleTenda('${data.nohp}')"
         style="
@@ -197,8 +195,7 @@ window.tampilkanDashboard = function (data) {
           border:none;
           border-radius:8px;
           background:#dc3545;
-          color:white;
-        ">
+          color:white;">
         Batalkan Tenda
       </button>
     `;
@@ -214,33 +211,30 @@ window.tampilkanDashboard = function (data) {
           border:none;
           border-radius:8px;
           background:#28a745;
-          color:white;
-        ">
+          color:white;">
         Pesan Tenda
       </button>
     `;
   }
 
-};
+  /* =========================
+     TAMPILKAN KUOTA TENDA
+  ========================== */
 
-   // ======================
-// TAMPILKAN KUOTA TENDA
-// ======================
+  fetch(`${apiUrl}?mode=ambilKuotaTenda&t=` + Date.now())
+    .then(res => res.json())
+    .then(kuota => {
 
-fetch(`${apiUrl}?mode=ambilKuotaTenda&t=` + Date.now())
-  .then(res => res.json())
-  .then(kuota => {
+      const kuotaInfo = document.createElement("p");
+      kuotaInfo.style.marginTop = "8px";
+      kuotaInfo.style.fontSize = "13px";
+      kuotaInfo.style.fontWeight = "bold";
+      kuotaInfo.innerHTML = `Sisa Kuota Tenda: ${kuota.sisa} / 200`;
 
-    const kuotaInfo = document.createElement("p");
-    kuotaInfo.style.marginTop = "8px";
-    kuotaInfo.style.fontSize = "13px";
-    kuotaInfo.style.fontWeight = "bold";
+      tendaArea.appendChild(kuotaInfo);
+    });
 
-    kuotaInfo.innerHTML =
-      `Sisa Kuota Tenda: ${kuota.sisa} / 200`;
-
-    tendaArea.appendChild(kuotaInfo);
-  });
+};   // ← function baru ditutup di sini
    
 /* =================================================
    TUTUP DASHBOARD PESERTA
@@ -335,6 +329,7 @@ function toggleTenda(nohp) {
     })
     .catch(() => alert("Gagal koneksi server"));
 }
+
 
 
 
