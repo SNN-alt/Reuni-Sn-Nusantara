@@ -107,39 +107,42 @@ window.loginPeserta = function () {
     .catch(() => alert("Gagal koneksi server"));
 };
 
+/* =================================================
+   DASHBOARD PESERTA
+================================================= */
+window.tampilkanDashboard = function (data) {
 
-  /* =================================================
-     DASHBOARD PESERTA
-  ================================================= */
-  window.tampilkanDashboard = function (data) {
+  document.getElementById("isiDashboard").innerHTML = `
+    <h3>👋 Halo, ${data.nama}</h3>
 
-    document.getElementById("isiDashboard").innerHTML = `
-      <h3>👋 Halo, ${data.nama}</h3>
+    <table class="info-table">
+      <tr><td>No HP</td><td class="val">${data.nohp}</td></tr>
+      <tr><td>Jenis Kelamin</td><td class="val">${data.jk}</td></tr>
+      <tr><td>Keluarga</td><td class="val">${data.keluarga}</td></tr>
+      <tr><td>Jumlah</td><td class="val">${data.jumlah}</td></tr>
+      <tr><td>Parkir</td><td class="val">${data.parkir}</td></tr>
+      <tr><td>Status</td><td class="val">${data.statushadir || "BELUM KONFIRMASI"}</td></tr>
+    </table>
 
-      <table class="info-table">
-        <tr><td>No HP</td><td class="val">${data.nohp}</td></tr>
-        <tr><td>Jenis Kelamin</td><td class="val">${data.jk}</td></tr>
-        <tr><td>Keluarga</td><td class="val">${data.keluarga}</td></tr>
-        <tr><td>Jumlah</td><td class="val">${data.jumlah}</td></tr>
-        <tr><td>Parkir</td><td class="val">${data.parkir}</td></tr>
-        <tr><td>Status</td><td class="val">${data.statushadir || "BELUM KONFIRMASI"}</td></tr>
-      </table>
+    <div id="qrArea" style="margin-top:15px;text-align:center;"></div>
+    <div id="tendaArea" style="margin-top:15px;text-align:center;"></div>
+  `;
 
-      <div id="qrArea" style="margin-top:15px;text-align:center;"></div>
-      <div id="tendaArea" style="margin-top:15px;text-align:center;"></div>
+  document.getElementById("popupDashboard").style.display = "flex";
+
+  /* =========================
+     QR / KONFIRMASI H-7
+  ========================== */
+
+  if (String(data.qr_aktif).toUpperCase() === "YA") {
+
+    document.getElementById("qrArea").innerHTML = `
+      <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(data.qr)}">
+      <p style="font-size:13px">Tunjukkan QR saat registrasi</p>
     `;
 
-    document.getElementById("popupDashboard").style.display = "flex";
+  } else {
 
-    // === JIKA QR SUDAH AKTIF ===
-    if (String(data.qr_aktif).toUpperCase() === "YA") {
-      document.getElementById("qrArea").innerHTML = `
-        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(data.qr)}">
-        <p style="font-size:13px">Tunjukkan QR saat registrasi</p>
-      `;
-    }
-
-    // === LOGIKA H-7 (WIB, AMAN) ===
     const now = new Date();
     const todayWIB = new Date(
       now.getTime() + (7 * 60 + now.getTimezoneOffset()) * 60000
@@ -171,34 +174,54 @@ window.loginPeserta = function () {
         ${aktif ? "Konfirmasi Kehadiran" : "Aktif 4 April 2026"}
       </button>
     `;
-     // ======================
-// TOMBOL TENDA
-// ======================
+  }
 
-const tendaArea = document.getElementById("tendaArea");
+  /* =========================
+     TOMBOL TENDA
+  ========================== */
 
-if (String(data.tenda).toUpperCase() === "YA") {
+  const tendaArea = document.getElementById("tendaArea");
 
-  tendaArea.innerHTML = `
-    <p style="font-weight:bold;color:#28a745;">
-      🏕 Anda sudah memesan tenda
-    </p>
-    <button onclick="toggleTenda('${data.nohp}')"
-      style="margin-top:8px;padding:10px 16px;border:none;border-radius:8px;background:#dc3545;color:white;">
-      Batalkan Tenda
-    </button>
-  `;
+  if (String(data.tenda).toUpperCase() === "YA") {
 
-} else {
+    tendaArea.innerHTML = `
+      <p style="font-weight:bold;color:#28a745;">
+        🏕 Anda sudah memesan tenda
+      </p>
 
-  tendaArea.innerHTML = `
-    <button onclick="toggleTenda('${data.nohp}')"
-      style="margin-top:8px;padding:10px 16px;border:none;border-radius:8px;background:#28a745;color:white;">
-      Pesan Tenda
-    </button>
-  `;
-}
-  };
+      <button
+        onclick="toggleTenda('${data.nohp}')"
+        style="
+          margin-top:8px;
+          padding:10px 16px;
+          border:none;
+          border-radius:8px;
+          background:#dc3545;
+          color:white;
+        ">
+        Batalkan Tenda
+      </button>
+    `;
+
+  } else {
+
+    tendaArea.innerHTML = `
+      <button
+        onclick="toggleTenda('${data.nohp}')"
+        style="
+          margin-top:8px;
+          padding:10px 16px;
+          border:none;
+          border-radius:8px;
+          background:#28a745;
+          color:white;
+        ">
+        Pesan Tenda
+      </button>
+    `;
+  }
+
+};
    
 /* =================================================
    TUTUP DASHBOARD PESERTA
@@ -275,6 +298,23 @@ function bukaPeserta() {
 
 function bukaUMKM() {
   window.open("https://forms.gle/sUyoZ34bRnDrp2xW6", "_blank");
+}
+
+/* =================================================
+   TENDA
+================================================= */
+function toggleTenda(nohp) {
+
+  fetch(`${apiUrl}?mode=toggleTenda&nohp=${encodeURIComponent(nohp)}`)
+    .then(res => res.json())
+    .then(data => {
+      alert(data.message);
+
+      if (data.status === "OK" || data.status === "BATAL") {
+        loginPeserta(); // refresh dashboard
+      }
+    })
+    .catch(() => alert("Gagal koneksi server"));
 }
 
 
