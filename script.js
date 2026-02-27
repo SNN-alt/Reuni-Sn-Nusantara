@@ -126,6 +126,7 @@ window.loginPeserta = function () {
       </table>
 
       <div id="qrArea" style="margin-top:15px;text-align:center;"></div>
+      <div id="tendaArea" style="margin-top:15px;text-align:center;"></div>
     `;
 
     document.getElementById("popupDashboard").style.display = "flex";
@@ -136,7 +137,6 @@ window.loginPeserta = function () {
         <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(data.qr)}">
         <p style="font-size:13px">Tunjukkan QR saat registrasi</p>
       `;
-      return;
     }
 
     // === LOGIKA H-7 (WIB, AMAN) ===
@@ -171,6 +171,33 @@ window.loginPeserta = function () {
         ${aktif ? "Konfirmasi Kehadiran" : "Aktif 4 April 2026"}
       </button>
     `;
+     // ======================
+// TOMBOL TENDA
+// ======================
+
+const tendaArea = document.getElementById("tendaArea");
+
+if (String(data.tenda).toUpperCase() === "YA") {
+
+  tendaArea.innerHTML = `
+    <p style="font-weight:bold;color:#28a745;">
+      🏕 Anda sudah memesan tenda
+    </p>
+    <button onclick="toggleTenda('${data.nohp}')"
+      style="margin-top:8px;padding:10px 16px;border:none;border-radius:8px;background:#dc3545;color:white;">
+      Batalkan Tenda
+    </button>
+  `;
+
+} else {
+
+  tendaArea.innerHTML = `
+    <button onclick="toggleTenda('${data.nohp}')"
+      style="margin-top:8px;padding:10px 16px;border:none;border-radius:8px;background:#28a745;color:white;">
+      Pesan Tenda
+    </button>
+  `;
+}
   };
    
 /* =================================================
@@ -249,6 +276,7 @@ function bukaPeserta() {
 function bukaUMKM() {
   window.open("https://forms.gle/sUyoZ34bRnDrp2xW6", "_blank");
 }
+
 
 
 
