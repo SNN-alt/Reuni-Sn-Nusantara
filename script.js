@@ -181,32 +181,42 @@ document.addEventListener("DOMContentLoaded", function () {
 
     popupDashboard.classList.add("active");
 
-    /* ===== H-7 LOGIC ===== */
-    const h7 = new Date(eventDate.getTime() - (7 * 24 * 60 * 60 * 1000));
-    const nowWIB = new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Jakarta" }));
-    const bolehKonfirmasi = nowWIB >= h7;
+   /* ===== H-7 LOGIC ===== */
+const h7 = new Date(eventDate.getTime() - (7 * 24 * 60 * 60 * 1000));
+const nowWIB = new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Jakarta" }));
+const bolehKonfirmasi = nowWIB >= h7;
 
-    if ((data.qr_aktif || "").toUpperCase() === "YA") {
+if ((data.qr_aktif || "").toUpperCase() === "YA") {
 
-      qrArea.innerHTML = `
-        <div class="qr-frame">
-          <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${data.qr}">
-        </div>
-        <p>Tunjukkan QR saat registrasi</p>
-      `;
+  qrArea.innerHTML = `
+    <div class="qr-frame">
+      <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${data.qr}">
+    </div>
+    <p style="margin-top:10px;font-weight:600;">
+      Tunjukkan QR saat registrasi
+    </p>
+  `;
 
-    } else {
+} else {
 
-      qrArea.innerHTML = `
-        <p style="color:#dc3545;font-weight:600;">Konfirmasi dibuka 4 April 2026</p>
-        <button onclick="konfirmasiHadir('${data.nohp}')"
-        ${bolehKonfirmasi ? "" : "disabled"}
-        style="margin-top:10px;padding:10px 16px;border:none;border-radius:8px;
-        background:${bolehKonfirmasi ? "#198754" : "#aaa"};color:white;">
-        ${bolehKonfirmasi ? "Konfirmasi Kehadiran" : "Belum Aktif"}
-        </button>
-      `;
-    }
+  qrArea.innerHTML = `
+    <div class="konfirmasi-text">
+      Konfirmasi dibuka 4 April 2026
+    </div>
+
+    <button 
+      class="konfirmasi-btn"
+      onclick="konfirmasiHadir('${data.nohp}')"
+      ${bolehKonfirmasi ? "" : "disabled"}
+      style="background:${bolehKonfirmasi ? "#198754" : "#aaa"};color:white;">
+      ${bolehKonfirmasi ? "Konfirmasi Kehadiran" : "Belum Aktif"}
+    </button>
+
+    <div class="konfirmasi-info">
+      Lakukan konfirmasi untuk mendapatkan kuota tenda
+    </div>
+  `;
+}
 
     /* ===== STATUS TENDA ===== */
     try {
@@ -236,3 +246,4 @@ document.addEventListener("DOMContentLoaded", function () {
   };
 
 });
+
