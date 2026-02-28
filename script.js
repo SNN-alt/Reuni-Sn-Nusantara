@@ -59,18 +59,29 @@ document.addEventListener("DOMContentLoaded", function () {
   /* =====================================================
      COUNTDOWN TIMER
   ===================================================== */
-  function updateCountdown() {
-    const now = new Date();
-    const diff = eventDate - now;
+  /* ===== COUNTDOWN FULL FORMAT ===== */
+function updateCountdown() {
 
-    if (diff <= 0) {
-      countdownBox.innerHTML = "🎉 Acara Dimulai!";
-      return;
-    }
+  const now = new Date();
+  const diff = eventDate - now;
 
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    countdownBox.innerHTML = `⏳ Menuju Acara: ${days} hari lagi`;
+  if (diff <= 0) {
+    countdownBox.innerHTML = "🎉 Acara Sedang Berlangsung!";
+    return;
   }
+
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+  const minutes = Math.floor((diff / (1000 * 60)) % 60);
+  const seconds = Math.floor((diff / 1000) % 60);
+
+  countdownBox.innerHTML = `
+    ⏳ ${days} Hari 
+    ${hours.toString().padStart(2,'0')} Jam 
+    ${minutes.toString().padStart(2,'0')} Menit 
+    ${seconds.toString().padStart(2,'0')} Detik
+  `;
+}
 
   setInterval(updateCountdown, 1000);
   updateCountdown();
@@ -246,4 +257,5 @@ if ((data.qr_aktif || "").toUpperCase() === "YA") {
   };
 
 });
+
 
