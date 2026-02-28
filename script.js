@@ -68,26 +68,47 @@ document.addEventListener("DOMContentLoaded", function () {
     const statusHadir = (data.statushadir || "").toUpperCase();
     const statusTenda = (data.tenda || "").toUpperCase();
 
-    /* ================= QR ================= */
+    /* ================= QR (AKTIF H-7) ================= */
 
-    if ((data.qr_aktif || "").toUpperCase() === "YA") {
+const eventDate = new Date("2026-04-11T00:00:00+07:00");
+const h7 = new Date(eventDate);
+h7.setDate(eventDate.getDate() - 7);
 
-      qrArea.innerHTML = `
-        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(data.qr)}">
-        <p style="font-size:13px">Tunjukkan QR saat registrasi</p>
-      `;
+const now = new Date();
+const nowWIB = new Date(now.getTime() + (7 * 60 + now.getTimezoneOffset()) * 60000);
 
-    } else {
+const bolehKonfirmasi = nowWIB >= h7;
 
-      qrArea.innerHTML = `
-        <button
-          onclick="konfirmasiHadir('${data.nohp}')"
-          style="margin-top:10px;padding:10px 16px;border:none;border-radius:8px;background:#28a745;color:white;">
-          Konfirmasi Kehadiran
-        </button>
-      `;
-    }
+if ((data.qr_aktif || "").toUpperCase() === "YA") {
 
+  qrArea.innerHTML = `
+    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(data.qr)}">
+    <p style="font-size:13px">Tunjukkan QR saat registrasi</p>
+  `;
+
+} else {
+
+  qrArea.innerHTML = `
+    <p style="color:red;font-weight:bold;">
+      Konfirmasi dibuka mulai 4 April 2026
+    </p>
+
+    <button
+      onclick="konfirmasiHadir('${data.nohp}')"
+      ${bolehKonfirmasi ? "" : "disabled"}
+      style="
+        margin-top:10px;
+        padding:10px 16px;
+        border:none;
+        border-radius:8px;
+        background:${bolehKonfirmasi ? "#28a745" : "#aaa"};
+        color:white;
+        cursor:${bolehKonfirmasi ? "pointer" : "not-allowed"};
+      ">
+      ${bolehKonfirmasi ? "Konfirmasi Kehadiran" : "Belum Aktif"}
+    </button>
+  `;
+}
     /* ================= STATUS TENDA ================= */
 
     if (statusHadir === "HADIR") {
@@ -199,3 +220,4 @@ function bukaPeserta() {
 function bukaUMKM() {
   window.open("https://forms.gle/sUyoZ34bRnDrp2xW6", "_blank");
 }
+
