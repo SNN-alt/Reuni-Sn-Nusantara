@@ -4,7 +4,7 @@ let namaAktif = "";
    GLOBAL API URL
 ================================================= */
 const apiUrl =
-  "https://script.google.com/macros/s/AKfycbzcRUogBH0RuE_zMaTO0c2lv1LfYJFNb-ZoDtZ_wK64IyZLSCFooVwZ8uzOVC3ZZKOC/exec";
+  "https://script.google.com/macros/s/AKfycbzNp16IqpdW5X7gZqC2WLKtpmU6FEHI5wUOQmHXknXWrpipp2kHzqmPjQ223Frvq7ao/exec";
 
 
 /* =================================================
@@ -499,6 +499,7 @@ function redirectPembayaran(nohp, nama, tipe) {
 
   window.open(formUrl, "_blank");
 }
+
 
 
 
