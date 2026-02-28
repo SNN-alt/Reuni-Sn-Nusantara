@@ -184,13 +184,15 @@ window.tampilkanDashboard = function (data) {
     `;
   }
 
-  /* =========================
+ /* =========================
    TENDA (DENGAN LOCK)
 ========================== */
 
 const tendaArea = document.getElementById("tendaArea");
 
+const statusKamar = String(data.status_kamar || "").toUpperCase();
 const sudahKamar = statusKamar === "MENUNGGU" || statusKamar === "LUNAS";
+const statusTenda = String(data.tenda || "").toUpperCase();
 
 if (sudahKamar) {
 
@@ -200,7 +202,7 @@ if (sudahKamar) {
     </p>
   `;
 
-} else if (String(data.tenda || "").toUpperCase() === "YA") {
+} else if (statusTenda === "YA") {
 
   tendaArea.innerHTML = `
     <p style="font-weight:bold;color:#28a745;">
@@ -494,6 +496,7 @@ function redirectPembayaran(nohp, nama, tipe) {
 
   window.open(formUrl, "_blank");
 }
+
 
 
 
