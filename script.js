@@ -4,7 +4,7 @@ let namaAktif = "";
    GLOBAL API URL
 ================================================= */
 const apiUrl =
-  "https://https://script.google.com/macros/s/AKfycbzNp16IqpdW5X7gZqC2WLKtpmU6FEHI5wUOQmHXknXWrpipp2kHzqmPjQ223Frvq7ao/exec";
+  "https:https://script.google.com/macros/s/AKfycbyyZnfx-ilQjNhAG0gP-rO_ctPne7HoxuREYerYXfrRTvJRiFYJReZkuT6kZC8dqop3/exec";
 
 
 /* =================================================
@@ -292,3 +292,4 @@ function bukaPeserta() {
 function bukaUMKM() {
   window.open("https://forms.gle/sUyoZ34bRnDrp2xW6", "_blank");
 }
+
