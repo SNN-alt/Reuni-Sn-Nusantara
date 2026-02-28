@@ -211,7 +211,22 @@ window.tampilkanDashboard = function (data) {
       </button>
     `;
   }
+/* ================= KUOTA TENDA ================= */
+fetch(`${apiUrl}?mode=ambilKuotaTenda&t=` + Date.now())
+  .then(res => res.json())
+  .then(kuota => {
 
+    const kuotaInfo = document.createElement("p");
+    kuotaInfo.style.marginTop = "8px";
+    kuotaInfo.style.fontSize = "13px";
+    kuotaInfo.style.fontWeight = "bold";
+
+    kuotaInfo.innerHTML =
+      `Sisa Kuota Tenda: ${kuota.sisa} / 200`;
+
+    tendaArea.appendChild(kuotaInfo);
+  });
+   
   /* ================= KAMAR LOCK ================= */
 
   if (statusTenda === "YA") {
@@ -475,6 +490,7 @@ function redirectPembayaran(nohp, nama, tipe) {
 
   window.open(formUrl, "_blank");
 }
+
 
 
 
