@@ -1,398 +1,204 @@
 /* =================================================
-   RESET & GLOBAL
+   RESET
 ================================================= */
-* {
-  box-sizing: border-box;
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body{
+  font-family:'Segoe UI',sans-serif;
+  text-align:center;
+  color:#fff;
+  background:
+    linear-gradient(rgba(5,10,30,0.88), rgba(5,10,30,0.88)),
+    url("images/12.jpeg");
+  background-size:cover;
+  background-position:center;
+  background-attachment:fixed;
 }
 
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  text-align: center;
-  color: #000;
-
-  /* Background utama */
-  background-image: url("images/12.jpeg");
-  background-repeat: no-repeat;
-  background-position: center top;
-  background-size: cover;
+/* HEADER */
+header{
+  height:110px;
+  background:url("images/ATAS.png") no-repeat center;
+  background-size:contain;
+  margin-bottom:10px;
 }
 
-/* =================================================
-   HEADER
-================================================= */
-header {
-  height: 90px;
-  background-image: url("images/ATAS.png");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
+/* RUNNING TEXT */
+.marquee{
+  background:linear-gradient(90deg,#0f1c40,#1a2d6b);
+  color:#FFD700;
+  padding:8px 0;
+  overflow:hidden;
+  font-weight:500;
+}
+.marquee p{
+  white-space:nowrap;
+  display:inline-block;
+  animation:marquee 18s linear infinite;
+}
+@keyframes marquee{
+  from{transform:translateX(100%)}
+  to{transform:translateX(-100%)}
 }
 
-/* =================================================
-   RUNNING TEXT
-================================================= */
-.marquee {
-  background: #000;
-  color: #fff;
-  padding: 6px 0;
-  overflow: hidden;
+/* STATISTIK */
+.statistik-box{ padding:15px; }
+
+.statistik-premium{
+  display:flex;
+  justify-content:center;
+  gap:40px;
+  padding:20px;
+  border-radius:20px;
+  background:rgba(255,255,255,0.08);
+  backdrop-filter:blur(14px);
+  border:1px solid rgba(255,215,0,0.3);
+  box-shadow:0 25px 45px rgba(0,0,0,0.6);
+}
+.stat-item small{ color:#ccc; font-size:13px; }
+.stat-item span{
+  font-size:32px;
+  font-weight:bold;
+  color:#FFD700;
 }
 
-.marquee p {
-  white-space: nowrap;
-  display: inline-block;
-  animation: marquee 15s linear infinite;
+/* BUTTON */
+main{ padding:20px 10px; }
+
+.btn{
+  width:100%;
+  max-width:320px;
+  padding:14px;
+  margin:10px auto;
+  border-radius:16px;
+  font-weight:bold;
+  border:none;
+  cursor:pointer;
+  transition:.3s;
+}
+.btn:hover{
+  transform:translateY(-4px);
+  box-shadow:0 15px 30px rgba(0,0,0,0.6);
 }
 
-@keyframes marquee {
-  from { transform: translateX(100%); }
-  to   { transform: translateX(-100%); }
+.panduan{ background:linear-gradient(135deg,#FFD700,#b99700); color:#000;}
+.proposal{ background:linear-gradient(135deg,#1a2d6b,#0f1c40); color:#FFD700; border:1px solid #FFD700;}
+.peserta{ background:linear-gradient(135deg,#198754,#145c32); color:#fff;}
+.umkm{ background:linear-gradient(135deg,#6f42c1,#432874); color:#fff;}
+.callcenter{ background:linear-gradient(135deg,#dc3545,#7a1c25); color:#fff;}
+
+/* LOGIN */
+.login-box{
+  background:rgba(255,255,255,0.08);
+  backdrop-filter:blur(16px);
+  padding:24px;
+  border-radius:20px;
+  max-width:380px;
+  margin:20px auto;
+  border:1px solid rgba(255,215,0,0.3);
+}
+.login-box h3{ color:#FFD700; margin-bottom:12px; }
+.login-box input{
+  width:100%;
+  padding:12px;
+  border-radius:10px;
+  border:none;
+  margin-bottom:14px;
+}
+.login-box button{
+  background:linear-gradient(135deg,#FFD700,#b99700);
+  border:none;
+  padding:12px;
+  border-radius:12px;
+  font-weight:bold;
+  cursor:pointer;
 }
 
-/* ===============================
-   STATISTIK PESERTA
-================================ */
+/* DASHBOARD */
+.popup-overlay{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.8);
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
+}
+.popup-box{
+  background:#fff;
+  color:#000;
+  width:90%;
+  max-width:420px;
+  padding:25px;
+  border-radius:22px;
+  box-shadow:0 25px 60px rgba(0,0,0,0.6);
+  animation:fadeUp .4s ease;
+}
+.close-x{
+  position:absolute;
+  top:10px;
+  right:15px;
+  font-size:22px;
+  cursor:pointer;
+}
+.info-table{ width:100%; margin-top:15px; font-size:14px;}
+.info-table .val{ text-align:right; font-weight:bold;}
 
-.statistik-box {
-  width: 100%;
-  padding: 14px 10px;
-  margin: 6px 0;
-
-  background: rgba(255,255,255,0.85);
-  backdrop-filter: blur(4px);
-
-  text-align: left;
-  font-size: 14px;
-  font-weight: 500;
-
-  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+/* SPONSOR */
+.sponsor-section h2{ color:#FFD700; margin:15px 0 10px;}
+.sponsor-gallery{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
+  max-width:380px;
+  margin:auto;
+}
+.sponsor-img{
+  width:100%;
+  border-radius:16px;
+  cursor:pointer;
+  transition:.3s;
+}
+.sponsor-img:hover{
+  transform:scale(1.1);
+  box-shadow:0 15px 30px rgba(0,0,0,0.6);
 }
 
-.statistik-box strong {
-  display: block;
-  margin-bottom: 6px;
+/* MODAL */
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.8);
+  justify-content:center;
+  align-items:center;
+  z-index:9998;
+}
+.modal-content{
+  background:#fff;
+  color:#000;
+  width:90%;
+  max-width:500px;
+  padding:20px;
+  border-radius:20px;
 }
 
-.statistik-premium {
-  display: flex;
-  justify-content: center;
-  gap: 40px;
-  background: rgba(255,255,255,0.9);
-  backdrop-filter: blur(4px);
-  padding: 14px 20px;
-  border-radius: 14px;
-  box-shadow: 0 6px 16px rgba(0,0,0,0.25);
-  text-align: center;
+/* MAPS & FOOTER */
+.maps-box{
+  padding:16px;
+  background:linear-gradient(90deg,#0f1c40,#1a2d6b);
+  color:#FFD700;
+  font-weight:bold;
+}
+.osn-box{
+  padding:16px;
+  background:#000;
+  color:#FFD700;
+  font-weight:bold;
 }
 
-.stat-item small {
-  display: block;
-  font-size: 13px;
-  color: #555;
-  margin-bottom: 4px;
+/* ANIM */
+@keyframes fadeUp{
+  from{opacity:0; transform:translateY(25px);}
+  to{opacity:1; transform:translateY(0);}
 }
-
-.stat-item span {
-  display: block;
-  font-size: 26px;
-  font-weight: bold;
-  color: #28a745;
-  line-height: 1.2;
-}
-
-/* =================================================
-   MENU UTAMA
-================================================= */
-main {
-  padding: 15px;
-}
-
-.btn {
-  width: 100%;
-  max-width: 300px;
-  padding: 10px;
-  margin: 6px auto;
-  border: none;
-  border-radius: 10px;
-  font-size: 15px;
-  cursor: pointer;
-}
-
-/* Warna tombol */
-.panduan    { background: #ffc107; }
-.proposal   { background: #17a2b8; color: #000; }
-.peserta    { background: #28a745; color: #fff; }
-.umkm       { background: #6f42c1; color: #fff; }
-.callcenter { background: #dc3545; color: #fff; }
-
-/* =================================================
-   LOGIN BOX
-================================================= */
-.login-box {
-  background: rgba(255,255,255,0.9);
-  backdrop-filter: blur(4px);
-  padding: 16px;
-  border-radius: 14px;
-  max-width: 340px;
-  margin: 16px auto;
-  box-shadow: 0 6px 16px rgba(0,0,0,0.25);
-}
-
-.login-box input {
-  width: 100%;
-  padding: 8px;
-  margin-bottom: 10px;
-}
-
-.login-box button {
-  background: #28a745;
-  color: #fff;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-/* =================================================
-   DASHBOARD INFO TABLE (PREMIUM)
-================================================= */
-.info-table {
-  width: 100%;
-  font-size: 14px;
-  margin-top: 10px;
-  border-collapse: collapse;
-}
-
-.info-table td {
-  padding: 4px 6px;
-}
-
-.info-table td:first-child {
-  text-align: left;
-  font-weight: 500;
-}
-
-.info-table .val {
-  text-align: right;        /* Rata kanan data */
-  font-weight: bold;
-}
-
-/* =================================================
-   GOOGLE MAPS (FULL WIDTH)
-================================================= */
-.maps-box {
-  width: 100%;
-  padding: 14px 10px;
-  margin: 5px 0;
-
-  background: rgba(0,0,0,0.65);
-  color: #fff;
-
-  text-align: center;
-  font-size: 15px;
-  font-weight: bold;
-}
-
-.maps-box a {
-  color: #00c3ff;
-  text-decoration: none;
-  font-weight: bold;
-}
-
-.maps-box a:hover {
-  text-decoration: underline;
-}
-
-/* =================================================
-   SPONSOR SECTION
-================================================= */
-.sponsor-section {
-  margin: 10px auto;
-}
-
-.sponsor-section h2 {
-  color: #000;
-  font-size: 16px;
-  margin-bottom: 8px;
-}
-
-.sponsor-gallery {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  max-width: 360px;
-  margin: 0 auto 10px;
-}
-
-.sponsor-img {
-  width: 100%;
-  max-width: 90px;
-  margin: auto;
-  border-radius: 10px;
-  cursor: pointer;
-}
-
-/* =================================================
-   SPONSOR MODAL (ZOOM)
-================================================= */
-#sponsorOverlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.85);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-}
-
-#sponsorModal {
-  position: relative;
-}
-
-#sponsorPreview {
-  max-width: 90vw;
-  max-height: 80vh;
-  border-radius: 12px;
-  display: block;
-}
-
-#closeSponsor {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  width: 36px;
-  height: 36px;
-  line-height: 36px;
-
-  background: rgba(0,0,0,0.75);
-  color: #fff;
-  border-radius: 50%;
-  font-size: 20px;
-  cursor: pointer;
-}
-
-#closeSponsor:hover {
-  background: red;
-}
-
-/* =================================================
-   MODAL UMUM
-================================================= */
-.modal {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.6);
-  z-index: 9998;
-}
-
-.modal-content {
-  background: #fff;
-  width: 90%;
-  max-width: 500px;
-  margin: 50px auto;
-  padding: 15px;
-  border-radius: 10px;
-}
-
-.close {
-  float: right;
-  font-size: 22px;
-  cursor: pointer;
-}
-
-/* =================================================
-   DASHBOARD POPUP
-================================================= */
-.popup-overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.6);
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-}
-
-.popup-box {
-  background: #fff;
-  width: 90%;
-  max-width: 400px;
-  padding: 15px;
-  border-radius: 10px;
-  position: relative;
-}
-
-.close-x {
-  position: absolute;
-  top: 8px;
-  right: 10px;
-  font-size: 22px;
-  cursor: pointer;
-}
-
-/* =================================================
-   FOOTER (OSN MOBILE)
-================================================= */
-.osn-box {
-  width: 100%;
-  padding: 14px 10px;
-  margin: 0;
-  background: rgba(0,0,0,0.65);
-  color: #fff;
-  text-align: center;
-  font-size: 15px;
-  font-weight: bold;
-}
-
-/* =================================================
-   CALL CENTER MODAL
-================================================= */
-.callcenter-box {
-  text-align: center;
-}
-
-.callcenter-box h3 {
-  margin: 5px 0;
-}
-
-.callcenter-box p {
-  font-size: 14px;
-  margin-bottom: 15px;
-}
-
-.cc-btn {
-  display: block;
-  width: 100%;
-  padding: 12px;
-  margin: 8px 0;
-  border-radius: 10px;
-  text-decoration: none;
-  font-weight: bold;
-  font-size: 15px;
-  color: #fff;
-}
-
-.wa-umum    { background: #25D366; }
-.wa-sponsor { background: #128C7E; }
-
-.cc-btn:hover {
-  opacity: 0.9;
-}
-
-/* =================================================
-   RESPONSIVE (DESKTOP)
-================================================= */
-@media (min-width: 768px) {
-  .btn {
-    max-width: 250px;
-  }
-
-  .sponsor-gallery {
-    max-width: 420px;
-  }
-}
-
-
-
