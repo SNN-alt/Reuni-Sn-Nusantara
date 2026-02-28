@@ -2,23 +2,22 @@ const apiUrl="https://script.google.com/macros/s/AKfycbyyZnfx-ilQjNhAG0gP-rO_ctP
 
 document.addEventListener("DOMContentLoaded",function(){
 
-/* ===== MODAL GLOBAL CLOSE ===== */
-document.querySelectorAll(".modal").forEach(m=>{
-  m.addEventListener("click",e=>{
-    if(e.target===m) m.style.display="none";
+/* ===== GLOBAL MODAL CLOSE ===== */
+document.querySelectorAll(".modal, .popup-overlay").forEach(el=>{
+  el.addEventListener("click",e=>{
+    if(e.target===el) el.classList.remove("active");
   });
 });
+document.querySelectorAll(".close, .close-x").forEach(btn=>{
+  btn.onclick=()=>btn.closest(".modal, .popup-overlay").classList.remove("active");
+});
 
-/* ===== PANDUAN & PROPOSAL ===== */
-window.bukaPanduan=()=>modalPanduan.style.display="flex";
-window.tutupPanduan=()=>modalPanduan.style.display="none";
-window.bukaProposal=()=>modalProposal.style.display="flex";
-window.tutupProposal=()=>modalProposal.style.display="none";
+/* ===== OPEN MODAL ===== */
+window.bukaPanduan=()=>modalPanduan.classList.add("active");
+window.bukaProposal=()=>modalProposal.classList.add("active");
+btnCallCenter.onclick=()=>modalCallCenter.classList.add("active");
 
-/* ===== CALL CENTER ===== */
-btnCallCenter.onclick=()=>modalCallCenter.style.display="flex";
-
-/* ===== SPONSOR ZOOM ===== */
+/* ===== SPONSOR ===== */
 document.querySelectorAll(".sponsor-img").forEach(img=>{
   img.onclick=function(){
     sponsorPreview.src=this.src;
@@ -26,16 +25,11 @@ document.querySelectorAll(".sponsor-img").forEach(img=>{
   };
 });
 closeSponsor.onclick=()=>sponsorOverlay.classList.remove("active");
-sponsorOverlay.onclick=e=>{
-  if(e.target===sponsorOverlay)
-    sponsorOverlay.classList.remove("active");
-};
 
 /* ===== LOGIN ===== */
 window.loginPeserta=async function(){
-  const input=nohpLogin;
-  let nohp=input.value.replace(/\D/g,"");
-  input.value=nohp;
+  let nohp=nohpLogin.value.replace(/\D/g,"");
+  nohpLogin.value=nohp;
   if(nohp.length<10){alert("Nomor HP tidak valid");return;}
 
   try{
@@ -47,7 +41,12 @@ window.loginPeserta=async function(){
 };
 
 /* ===== DASHBOARD ===== */
-window.tampilkanDashboard=function(data){
+window.tampilkanDashboard=async function(data){
+
+  const statusBadge =
+    (data.statushadir||"").toUpperCase()==="HADIR"
+    ? `<span class="badge badge-green">HADIR</span>`
+    : `<span class="badge badge-gray">BELUM KONFIRMASI</span>`;
 
   isiDashboard.innerHTML=`
     <h3>Halo, ${data.nama}</h3>
@@ -57,13 +56,13 @@ window.tampilkanDashboard=function(data){
       <tr><td>Keluarga</td><td class="val">${data.keluarga}</td></tr>
       <tr><td>Jumlah</td><td class="val">${data.jumlah}</td></tr>
       <tr><td>Parkir</td><td class="val">${data.parkir}</td></tr>
-      <tr><td>Status</td><td class="val">${data.statushadir||"BELUM KONFIRMASI"}</td></tr>
+      <tr><td>Status</td><td class="val">${statusBadge}</td></tr>
     </table>
-    <div id="qrArea" style="margin-top:15px;text-align:center;"></div>
-    <div id="tendaArea" style="margin-top:10px;text-align:center;"></div>
+    <div class="dashboard-section" id="qrArea"></div>
+    <div class="dashboard-section" id="tendaArea"></div>
   `;
 
-  popupDashboard.style.display="flex";
+  popupDashboard.classList.add("active");
 
   const eventDate=new Date("2026-04-11T00:00:00+07:00");
   const h7=new Date(eventDate.getTime()-7*24*60*60*1000);
@@ -72,29 +71,33 @@ window.tampilkanDashboard=function(data){
 
   if((data.qr_aktif||"").toUpperCase()==="YA"){
     qrArea.innerHTML=`
-      <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${data.qr}">
-      <p>Tunjukkan QR saat registrasi</p>
+      <div class="qr-frame">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${data.qr}">
+      </div>
+      <p style="margin-top:10px;">Tunjukkan QR saat registrasi</p>
     `;
   }else{
     qrArea.innerHTML=`
-      <p style="color:red;font-weight:bold;">
-      Konfirmasi dibuka 4 April 2026
-      </p>
+      <p style="color:#dc3545;font-weight:600;">Konfirmasi dibuka 4 April 2026</p>
       <button onclick="konfirmasiHadir('${data.nohp}')"
       ${boleh?"":"disabled"}
-      style="padding:10px 16px;border:none;border-radius:8px;
-      background:${boleh?"#28a745":"#aaa"};color:white;">
+      style="margin-top:10px;padding:10px 16px;border:none;border-radius:8px;
+      background:${boleh?"#198754":"#aaa"};color:white;">
       ${boleh?"Konfirmasi Kehadiran":"Belum Aktif"}
       </button>
     `;
   }
 
-  if((data.statushadir||"").toUpperCase()==="HADIR"){
-    if((data.tenda||"").toUpperCase()==="YA")
-      tendaArea.innerHTML="<p style='color:green;font-weight:bold;'>🏕 Anda mendapatkan jatah tenda</p>";
-    else
-      tendaArea.innerHTML="<p style='color:red;font-weight:bold;'>⚠ Kuota tenda habis, hubungi Call Center</p>";
-  }
+  try{
+    const res=await fetch(`${apiUrl}?mode=ambilKuotaTenda&t=${Date.now()}`);
+    const kuota=await res.json();
+
+    tendaArea.innerHTML=`
+      <div class="tenda-box">
+        Sisa Kuota Tenda: <strong>${kuota.sisa}</strong> / 200
+      </div>
+    `;
+  }catch{}
 };
 
 /* ===== KONFIRMASI ===== */
