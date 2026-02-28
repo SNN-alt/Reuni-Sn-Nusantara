@@ -1,64 +1,102 @@
-/* ================= RESET ================= */
+/* ================= GLOBAL ================= */
 *{box-sizing:border-box;margin:0;padding:0}
 
 body{
   font-family:'Inter','Segoe UI',sans-serif;
-  text-align:center;
-  color:#fff;
   background:
-    linear-gradient(rgba(10,15,35,.92),rgba(10,15,35,.92)),
+    linear-gradient(rgba(8,12,30,.92),rgba(8,12,30,.92)),
     url("images/12.jpeg");
   background-size:cover;
   background-position:center;
   background-attachment:fixed;
+  color:#fff;
+  text-align:center;
 }
 
 /* ================= HEADER ================= */
 header{
-  height:110px;
+  height:100px;
   background:url("images/ATAS.png") no-repeat center;
   background-size:contain;
-  margin-bottom:10px;
+}
+
+/* ================= RUNNING TEXT ================= */
+.marquee{
+  background:#0e1a45;
+  overflow:hidden;
+  padding:10px 0;
+}
+.marquee p{
+  display:inline-block;
+  white-space:nowrap;
+  animation:marquee 20s linear infinite;
+  color:#FFD700;
+  font-size:14px;
+}
+@keyframes marquee{
+  0%{transform:translateX(100%)}
+  100%{transform:translateX(-100%)}
 }
 
 /* ================= STATISTIK ================= */
-.statistik-box{padding:20px}
 .statistik-premium{
   display:flex;
   justify-content:center;
-  gap:50px;
-  padding:20px 30px;
-  border-radius:20px;
+  gap:40px;
+  padding:20px;
+  border-radius:18px;
   background:rgba(255,255,255,.06);
-  backdrop-filter:blur(20px);
-  border:1px solid rgba(255,255,255,.1);
-}
-.stat-item small{
-  display:block;
-  font-size:13px;
-  color:#aaa;
+  backdrop-filter:blur(15px);
+  margin:15px;
 }
 .stat-item span{
-  font-size:34px;
+  font-size:32px;
   font-weight:700;
   color:#FFD700;
 }
 
+/* ================= COUNTDOWN ================= */
+.countdown-box{
+  margin:15px;
+  padding:12px;
+  border-radius:14px;
+  background:#16235a;
+  font-weight:600;
+}
+
+/* ================= PROGRESS KUOTA ================= */
+.progress-kuota{
+  margin:20px;
+  padding:15px;
+  border-radius:16px;
+  background:rgba(255,255,255,.05);
+}
+.progress-bar{
+  height:10px;
+  border-radius:10px;
+  background:#333;
+  overflow:hidden;
+  margin-top:10px;
+}
+.progress-fill{
+  height:100%;
+  background:#FFD700;
+  transition:width .5s ease;
+}
+
 /* ================= BUTTON ================= */
-main{padding:25px 10px}
+main{padding:20px 10px}
 .btn{
   width:100%;
-  max-width:320px;
-  padding:15px;
-  margin:10px auto;
+  max-width:340px;
+  padding:16px;
+  margin:8px auto;
   border-radius:14px;
   font-weight:600;
   border:none;
   cursor:pointer;
-  transition:.25s;
+  font-size:15px;
 }
-.btn:hover{transform:translateY(-3px)}
-
 .panduan{background:#FFD700;color:#000}
 .proposal{background:#1c2f6b;color:#FFD700;border:1px solid #FFD700}
 .peserta{background:#198754;color:#fff}
@@ -68,39 +106,29 @@ main{padding:25px 10px}
 /* ================= LOGIN ================= */
 .login-box{
   background:rgba(255,255,255,.05);
-  backdrop-filter:blur(20px);
-  padding:28px;
-  border-radius:22px;
+  padding:25px;
+  border-radius:20px;
   max-width:420px;
-  margin:25px auto;
-  border:1px solid rgba(255,255,255,.08);
-}
-.login-box h3{
-  color:#FFD700;
-  margin-bottom:15px;
-  font-weight:600;
+  margin:20px auto;
+  backdrop-filter:blur(20px);
 }
 .login-box input{
   width:100%;
   padding:14px;
   border-radius:12px;
   border:none;
-  margin-bottom:15px;
-  font-size:15px;
+  margin-bottom:12px;
 }
 .login-box button{
   background:#FFD700;
-  color:#000;
   padding:14px;
   border:none;
   border-radius:12px;
   font-weight:600;
 }
 
-/* ================= MODAL SYSTEM ================= */
-.modal,
-.popup-overlay,
-#sponsorOverlay{
+/* ================= DASHBOARD ================= */
+.popup-overlay{
   display:none;
   position:fixed;
   inset:0;
@@ -109,124 +137,56 @@ main{padding:25px 10px}
   align-items:center;
   z-index:9999;
 }
-.modal.active,
-.popup-overlay.active,
-#sponsorOverlay.active{
-  display:flex;
-}
+.popup-overlay.active{display:flex}
 
-/* ================= DASHBOARD CARD ================= */
 .popup-box{
-  background:#ffffff;
+  background:#fff;
   color:#111;
-  width:94%;
-  max-width:440px;
-  padding:30px;
-  border-radius:24px;
-  position:relative;
-  box-shadow:0 30px 80px rgba(0,0,0,.45);
+  width:95%;
+  max-width:420px;
+  padding:25px;
+  border-radius:22px;
   text-align:left;
 }
-
-.popup-box h3{
-  text-align:center;
-  margin-bottom:20px;
-  font-size:18px;
-}
-
 .close-x{
   position:absolute;
+  right:20px;
   top:15px;
-  right:18px;
-  font-size:20px;
   cursor:pointer;
 }
 
-/* table style clean */
-.info-table{
-  width:100%;
-  border-collapse:collapse;
-  font-size:14px;
-}
 .info-table td{
-  padding:7px 0;
-}
-.info-table td:first-child{
-  color:#666;
+  padding:6px 0;
 }
 .info-table .val{
   text-align:right;
   font-weight:600;
 }
 
-/* status badge */
 .badge{
   padding:4px 10px;
   border-radius:20px;
   font-size:12px;
-  font-weight:600;
 }
 .badge-green{background:#d4edda;color:#155724}
-.badge-red{background:#f8d7da;color:#721c24}
-.badge-gray{background:#eee;color:#444}
+.badge-gray{background:#eee;color:#333}
 
-/* section area */
-.dashboard-section{
-  margin-top:20px;
-  text-align:center;
-}
-
-.qr-frame{
-  background:#f8f8f8;
-  padding:15px;
-  border-radius:18px;
-  display:inline-block;
-  box-shadow:0 8px 20px rgba(0,0,0,.15);
-}
-
-.tenda-box{
-  margin-top:15px;
-  padding:12px;
-  border-radius:14px;
-  background:#f4f6f9;
+/* ================= FOOTER ================= */
+.maps-box{
+  background:#111c3f;
+  padding:18px;
   font-size:14px;
 }
-
-/* ================= SPONSOR ================= */
-.sponsor-gallery{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:16px;
-  max-width:420px;
-  margin:auto;
-}
-.sponsor-img{
-  width:100%;
-  border-radius:16px;
-  cursor:pointer;
-  transition:.3s;
-}
-.sponsor-img:hover{
-  transform:scale(1.05);
+.osn-box{
+  background:#0a0f25;
+  padding:18px;
+  font-size:14px;
+  color:#aaa;
 }
 
-/* ================= CALL CENTER ================= */
-.modal-content{
-  background:#fff;
-  color:#111;
-  padding:30px;
-  border-radius:22px;
-  width:94%;
-  max-width:450px;
+/* ================= MOBILE OPTIMIZATION ================= */
+@media(max-width:600px){
+  .statistik-premium{flex-direction:column;gap:10px}
+  .btn{font-size:14px}
+  .login-box{margin:15px}
 }
-.cc-btn{
-  display:block;
-  padding:15px;
-  margin:10px 0;
-  border-radius:14px;
-  text-decoration:none;
-  font-weight:600;
-  color:#fff;
-}
-.wa-umum{background:#25D366}
-.wa-sponsor{background:#128C7E}
