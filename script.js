@@ -1,3 +1,5 @@
+let nohpAktif = "";
+let namaAktif = "";
 /* =================================================
    GLOBAL API URL
 ================================================= */
@@ -111,6 +113,9 @@ window.loginPeserta = function () {
    DASHBOARD PESERTA
 ================================================= */
 window.tampilkanDashboard = function (data) {
+   
+   nohpAktif = data.nohp;
+   namaAktif = data.nama;
 
   document.getElementById("isiDashboard").innerHTML = `
     <h3>👋 Halo, ${data.nama}</h3>
@@ -126,6 +131,7 @@ window.tampilkanDashboard = function (data) {
 
     <div id="qrArea" style="margin-top:15px;text-align:center;"></div>
     <div id="tendaArea" style="margin-top:15px;text-align:center;"></div>
+    <div id="kamarArea" style="margin-top:15px;text-align:center;"></div>
   `;
 
   document.getElementById("popupDashboard").style.display = "flex";
@@ -235,6 +241,53 @@ window.tampilkanDashboard = function (data) {
     });
 
 };   // ← function baru ditutup di sini
+
+   /* =========================
+   TOMBOL KAMAR
+========================== */
+
+const kamarArea = document.getElementById("kamarArea");
+
+if (String(data.status_kamar || "").toUpperCase() === "LUNAS") {
+
+  kamarArea.innerHTML = `
+    <p style="font-weight:bold;color:#28a745;">
+      🏨 Status Kamar: LUNAS
+    </p>
+    <p>${data.tipe_kamar || ""}</p>
+  `;
+
+} else if (String(data.status_kamar || "").toUpperCase() === "MENUNGGU") {
+
+  kamarArea.innerHTML = `
+    <p style="font-weight:bold;color:#ffc107;">
+      🏨 Status: MENUNGGU PEMBAYARAN
+    </p>
+    <p>${data.tipe_kamar || ""}</p>
+
+    <button
+      onclick="redirectPembayaran('${data.nohp}','${data.nama}','${data.tipe_kamar}')"
+      style="margin-top:8px;padding:10px 16px;border:none;border-radius:8px;background:#28a745;color:white;">
+      Lakukan Pembayaran
+    </button>
+
+    <button
+      onclick="toggleKamarFrontend('${data.nohp}','${data.tipe_kamar}')"
+      style="margin-top:8px;margin-left:8px;padding:10px 16px;border:none;border-radius:8px;background:#dc3545;color:white;">
+      Batalkan
+    </button>
+  `;
+
+} else {
+
+  kamarArea.innerHTML = `
+    <button
+      onclick="pilihKamar('${data.nohp}')"
+      style="margin-top:8px;padding:10px 16px;border:none;border-radius:8px;background:#007bff;color:white;">
+      Pesan Kamar
+    </button>
+  `;
+}
    
 /* =================================================
    TUTUP DASHBOARD PESERTA
@@ -389,10 +442,63 @@ document.getElementById("modalTenda")?.addEventListener("click", function(e){
   }
 });
 
+function pilihKamar(nohp) {
+  document.getElementById("modalPilihKamar").style.display = "flex";
+}
 
+function tutupModalPilihKamar() {
+  document.getElementById("modalPilihKamar").style.display = "none";
+}
 
+document.addEventListener("click", function (e) {
+  const modal = document.getElementById("modalPilihKamar");
+  if (e.target === modal) {
+    modal.style.display = "none";
+  }
+});
 
+function konfirmasiPesanKamar() {
 
+  const selected = document.querySelector('input[name="tipeKamar"]:checked');
+
+  if (!selected) {
+    alert("Silakan pilih tipe kamar");
+    return;
+  }
+
+  const tipe = selected.value;
+
+  fetch(`${apiUrl}?mode=toggleKamar&nohp=${encodeURIComponent(nohpAktif)}&tipe=${encodeURIComponent(tipe)}`)
+    .then(res => res.json())
+    .then(data => {
+      alert(data.message);
+      tutupModalPilihKamar();
+      loginPeserta(); // refresh dashboard
+    })
+    .catch(() => alert("Gagal koneksi server"));
+}
+
+function toggleKamarFrontend(nohp, tipe) {
+
+  fetch(`${apiUrl}?mode=toggleKamar&nohp=${encodeURIComponent(nohp)}&tipe=${encodeURIComponent(tipe || "")}`)
+    .then(res => res.json())
+    .then(data => {
+      alert(data.message);
+      loginPeserta();
+    })
+    .catch(() => alert("Gagal koneksi server"));
+}
+
+function redirectPembayaran(nohp, nama, tipe) {
+
+  const formUrl =
+    "https://docs.google.com/forms/d/e/1FAIpQLSensC9TSqAGd_EsXw1oib7u1Dp-wyEwtIL_bkE-xLWwwhDtyg/viewform?usp=pp_url" +
+    "&entry.265402746=" + encodeURIComponent(nohp) +
+    "&entry.1362223935=" + encodeURIComponent(nama) +
+    "&entry.71905223=" + encodeURIComponent(tipe);
+
+  window.open(formUrl, "_blank");
+}
 
 
 
