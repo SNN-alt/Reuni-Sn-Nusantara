@@ -68,7 +68,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const statusHadir = (data.statushadir || "").toUpperCase();
     const statusTenda = (data.tenda || "").toUpperCase();
 
-    /* ================= QR (AKTIF H-7) ================= */
+   /* ================= QR (AKTIF H-7 / MODE TEST) ================= */
 
 const eventDate = new Date("2026-04-11T00:00:00+07:00");
 const h7 = new Date(eventDate);
@@ -77,7 +77,10 @@ h7.setDate(eventDate.getDate() - 7);
 const now = new Date();
 const nowWIB = new Date(now.getTime() + (7 * 60 + now.getTimezoneOffset()) * 60000);
 
-const bolehKonfirmasi = nowWIB >= h7;
+// ================= MODE TEST =================
+const MODE_TEST = true; // nanti ubah ke false saat produksi
+
+const bolehKonfirmasi = MODE_TEST ? true : (nowWIB >= h7);
 
 if ((data.qr_aktif || "").toUpperCase() === "YA") {
 
@@ -220,4 +223,5 @@ function bukaPeserta() {
 function bukaUMKM() {
   window.open("https://forms.gle/sUyoZ34bRnDrp2xW6", "_blank");
 }
+
 
