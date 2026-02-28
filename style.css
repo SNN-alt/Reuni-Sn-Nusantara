@@ -1,133 +1,204 @@
-/* ================= GLOBAL ================= */
-*{box-sizing:border-box;margin:0;padding:0}
+/* =====================================================
+   RESET & GLOBAL
+===================================================== */
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
 
 body{
   font-family:'Inter','Segoe UI',sans-serif;
   background:
-    linear-gradient(rgba(8,12,30,.92),rgba(8,12,30,.92)),
+    linear-gradient(rgba(8,12,30,.94),rgba(8,12,30,.94)),
     url("images/12.jpeg");
   background-size:cover;
   background-position:center;
   background-attachment:fixed;
   color:#fff;
   text-align:center;
+  line-height:1.5;
 }
 
-/* ================= HEADER ================= */
+/* =====================================================
+   HEADER
+===================================================== */
 header{
   height:100px;
   background:url("images/ATAS.png") no-repeat center;
   background-size:contain;
+  margin-bottom:10px;
 }
 
-/* ================= RUNNING TEXT ================= */
+/* =====================================================
+   RUNNING TEXT
+===================================================== */
 .marquee{
-  background:#0e1a45;
+  width:100%;
   overflow:hidden;
+  background:#0f1b45;
   padding:10px 0;
 }
+
 .marquee p{
   display:inline-block;
   white-space:nowrap;
-  animation:marquee 20s linear infinite;
+  animation:marquee 22s linear infinite;
   color:#FFD700;
   font-size:14px;
+  letter-spacing:.5px;
 }
+
 @keyframes marquee{
   0%{transform:translateX(100%)}
   100%{transform:translateX(-100%)}
 }
 
-/* ================= STATISTIK ================= */
+/* =====================================================
+   STATISTIK
+===================================================== */
+.statistik-box{
+  padding:20px;
+}
+
 .statistik-premium{
   display:flex;
   justify-content:center;
-  gap:40px;
-  padding:20px;
-  border-radius:18px;
+  gap:50px;
+  padding:20px 30px;
+  border-radius:20px;
   background:rgba(255,255,255,.06);
-  backdrop-filter:blur(15px);
-  margin:15px;
+  backdrop-filter:blur(20px);
+  border:1px solid rgba(255,255,255,.08);
 }
+
+.stat-item small{
+  display:block;
+  font-size:13px;
+  color:#aaa;
+  margin-bottom:4px;
+}
+
 .stat-item span{
-  font-size:32px;
+  font-size:34px;
   font-weight:700;
   color:#FFD700;
 }
 
-/* ================= COUNTDOWN ================= */
+/* =====================================================
+   COUNTDOWN
+===================================================== */
 .countdown-box{
-  margin:15px;
-  padding:12px;
-  border-radius:14px;
+  margin:15px auto;
+  padding:14px;
+  width:90%;
+  max-width:420px;
+  border-radius:16px;
   background:#16235a;
   font-weight:600;
+  letter-spacing:.5px;
 }
 
-/* ================= PROGRESS KUOTA ================= */
+/* =====================================================
+   PROGRESS KUOTA
+===================================================== */
 .progress-kuota{
-  margin:20px;
-  padding:15px;
-  border-radius:16px;
+  margin:20px auto;
+  padding:18px;
+  width:90%;
+  max-width:420px;
+  border-radius:18px;
   background:rgba(255,255,255,.05);
+  backdrop-filter:blur(15px);
 }
+
 .progress-bar{
-  height:10px;
-  border-radius:10px;
-  background:#333;
+  height:12px;
+  border-radius:20px;
+  background:#2b2b2b;
   overflow:hidden;
-  margin-top:10px;
+  margin-top:12px;
 }
+
 .progress-fill{
   height:100%;
   background:#FFD700;
   transition:width .5s ease;
 }
 
-/* ================= BUTTON ================= */
-main{padding:20px 10px}
+/* =====================================================
+   BUTTON SECTION
+===================================================== */
+main{
+  padding:25px 15px;
+}
+
 .btn{
   width:100%;
-  max-width:340px;
+  max-width:360px;
   padding:16px;
-  margin:8px auto;
-  border-radius:14px;
+  margin:10px auto;
+  border-radius:16px;
   font-weight:600;
+  font-size:15px;
   border:none;
   cursor:pointer;
-  font-size:15px;
+  transition:.25s ease;
+  letter-spacing:.4px;
 }
+
+.btn:hover{
+  transform:translateY(-3px);
+  opacity:.95;
+}
+
 .panduan{background:#FFD700;color:#000}
 .proposal{background:#1c2f6b;color:#FFD700;border:1px solid #FFD700}
 .peserta{background:#198754;color:#fff}
 .umkm{background:#6f42c1;color:#fff}
 .callcenter{background:#dc3545;color:#fff}
 
-/* ================= LOGIN ================= */
+/* =====================================================
+   LOGIN BOX
+===================================================== */
 .login-box{
   background:rgba(255,255,255,.05);
-  padding:25px;
-  border-radius:20px;
+  backdrop-filter:blur(25px);
+  padding:30px;
+  border-radius:24px;
   max-width:420px;
-  margin:20px auto;
-  backdrop-filter:blur(20px);
+  margin:25px auto;
+  border:1px solid rgba(255,255,255,.08);
 }
-.login-box input{
-  width:100%;
-  padding:14px;
-  border-radius:12px;
-  border:none;
-  margin-bottom:12px;
-}
-.login-box button{
-  background:#FFD700;
-  padding:14px;
-  border:none;
-  border-radius:12px;
+
+.login-box h3{
+  color:#FFD700;
+  margin-bottom:18px;
   font-weight:600;
 }
 
-/* ================= DASHBOARD ================= */
+.login-box input{
+  width:100%;
+  padding:15px;
+  border-radius:14px;
+  border:none;
+  margin-bottom:15px;
+  font-size:15px;
+}
+
+.login-box button{
+  background:#FFD700;
+  color:#000;
+  padding:15px;
+  border:none;
+  border-radius:14px;
+  font-weight:600;
+  cursor:pointer;
+}
+
+/* =====================================================
+   DASHBOARD POPUP
+===================================================== */
 .popup-overlay{
   display:none;
   position:fixed;
@@ -137,56 +208,229 @@ main{padding:20px 10px}
   align-items:center;
   z-index:9999;
 }
-.popup-overlay.active{display:flex}
+
+.popup-overlay.active{
+  display:flex;
+}
 
 .popup-box{
   background:#fff;
   color:#111;
   width:95%;
-  max-width:420px;
-  padding:25px;
-  border-radius:22px;
+  max-width:440px;
+  padding:30px;
+  border-radius:26px;
   text-align:left;
+  position:relative;
+  box-shadow:0 40px 100px rgba(0,0,0,.5);
 }
+
 .close-x{
   position:absolute;
-  right:20px;
-  top:15px;
+  top:18px;
+  right:22px;
+  font-size:20px;
   cursor:pointer;
+  font-weight:600;
+}
+
+/* TABLE */
+.info-table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:14px;
 }
 
 .info-table td{
-  padding:6px 0;
+  padding:8px 0;
 }
+
+.info-table td:first-child{
+  color:#666;
+}
+
 .info-table .val{
   text-align:right;
   font-weight:600;
 }
 
+/* BADGE */
 .badge{
   padding:4px 10px;
   border-radius:20px;
   font-size:12px;
+  font-weight:600;
 }
+
 .badge-green{background:#d4edda;color:#155724}
 .badge-gray{background:#eee;color:#333}
 
-/* ================= FOOTER ================= */
-.maps-box{
-  background:#111c3f;
-  padding:18px;
-  font-size:14px;
-}
-.osn-box{
-  background:#0a0f25;
-  padding:18px;
-  font-size:14px;
-  color:#aaa;
+/* QR FRAME */
+.qr-frame{
+  background:#f8f8f8;
+  padding:15px;
+  border-radius:18px;
+  display:inline-block;
+  box-shadow:0 10px 25px rgba(0,0,0,.15);
+  margin-top:15px;
 }
 
-/* ================= MOBILE OPTIMIZATION ================= */
+/* TENDA BOX */
+.tenda-box{
+  margin-top:18px;
+  padding:14px;
+  border-radius:14px;
+  background:#f4f6f9;
+  font-size:14px;
+}
+
+/* =====================================================
+   SPONSOR
+===================================================== */
+.sponsor-section{
+  margin:25px 0;
+}
+
+.sponsor-section h2{
+  margin-bottom:15px;
+  font-size:16px;
+  letter-spacing:1px;
+}
+
+.sponsor-gallery{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:16px;
+  max-width:420px;
+  margin:auto;
+}
+
+.sponsor-img{
+  width:100%;
+  border-radius:18px;
+  cursor:pointer;
+  transition:.3s;
+}
+
+.sponsor-img:hover{
+  transform:scale(1.05);
+}
+
+/* SPONSOR OVERLAY */
+#sponsorOverlay{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.85);
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
+}
+
+#sponsorOverlay.active{
+  display:flex;
+}
+
+#sponsorPreview{
+  max-width:90vw;
+  max-height:85vh;
+  border-radius:20px;
+}
+
+#closeSponsor{
+  position:absolute;
+  top:-12px;
+  right:-12px;
+  background:#dc3545;
+  color:#fff;
+  width:36px;
+  height:36px;
+  border-radius:50%;
+  line-height:36px;
+  cursor:pointer;
+}
+
+/* =====================================================
+   CALL CENTER
+===================================================== */
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.75);
+  justify-content:center;
+  align-items:center;
+}
+
+.modal.active{
+  display:flex;
+}
+
+.modal-content{
+  background:#fff;
+  color:#111;
+  padding:30px;
+  border-radius:26px;
+  width:95%;
+  max-width:450px;
+}
+
+.cc-btn{
+  display:block;
+  padding:15px;
+  margin:12px 0;
+  border-radius:16px;
+  text-decoration:none;
+  font-weight:600;
+  color:#fff;
+}
+
+.wa-umum{background:#25D366}
+.wa-sponsor{background:#128C7E}
+
+/* =====================================================
+   FOOTER
+===================================================== */
+.maps-box{
+  background:#111c3f;
+  padding:20px;
+  font-size:14px;
+  color:#ddd;
+}
+
+.maps-box a{
+  color:#FFD700;
+  text-decoration:none;
+  font-weight:600;
+}
+
+.osn-box{
+  background:#0a0f25;
+  padding:20px;
+  font-size:13px;
+  color:#888;
+  letter-spacing:.5px;
+}
+
+/* =====================================================
+   MOBILE OPTIMIZATION
+===================================================== */
 @media(max-width:600px){
-  .statistik-premium{flex-direction:column;gap:10px}
-  .btn{font-size:14px}
-  .login-box{margin:15px}
+
+  .statistik-premium{
+    flex-direction:column;
+    gap:15px;
+  }
+
+  .btn{
+    font-size:14px;
+  }
+
+  .login-box{
+    margin:20px 15px;
+  }
+
+  .popup-box{
+    padding:22px;
+  }
 }
