@@ -1,19 +1,70 @@
-let apiUrl = "https://script.google.com/macros/s/AKfycbyyZnfx-ilQjNhAG0gP-rO_ctPne7HoxuREYerYXfrRTvJRiFYJReZkuT6kZC8dqop3/exec";
+const apiUrl = "https://script.google.com/macros/s/AKfycbyyZnfx-ilQjNhAG0gP-rO_ctPne7HoxuREYerYXfrRTvJRiFYJReZkuT6kZC8dqop3/exec";
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", function () {
 
-  const nohpInput = document.getElementById("nohpLogin");
-  const popup = document.getElementById("popupDashboard");
-  const isiDashboard = document.getElementById("isiDashboard");
-  const statistikBox = document.getElementById("statistikBox");
+  /* ================= MODAL PANDUAN ================= */
+  window.bukaPanduan = function () {
+    document.getElementById("modalPanduan").style.display = "flex";
+  };
+  window.tutupPanduan = function () {
+    document.getElementById("modalPanduan").style.display = "none";
+  };
+
+  /* ================= MODAL PROPOSAL ================= */
+  window.bukaProposal = function () {
+    document.getElementById("modalProposal").style.display = "flex";
+  };
+  window.tutupProposal = function () {
+    document.getElementById("modalProposal").style.display = "none";
+  };
+
+  /* ================= CALL CENTER ================= */
+  const modalCallCenter = document.getElementById("modalCallCenter");
+  const btnCallCenter = document.getElementById("btnCallCenter");
+
+  if (btnCallCenter && modalCallCenter) {
+    btnCallCenter.onclick = () => modalCallCenter.style.display = "flex";
+
+    modalCallCenter.addEventListener("click", function (e) {
+      if (e.target === modalCallCenter) {
+        modalCallCenter.style.display = "none";
+      }
+    });
+
+    const closeBtn = modalCallCenter.querySelector(".close");
+    if (closeBtn) {
+      closeBtn.onclick = () => modalCallCenter.style.display = "none";
+    }
+  }
+
+  /* ================= SPONSOR ZOOM ================= */
+  const sponsorOverlay = document.getElementById("sponsorOverlay");
+  const sponsorPreview = document.getElementById("sponsorPreview");
+
+  document.querySelectorAll(".sponsor-img").forEach(img => {
+    img.addEventListener("click", function () {
+      sponsorPreview.src = this.src;
+      sponsorOverlay.style.display = "flex";
+    });
+  });
+
+  if (sponsorOverlay) {
+    sponsorOverlay.addEventListener("click", function (e) {
+      if (e.target === sponsorOverlay) {
+        sponsorOverlay.style.display = "none";
+        sponsorPreview.src = "";
+      }
+    });
+  }
 
   /* ================= LOGIN ================= */
   window.loginPeserta = async function () {
 
-    let nohp = nohpInput.value.replace(/\D/g,"");
-    nohpInput.value = nohp;
+    const input = document.getElementById("nohpLogin");
+    let nohp = input.value.replace(/\D/g, "");
+    input.value = nohp;
 
-    if(nohp.length < 10){
+    if (nohp.length < 10) {
       alert("Nomor HP tidak valid");
       return;
     }
@@ -22,17 +73,16 @@ document.addEventListener("DOMContentLoaded", () => {
     btn.innerText = "Memproses...";
     btn.disabled = true;
 
-    try{
-      const res = await fetch(apiUrl+"?mode=login&nohp="+encodeURIComponent(nohp));
+    try {
+      const res = await fetch(`${apiUrl}?mode=login&nohp=${encodeURIComponent(nohp)}`);
       const data = await res.json();
 
-      if(data.status === "NOT_FOUND"){
+      if (data.status === "NOT_FOUND") {
         alert("Nomor belum terdaftar");
-      }else{
+      } else {
         tampilkanDashboard(data);
       }
-
-    }catch(err){
+    } catch {
       alert("Gagal koneksi server");
     }
 
@@ -41,65 +91,63 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   /* ================= DASHBOARD ================= */
-  function tampilkanDashboard(data){
+  function tampilkanDashboard(data) {
 
-    isiDashboard.innerHTML = `
+    const popup = document.getElementById("popupDashboard");
+    const isi = document.getElementById("isiDashboard");
+
+    isi.innerHTML = `
       <h3>Halo, ${data.nama}</h3>
       <table class="info-table">
         <tr><td>No HP</td><td class="val">${data.nohp}</td></tr>
         <tr><td>Keluarga</td><td class="val">${data.keluarga}</td></tr>
         <tr><td>Status</td><td class="val">${data.statushadir || "BELUM KONFIRMASI"}</td></tr>
       </table>
-      <div id="qrArea" style="margin-top:15px;"></div>
+      <div id="qrArea" style="margin-top:15px;text-align:center;"></div>
     `;
 
-    popup.style.display="flex";
+    popup.style.display = "flex";
 
     const qrArea = document.getElementById("qrArea");
 
-    const eventDate = new Date("2026-04-11T00:00:00+07:00");
-    const nowWIB = new Date(new Date().toLocaleString("en-US",{timeZone:"Asia/Jakarta"}));
-    const h7 = new Date(eventDate.getTime() - (7*24*60*60*1000));
-
-    if(data.qr_aktif === "YA"){
+    if ((data.qr_aktif || "").toUpperCase() === "YA") {
       qrArea.innerHTML = `
         <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(data.qr)}">
         <p>Tunjukkan QR saat registrasi</p>
       `;
-    }else{
+    } else {
       qrArea.innerHTML = `
-        <p style="color:red;">Konfirmasi dibuka 4 April 2026</p>
-        <button onclick="konfirmasiHadir('${data.nohp}')"
-        ${nowWIB >= h7 ? "" : "disabled"}>
-        Konfirmasi Kehadiran
+        <button onclick="konfirmasiHadir('${data.nohp}')">
+          Konfirmasi Kehadiran
         </button>
       `;
     }
   }
 
-  window.tutupDashboard = function(){
-    popup.style.display="none";
+  window.tutupDashboard = function () {
+    document.getElementById("popupDashboard").style.display = "none";
   };
 
   /* ================= KONFIRMASI ================= */
-  window.konfirmasiHadir = async function(nohp){
+  window.konfirmasiHadir = async function (nohp) {
 
-    try{
-      const res = await fetch(apiUrl+"?mode=konfirmasi&nohp="+encodeURIComponent(nohp));
+    try {
+      const res = await fetch(`${apiUrl}?mode=konfirmasi&nohp=${encodeURIComponent(nohp)}`);
       const data = await res.json();
       alert(data.message);
       loginPeserta();
-    }catch{
+    } catch {
       alert("Gagal koneksi");
     }
   };
 
   /* ================= STATISTIK ================= */
-  async function loadStatistik(){
-    if(!statistikBox) return;
+  async function loadStatistik() {
+    const statistikBox = document.getElementById("statistikBox");
+    if (!statistikBox) return;
 
-    try{
-      const res = await fetch(apiUrl+"?mode=statistik&t="+Date.now());
+    try {
+      const res = await fetch(`${apiUrl}?mode=statistik&t=${Date.now()}`);
       const data = await res.json();
 
       statistikBox.innerHTML = `
@@ -114,10 +162,18 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
         </div>
       `;
-    }catch{}
+    } catch {}
   }
 
   loadStatistik();
-  setInterval(loadStatistik,30000);
+  setInterval(loadStatistik, 30000);
 
 });
+
+/* ================= LINK FORM ================= */
+function bukaPeserta() {
+  window.open("https://forms.gle/VudgYiKRNVWU9zsG8", "_blank");
+}
+function bukaUMKM() {
+  window.open("https://forms.gle/sUyoZ34bRnDrp2xW6", "_blank");
+}
