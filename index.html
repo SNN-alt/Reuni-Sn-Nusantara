@@ -5,7 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Reuni SN Nusantara 2026</title>
 
-  <!-- CSS Utama -->
+  <meta name="description" content="Website Resmi Reuni SN Nusantara 2026">
+  <meta name="theme-color" content="#0a0f25">
+
   <link rel="stylesheet" href="style.css">
 </head>
 
@@ -15,18 +17,23 @@
   <header></header>
 
   <!-- ================= RUNNING TEXT ================= -->
-  <div class="marquee">
+  <section class="marquee">
     <p>
-      Selamat Datang di Reuni SN Nusantara 2026 |
-      Jangan lupa daftar Peserta atau UMKM |
-      Hubungi Call Center jika butuh informasi
+      Selamat Datang di Reuni SN Nusantara 2026 •
+      Jangan lupa daftar Peserta atau UMKM •
+      Konfirmasi Kehadiran mulai H-7 •
+      Hubungi Call Center jika membutuhkan bantuan
     </p>
-  </div>
+  </section>
 
-<!-- ================= STATISTIK PESERTA ================= -->
-<div id="statistikBox" class="statistik-box">
-  <!-- DIISI OLEH JS -->
-</div>
+  <!-- ================= STATISTIK ================= -->
+  <section id="statistikBox" class="statistik-box"></section>
+
+  <!-- ================= COUNTDOWN ================= -->
+  <section id="countdownBox" class="countdown-box"></section>
+
+  <!-- ================= PROGRESS KUOTA ================= -->
+  <section id="progressKuota" class="progress-kuota"></section>
 
   <!-- ================= SPONSOR ================= -->
   <section class="sponsor-section">
@@ -35,10 +42,6 @@
     <div class="sponsor-gallery">
       <img src="images/MAG.jpeg" class="sponsor-img" alt="Sponsor MAG">
       <img src="images/MJ.jpeg" class="sponsor-img" alt="Sponsor MJ">
-      <img src="images/OSN.jpeg" class="sponsor-img" alt="Sponsor OSN">
-
-      <img src="images/OSN.jpeg" class="sponsor-img" alt="Sponsor OSN">
-      <img src="images/OSN.jpeg" class="sponsor-img" alt="Sponsor OSN">
       <img src="images/OSN.jpeg" class="sponsor-img" alt="Sponsor OSN">
     </div>
   </section>
@@ -52,65 +55,56 @@
     <button class="btn umkm" onclick="bukaUMKM()">DAFTAR UMKM</button>
     <button class="btn callcenter" id="btnCallCenter">CALL CENTER</button>
 
-    <!-- LOGIN -->
+    <!-- ================= LOGIN ================= -->
     <section class="login-box">
       <h3>Login Peserta</h3>
       <input
-  type="text"
-  id="nohpLogin"
-  placeholder="Masukkan No HP terdaftar"
-  inputmode="numeric"
-  pattern="[0-9]*"
-  oninput="this.value = this.value.replace(/[^0-9]/g, '')"
-/>
+        type="text"
+        id="nohpLogin"
+        placeholder="Masukkan No HP terdaftar"
+        inputmode="numeric"
+        pattern="[0-9]*"
+        oninput="this.value=this.value.replace(/[^0-9]/g,'')"
+      >
       <button onclick="loginPeserta()">Login</button>
     </section>
 
   </main>
 
-  <!-- ================= DASHBOARD PESERTA ================= -->
+  <!-- ================= DASHBOARD POPUP ================= -->
   <div id="popupDashboard" class="popup-overlay">
     <div class="popup-box">
-      <span class="close-x" onclick="tutupDashboard()">×</span>
+      <span class="close-x">×</span>
       <div id="isiDashboard"></div>
     </div>
   </div>
 
-  <!-- ================= CALL CENTER ================= -->
+  <!-- ================= CALL CENTER MODAL ================= -->
   <div id="modalCallCenter" class="modal">
     <div class="modal-content callcenter-box">
-      <span class="close">&times;</span>
-
+      <span class="close">×</span>
       <h3>📞 Call Center Reuni SN 2026</h3>
       <p>Silakan pilih bagian yang ingin dihubungi</p>
 
       <a class="cc-btn wa-umum"
-         href="https://wa.me/6287748283935?text=Halo%20Admin,%20saya%20ingin%20informasi%20umum%20Reuni%20SN%202026"
-         target="_blank">
-        💬 Informasi Umum
+         href="https://wa.me/6287748283935?text=Halo%20Admin,%20saya%20ingin%20informasi%20Reuni%20SN%202026"
+         target="_blank" rel="noopener noreferrer">
+         💬 Informasi Umum
       </a>
 
       <a class="cc-btn wa-sponsor"
-         href="https://wa.me/6282312636561?text=Halo%20Admin,%20saya%20ingin%20informasi%20sponsorship%20Reuni%20SN%202026"
-         target="_blank">
-        🤝 Informasi Penginapan
+         href="https://wa.me/6282312636561?text=Halo%20Admin,%20saya%20ingin%20informasi%20penginapan%20Reuni%20SN%202026"
+         target="_blank" rel="noopener noreferrer">
+         🏨 Informasi Penginapan
       </a>
-    </div>
-  </div>
-
-  <!-- ================= ZOOM SPONSOR ================= -->
-  <div id="sponsorOverlay" class="sponsor-overlay">
-    <div class="sponsor-modal">
-      <span class="close-inside" id="closeSponsor">×</span>
-      <img id="sponsorPreview" class="sponsor-preview" alt="Preview Sponsor">
     </div>
   </div>
 
   <!-- ================= MODAL PANDUAN ================= -->
   <div id="modalPanduan" class="modal">
     <div class="modal-content">
-      <span class="close" onclick="tutupPanduan()">×</span>
-      <h2>Panduan Peserta</h2>
+      <span class="close">×</span>
+      <h3>Panduan Peserta</h3>
       <iframe src="files/KETENTUAN.pdf" width="100%" height="500"></iframe>
     </div>
   </div>
@@ -118,39 +112,36 @@
   <!-- ================= MODAL PROPOSAL ================= -->
   <div id="modalProposal" class="modal">
     <div class="modal-content">
-      <span class="close" onclick="tutupProposal()">×</span>
-      <h2>Proposal Kegiatan</h2>
+      <span class="close">×</span>
+      <h3>Proposal Kegiatan</h3>
       <iframe src="files/PROPOSAL.pdf" width="100%" height="500"></iframe>
     </div>
   </div>
 
-  <!-- ================= GOOGLE MAPS ================= -->
-  <div class="maps-box">
-    Lihat lokasi acara di
-    <a href="https://maps.app.goo.gl/Rv4JjxwD6UzkJhwG8" target="_blank">
-      Google Maps
-    </a>
+  <!-- ================= SPONSOR OVERLAY ================= -->
+  <div id="sponsorOverlay">
+    <div style="position:relative;">
+      <span id="closeSponsor">×</span>
+      <img id="sponsorPreview" alt="Preview Sponsor">
+    </div>
   </div>
+
+  <!-- ================= LOKASI ================= -->
+  <section class="maps-box">
+    📍 Lihat lokasi acara di
+    <a href="https://maps.app.goo.gl/Rv4JjxwD6UzkJhwG8"
+       target="_blank" rel="noopener noreferrer">
+       Google Maps
+    </a>
+  </section>
 
   <!-- ================= FOOTER ================= -->
-  <div class="osn-box">
+  <footer class="osn-box">
     OSN Mobile – Reuni SN Nusantara 2026
-  </div>
+  </footer>
 
-  <!-- JS -->
+  <!-- ================= SCRIPT ================= -->
   <script src="script.js"></script>
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
