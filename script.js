@@ -4,7 +4,7 @@ let namaAktif = "";
    GLOBAL API URL
 ================================================= */
 const apiUrl =
-  "https://script.google.com/macros/s/AKfycbzNp16IqpdW5X7gZqC2WLKtpmU6FEHI5wUOQmHXknXWrpipp2kHzqmPjQ223Frvq7ao/exec";
+  "https://https://script.google.com/macros/s/AKfycbzNp16IqpdW5X7gZqC2WLKtpmU6FEHI5wUOQmHXknXWrpipp2kHzqmPjQ223Frvq7ao/exec";
 
 
 /* =================================================
@@ -292,79 +292,3 @@ function bukaPeserta() {
 function bukaUMKM() {
   window.open("https://forms.gle/sUyoZ34bRnDrp2xW6", "_blank");
 }
-
-/* =================================================
-   TENDA
-================================================= */
-function toggleTenda(nohp, currentStatus) {
-
-  const modal = document.getElementById("modalTenda");
-  const isi = document.getElementById("isiModalTenda");
-
-  modal.style.display = "flex";
-
-  if (currentStatus === "YA") {
-
-    isi.innerHTML = `
-      <h3>Batalkan Tenda?</h3>
-      <p>Yakin ingin membatalkan pesanan tenda?</p>
-
-      <button onclick="prosesTenda('${nohp}')"
-        style="margin:8px;padding:8px 14px;background:#dc3545;color:white;border:none;border-radius:6px;">
-        Ya, Batalkan
-      </button>
-
-      <button onclick="tutupModalTenda()"
-        style="margin:8px;padding:8px 14px;background:#aaa;color:white;border:none;border-radius:6px;">
-        Tutup
-      </button>
-    `;
-
-  } else {
-
-    isi.innerHTML = `
-      <h3>Pesan Tenda?</h3>
-      <p>Anda yakin ingin memesan tenda?</p>
-
-      <button onclick="prosesTenda('${nohp}')"
-        style="margin:8px;padding:8px 14px;background:#28a745;color:white;border:none;border-radius:6px;">
-        Setuju
-      </button>
-
-      <button onclick="tutupModalTenda()"
-        style="margin:8px;padding:8px 14px;background:#aaa;color:white;border:none;border-radius:6px;">
-        Tidak
-      </button>
-    `;
-  }
-}
-
-function prosesTenda(nohp) {
-
-  fetch(`${apiUrl}?mode=toggleTenda&nohp=${encodeURIComponent(nohp)}`)
-    .then(res => res.json())
-    .then(data => {
-
-      alert(data.message);
-
-      tutupModalTenda();
-
-      if (data.status === "OK" || data.status === "BATAL") {
-        loginPeserta();
-      }
-
-    })
-    .catch(() => alert("Gagal koneksi server"));
-}
-
-function tutupModalTenda() {
-  document.getElementById("modalTenda").style.display = "none";
-}
-
-document.getElementById("closeTenda")?.addEventListener("click", tutupModalTenda);
-
-document.getElementById("modalTenda")?.addEventListener("click", function(e){
-  if (e.target.id === "modalTenda") {
-    tutupModalTenda();
-  }
-});
