@@ -220,7 +220,7 @@ main{
   max-width:440px;
   padding:30px;
   border-radius:26px;
-  text-align:left;
+  text-align:center;   /* ← GANTI INI */
   position:relative;
   box-shadow:0 40px 100px rgba(0,0,0,.5);
 }
@@ -284,6 +284,33 @@ main{
   font-size:14px;
 }
 
+/* ===== KONFIRMASI SECTION ===== */
+
+.dashboard-section{
+  margin-top:20px;
+  text-align:center;
+}
+
+.konfirmasi-text{
+  color:#dc3545;
+  font-weight:600;
+  margin-top:10px;
+}
+
+.konfirmasi-btn{
+  margin-top:12px;
+  padding:12px 20px;
+  border:none;
+  border-radius:10px;
+  font-weight:600;
+  cursor:pointer;
+}
+
+.konfirmasi-info{
+  margin-top:8px;
+  font-size:13px;
+  color:#666;
+}
 /* =====================================================
    SPONSOR
 ===================================================== */
@@ -434,3 +461,4 @@ main{
     padding:22px;
   }
 }
+
