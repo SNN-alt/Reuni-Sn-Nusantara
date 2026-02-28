@@ -140,9 +140,9 @@ window.tampilkanDashboard = function (data) {
   const tendaArea = document.getElementById("tendaArea");
   const kamarArea = document.getElementById("kamarArea");
 
-  const statusKamar = String(data.status_kamar || "").toUpperCase();
-  const tipeKamar = data.tipe_kamar || "";
-  const statusTenda = String(data.tenda || "").toUpperCase();
+  const statusKamar = data.status_kamar ? String(data.status_kamar).toUpperCase() : "";
+  const tipeKamar = data.tipe_kamar ? data.tipe_kamar : "";
+  const statusTenda = data.tenda ? String(data.tenda).toUpperCase() : "";
 
   /* ================= QR ================= */
 
@@ -475,6 +475,7 @@ function redirectPembayaran(nohp, nama, tipe) {
 
   window.open(formUrl, "_blank");
 }
+
 
 
 
