@@ -131,17 +131,12 @@ window.tampilkanDashboard = function (data) {
 
     <div id="qrArea" style="margin-top:15px;text-align:center;"></div>
     <div id="tendaArea" style="margin-top:15px;text-align:center;"></div>
-    <div id="kamarArea" style="margin-top:15px;text-align:center;"></div>
   `;
 
   document.getElementById("popupDashboard").style.display = "flex";
 
   const qrArea = document.getElementById("qrArea");
   const tendaArea = document.getElementById("tendaArea");
-  const kamarArea = document.getElementById("kamarArea");
-
-  const statusKamar = data.status_kamar ? String(data.status_kamar).toUpperCase() : "";
-  const tipeKamar = data.tipe_kamar ? data.tipe_kamar : "";
   const statusTenda = data.tenda ? String(data.tenda).toUpperCase() : "";
 
   /* ================= QR ================= */
@@ -178,17 +173,9 @@ window.tampilkanDashboard = function (data) {
     `;
   }
 
-  /* ================= TENDA LOCK ================= */
+  /* ================= TENDA ================= */
 
-  if (statusKamar === "MENUNGGU" || statusKamar === "LUNAS") {
-
-    tendaArea.innerHTML = `
-      <p style="color:#dc3545;font-weight:bold;">
-        ❌ Tidak bisa pesan tenda karena sudah memesan kamar
-      </p>
-    `;
-
-  } else if (statusTenda === "YA") {
+  if (statusTenda === "YA") {
 
     tendaArea.innerHTML = `
       <p style="font-weight:bold;color:#28a745;">
@@ -211,72 +198,21 @@ window.tampilkanDashboard = function (data) {
       </button>
     `;
   }
-/* ================= KUOTA TENDA ================= */
-fetch(`${apiUrl}?mode=ambilKuotaTenda&t=` + Date.now())
-  .then(res => res.json())
-  .then(kuota => {
 
-    const kuotaInfo = document.createElement("p");
-    kuotaInfo.style.marginTop = "8px";
-    kuotaInfo.style.fontSize = "13px";
-    kuotaInfo.style.fontWeight = "bold";
+  /* ================= KUOTA TENDA ================= */
 
-    kuotaInfo.innerHTML =
-      `Sisa Kuota Tenda: ${kuota.sisa} / 200`;
+  fetch(`${apiUrl}?mode=ambilKuotaTenda&t=` + Date.now())
+    .then(res => res.json())
+    .then(kuota => {
 
-    tendaArea.appendChild(kuotaInfo);
-  });
-   
-  /* ================= KAMAR LOCK ================= */
+      const kuotaInfo = document.createElement("p");
+      kuotaInfo.style.marginTop = "8px";
+      kuotaInfo.style.fontSize = "13px";
+      kuotaInfo.style.fontWeight = "bold";
+      kuotaInfo.innerHTML = `Sisa Kuota Tenda: ${kuota.sisa} / 200`;
 
-  if (statusTenda === "YA") {
-
-    kamarArea.innerHTML = `
-      <p style="color:#dc3545;font-weight:bold;">
-        ❌ Tidak bisa pesan kamar karena sudah memesan tenda
-      </p>
-    `;
-
-  } else if (statusKamar === "LUNAS") {
-
-    kamarArea.innerHTML = `
-      <p style="font-weight:bold;color:#28a745;">
-        🏨 Status Kamar: LUNAS
-      </p>
-      <p>${tipeKamar}</p>
-    `;
-
-  } else if (statusKamar === "MENUNGGU") {
-
-    kamarArea.innerHTML = `
-      <p style="font-weight:bold;color:#ffc107;">
-        🏨 Status: MENUNGGU PEMBAYARAN
-      </p>
-      <p>${tipeKamar}</p>
-
-      <button
-        onclick="redirectPembayaran('${data.nohp}','${data.nama}','${tipeKamar}')"
-        style="margin-top:8px;padding:10px 16px;border:none;border-radius:8px;background:#28a745;color:white;">
-        Lakukan Pembayaran
-      </button>
-
-      <button
-        onclick="toggleKamarFrontend('${data.nohp}','${tipeKamar}')"
-        style="margin-top:8px;margin-left:8px;padding:10px 16px;border:none;border-radius:8px;background:#dc3545;color:white;">
-        Batalkan
-      </button>
-    `;
-
-  } else {
-
-    kamarArea.innerHTML = `
-      <button
-        onclick="pilihKamar('${data.nohp}')"
-        style="margin-top:8px;padding:10px 16px;border:none;border-radius:8px;background:#007bff;color:white;">
-        Pesan Kamar
-      </button>
-    `;
-  }
+      tendaArea.appendChild(kuotaInfo);
+    });
 
 };
    
@@ -432,73 +368,3 @@ document.getElementById("modalTenda")?.addEventListener("click", function(e){
     tutupModalTenda();
   }
 });
-
-function pilihKamar(nohp) {
-  document.getElementById("modalPilihKamar").style.display = "flex";
-}
-
-function tutupModalPilihKamar() {
-  document.getElementById("modalPilihKamar").style.display = "none";
-}
-
-document.addEventListener("click", function (e) {
-  const modal = document.getElementById("modalPilihKamar");
-  if (e.target === modal) {
-    modal.style.display = "none";
-  }
-});
-
-function konfirmasiPesanKamar() {
-
-  const selected = document.querySelector('input[name="tipeKamar"]:checked');
-
-  if (!selected) {
-    alert("Silakan pilih tipe kamar");
-    return;
-  }
-
-  const tipe = selected.value;
-
-  fetch(`${apiUrl}?mode=toggleKamar&nohp=${encodeURIComponent(nohpAktif)}&tipe=${encodeURIComponent(tipe)}`)
-    .then(res => res.json())
-    .then(data => {
-      alert(data.message);
-      tutupModalPilihKamar();
-      loginPeserta(); // refresh dashboard
-    })
-    .catch(() => alert("Gagal koneksi server"));
-}
-
-function toggleKamarFrontend(nohp, tipe) {
-
-  fetch(`${apiUrl}?mode=toggleKamar&nohp=${encodeURIComponent(nohp)}&tipe=${encodeURIComponent(tipe || "")}`)
-    .then(res => res.json())
-    .then(data => {
-      alert(data.message);
-      loginPeserta();
-    })
-    .catch(() => alert("Gagal koneksi server"));
-}
-
-function redirectPembayaran(nohp, nama, tipe) {
-
-  const formUrl =
-    "https://docs.google.com/forms/d/e/1FAIpQLSensC9TSqAGd_EsXw1oib7u1Dp-wyEwtIL_bkE-xLWwwhDtyg/viewform?usp=pp_url" +
-    "&entry.265402746=" + encodeURIComponent(nohp) +
-    "&entry.1362223935=" + encodeURIComponent(nama) +
-    "&entry.71905223=" + encodeURIComponent(tipe);
-
-  window.open(formUrl, "_blank");
-}
-
-
-
-
-
-
-
-
-
-
-
-
