@@ -173,31 +173,39 @@ window.tampilkanDashboard = function (data) {
     `;
   }
 
-  /* ================= TENDA ================= */
+/* ================= STATUS TENDA ================= */
+
+const statusHadir = (data.statushadir || "").toUpperCase();
+const statusTenda = (data.tenda || "").toUpperCase();
+
+if (statusHadir === "HADIR") {
 
   if (statusTenda === "YA") {
 
     tendaArea.innerHTML = `
-      <p style="font-weight:bold;color:#28a745;">
-        🏕 Anda sudah memesan tenda
+      <p style="color:#28a745;font-weight:bold;">
+        🏕 Anda mendapatkan jatah tenda
       </p>
-      <button
-        onclick="toggleTenda('${data.nohp}', 'YA')"
-        style="margin-top:8px;padding:10px 16px;border:none;border-radius:8px;background:#dc3545;color:white;">
-        Batalkan Tenda
-      </button>
     `;
 
   } else {
 
     tendaArea.innerHTML = `
-      <button
-        onclick="toggleTenda('${data.nohp}')"
-        style="margin-top:8px;padding:10px 16px;border:none;border-radius:8px;background:#28a745;color:white;">
-        Pesan Tenda
-      </button>
+      <p style="color:#dc3545;font-weight:bold;">
+        ⚠ Kuota tenda sudah habis.<br>
+        Silakan hubungi Call Center.
+      </p>
     `;
   }
+
+} else {
+
+  tendaArea.innerHTML = `
+    <p style="color:#999;">
+      Konfirmasi kehadiran untuk mendapatkan jatah tenda
+    </p>
+  `;
+}
 
   /* ================= KUOTA TENDA ================= */
 
@@ -292,5 +300,6 @@ function bukaPeserta() {
 function bukaUMKM() {
   window.open("https://forms.gle/sUyoZ34bRnDrp2xW6", "_blank");
 }
+
 
 
