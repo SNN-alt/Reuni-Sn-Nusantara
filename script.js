@@ -136,11 +136,15 @@ window.tampilkanDashboard = function (data) {
 
   document.getElementById("popupDashboard").style.display = "flex";
 
-  /* =========================
-     QR / KONFIRMASI H-7
-  ========================== */
-
   const qrArea = document.getElementById("qrArea");
+  const tendaArea = document.getElementById("tendaArea");
+  const kamarArea = document.getElementById("kamarArea");
+
+  const statusKamar = String(data.status_kamar || "").toUpperCase();
+  const tipeKamar = data.tipe_kamar || "";
+  const statusTenda = String(data.tenda || "").toUpperCase();
+
+  /* ================= QR ================= */
 
   if (String(data.qr_aktif).toUpperCase() === "YA") {
 
@@ -152,9 +156,7 @@ window.tampilkanDashboard = function (data) {
   } else {
 
     const now = new Date();
-    const todayWIB = new Date(
-      now.getTime() + (7 * 60 + now.getTimezoneOffset()) * 60000
-    );
+    const todayWIB = new Date(now.getTime() + (7 * 60 + now.getTimezoneOffset()) * 60000);
 
     const eventDate = new Date("2026-04-11T00:00:00+07:00");
     const h7 = new Date(eventDate);
@@ -170,121 +172,98 @@ window.tampilkanDashboard = function (data) {
       <button
         onclick="konfirmasiHadir('${data.nohp}')"
         ${aktif ? "" : "disabled"}
-        style="
-          margin-top:10px;
-          padding:10px 16px;
-          border:none;
-          border-radius:8px;
-          background:${aktif ? "#28a745" : "#aaa"};
-          color:white;
-          cursor:${aktif ? "pointer" : "not-allowed"};
-        ">
+        style="margin-top:10px;padding:10px 16px;border:none;border-radius:8px;background:${aktif ? "#28a745" : "#aaa"};color:white;">
         ${aktif ? "Konfirmasi Kehadiran" : "Aktif 4 April 2026"}
       </button>
     `;
   }
 
- /* =========================
-   TENDA (DENGAN LOCK)
-========================== */
+  /* ================= TENDA LOCK ================= */
 
-const tendaArea = document.getElementById("tendaArea");
+  if (statusKamar === "MENUNGGU" || statusKamar === "LUNAS") {
 
-const statusKamar = String(data.status_kamar || "").toUpperCase();
-const sudahKamar = statusKamar === "MENUNGGU" || statusKamar === "LUNAS";
-const statusTenda = String(data.tenda || "").toUpperCase();
+    tendaArea.innerHTML = `
+      <p style="color:#dc3545;font-weight:bold;">
+        ❌ Tidak bisa pesan tenda karena sudah memesan kamar
+      </p>
+    `;
 
-if (sudahKamar) {
+  } else if (statusTenda === "YA") {
 
-  tendaArea.innerHTML = `
-    <p style="color:#dc3545;font-weight:bold;">
-      ❌ Tidak bisa pesan tenda karena sudah memesan kamar
-    </p>
-  `;
+    tendaArea.innerHTML = `
+      <p style="font-weight:bold;color:#28a745;">
+        🏕 Anda sudah memesan tenda
+      </p>
+      <button
+        onclick="toggleTenda('${data.nohp}', 'YA')"
+        style="margin-top:8px;padding:10px 16px;border:none;border-radius:8px;background:#dc3545;color:white;">
+        Batalkan Tenda
+      </button>
+    `;
 
-} else if (statusTenda === "YA") {
+  } else {
 
-  tendaArea.innerHTML = `
-    <p style="font-weight:bold;color:#28a745;">
-      🏕 Anda sudah memesan tenda
-    </p>
+    tendaArea.innerHTML = `
+      <button
+        onclick="toggleTenda('${data.nohp}')"
+        style="margin-top:8px;padding:10px 16px;border:none;border-radius:8px;background:#28a745;color:white;">
+        Pesan Tenda
+      </button>
+    `;
+  }
 
-    <button
-      onclick="toggleTenda('${data.nohp}', 'YA')"
-      style="margin-top:8px;padding:10px 16px;border:none;border-radius:8px;background:#dc3545;color:white;">
-      Batalkan Tenda
-    </button>
-  `;
+  /* ================= KAMAR LOCK ================= */
 
-} else {
+  if (statusTenda === "YA") {
 
-  tendaArea.innerHTML = `
-    <button
-      onclick="toggleTenda('${data.nohp}')"
-      style="margin-top:8px;padding:10px 16px;border:none;border-radius:8px;background:#28a745;color:white;">
-      Pesan Tenda
-    </button>
-  `;
-}
+    kamarArea.innerHTML = `
+      <p style="color:#dc3545;font-weight:bold;">
+        ❌ Tidak bisa pesan kamar karena sudah memesan tenda
+      </p>
+    `;
 
-  /* =========================
-   KAMAR (DENGAN LOCK)
-========================== */
+  } else if (statusKamar === "LUNAS") {
 
-const kamarArea = document.getElementById("kamarArea");
+    kamarArea.innerHTML = `
+      <p style="font-weight:bold;color:#28a745;">
+        🏨 Status Kamar: LUNAS
+      </p>
+      <p>${tipeKamar}</p>
+    `;
 
-const statusKamar = String(data.status_kamar || "").toUpperCase();
-const tipeKamar = data.tipe_kamar || "";
-const sudahTenda = String(data.tenda || "").toUpperCase() === "YA";
+  } else if (statusKamar === "MENUNGGU") {
 
-if (sudahTenda) {
+    kamarArea.innerHTML = `
+      <p style="font-weight:bold;color:#ffc107;">
+        🏨 Status: MENUNGGU PEMBAYARAN
+      </p>
+      <p>${tipeKamar}</p>
 
-  kamarArea.innerHTML = `
-    <p style="color:#dc3545;font-weight:bold;">
-      ❌ Tidak bisa pesan kamar karena sudah memesan tenda
-    </p>
-  `;
+      <button
+        onclick="redirectPembayaran('${data.nohp}','${data.nama}','${tipeKamar}')"
+        style="margin-top:8px;padding:10px 16px;border:none;border-radius:8px;background:#28a745;color:white;">
+        Lakukan Pembayaran
+      </button>
 
-} else if (statusKamar === "LUNAS") {
+      <button
+        onclick="toggleKamarFrontend('${data.nohp}','${tipeKamar}')"
+        style="margin-top:8px;margin-left:8px;padding:10px 16px;border:none;border-radius:8px;background:#dc3545;color:white;">
+        Batalkan
+      </button>
+    `;
 
-  kamarArea.innerHTML = `
-    <p style="font-weight:bold;color:#28a745;">
-      🏨 Status Kamar: LUNAS
-    </p>
-    <p>${tipeKamar}</p>
-  `;
+  } else {
 
-} else if (statusKamar === "MENUNGGU") {
+    kamarArea.innerHTML = `
+      <button
+        onclick="pilihKamar('${data.nohp}')"
+        style="margin-top:8px;padding:10px 16px;border:none;border-radius:8px;background:#007bff;color:white;">
+        Pesan Kamar
+      </button>
+    `;
+  }
 
-  kamarArea.innerHTML = `
-    <p style="font-weight:bold;color:#ffc107;">
-      🏨 Status: MENUNGGU PEMBAYARAN
-    </p>
-    <p>${tipeKamar}</p>
-
-    <button
-      onclick="redirectPembayaran('${data.nohp}','${data.nama}','${tipeKamar}')"
-      style="margin-top:8px;padding:10px 16px;border:none;border-radius:8px;background:#28a745;color:white;">
-      Lakukan Pembayaran
-    </button>
-
-    <button
-      onclick="toggleKamarFrontend('${data.nohp}','${tipeKamar}')"
-      style="margin-top:8px;margin-left:8px;padding:10px 16px;border:none;border-radius:8px;background:#dc3545;color:white;">
-      Batalkan
-    </button>
-  `;
-
-} else {
-
-  kamarArea.innerHTML = `
-    <button
-      onclick="pilihKamar('${data.nohp}')"
-      style="margin-top:8px;padding:10px 16px;border:none;border-radius:8px;background:#007bff;color:white;">
-      Pesan Kamar
-    </button>
-  `;
-}
+};
    
 /* =================================================
    TUTUP DASHBOARD PESERTA
@@ -496,6 +475,7 @@ function redirectPembayaran(nohp, nama, tipe) {
 
   window.open(formUrl, "_blank");
 }
+
 
 
 
