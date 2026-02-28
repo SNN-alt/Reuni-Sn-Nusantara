@@ -1,226 +1,123 @@
-let nohpAktif = "";
-let namaAktif = "";
+let apiUrl = "https://script.google.com/macros/s/AKfycbyyZnfx-ilQjNhAG0gP-rO_ctPne7HoxuREYerYXfrRTvJRiFYJReZkuT6kZC8dqop3/exec";
 
-const apiUrl =
-  "https://script.google.com/macros/s/AKfycbyyZnfx-ilQjNhAG0gP-rO_ctPne7HoxuREYerYXfrRTvJRiFYJReZkuT6kZC8dqop3/exec";
+document.addEventListener("DOMContentLoaded", () => {
 
-document.addEventListener("DOMContentLoaded", function () {
+  const nohpInput = document.getElementById("nohpLogin");
+  const popup = document.getElementById("popupDashboard");
+  const isiDashboard = document.getElementById("isiDashboard");
+  const statistikBox = document.getElementById("statistikBox");
 
   /* ================= LOGIN ================= */
+  window.loginPeserta = async function () {
 
-  window.loginPeserta = function () {
-
-    const nohpInput = document.getElementById("nohpLogin");
-    const nohp = nohpInput.value.replace(/[^0-9]/g, "");
+    let nohp = nohpInput.value.replace(/\D/g,"");
     nohpInput.value = nohp;
 
-    if (!nohp) {
-      alert("Masukkan nomor HP");
-      return;
-    }
-
-    if (nohp.length < 10) {
+    if(nohp.length < 10){
       alert("Nomor HP tidak valid");
       return;
     }
 
-    fetch(`${apiUrl}?mode=login&nohp=${encodeURIComponent(nohp)}`)
-      .then(res => res.json())
-      .then(data => {
-        if (data.status === "NOT_FOUND") {
-          alert("Nomor HP belum terdaftar");
-        } else {
-          tampilkanDashboard(data);
-        }
-      })
-      .catch(() => alert("Gagal koneksi server"));
-  };
+    const btn = document.querySelector(".login-box button");
+    btn.innerText = "Memproses...";
+    btn.disabled = true;
 
+    try{
+      const res = await fetch(apiUrl+"?mode=login&nohp="+encodeURIComponent(nohp));
+      const data = await res.json();
 
-  /* ================= DASHBOARD ================= */
-
-  window.tampilkanDashboard = function (data) {
-
-    nohpAktif = data.nohp;
-    namaAktif = data.nama;
-
-    document.getElementById("isiDashboard").innerHTML = `
-      <h3>👋 Halo, ${data.nama}</h3>
-
-      <table class="info-table">
-        <tr><td>No HP</td><td class="val">${data.nohp}</td></tr>
-        <tr><td>Jenis Kelamin</td><td class="val">${data.jk}</td></tr>
-        <tr><td>Keluarga</td><td class="val">${data.keluarga}</td></tr>
-        <tr><td>Jumlah</td><td class="val">${data.jumlah}</td></tr>
-        <tr><td>Parkir</td><td class="val">${data.parkir}</td></tr>
-        <tr><td>Status</td><td class="val">${data.statushadir || "BELUM KONFIRMASI"}</td></tr>
-      </table>
-
-      <div id="qrArea" style="margin-top:15px;text-align:center;"></div>
-      <div id="tendaArea" style="margin-top:15px;text-align:center;"></div>
-    `;
-
-    document.getElementById("popupDashboard").style.display = "flex";
-
-    const qrArea = document.getElementById("qrArea");
-    const tendaArea = document.getElementById("tendaArea");
-
-    const statusHadir = (data.statushadir || "").toUpperCase();
-    const statusTenda = (data.tenda || "").toUpperCase();
-
-   /* ================= QR (AKTIF H-7) ================= */
-
-const eventDate = new Date("2026-04-11T00:00:00+07:00");
-const h7 = new Date(eventDate);
-h7.setDate(eventDate.getDate() - 7);
-
-const now = new Date();
-const nowWIB = new Date(now.getTime() + (7 * 60 + now.getTimezoneOffset()) * 60000);
-
-const bolehKonfirmasi = nowWIB >= h7;
-
-if ((data.qr_aktif || "").toUpperCase() === "YA") {
-
-  qrArea.innerHTML = `
-    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(data.qr)}">
-    <p style="font-size:13px">Tunjukkan QR saat registrasi</p>
-  `;
-
-} else {
-
-  qrArea.innerHTML = `
-    <p style="color:red;font-weight:bold;">
-      Konfirmasi dibuka mulai 4 April 2026
-    </p>
-
-    <button
-      onclick="konfirmasiHadir('${data.nohp}')"
-      ${bolehKonfirmasi ? "" : "disabled"}
-      style="
-        margin-top:10px;
-        padding:10px 16px;
-        border:none;
-        border-radius:8px;
-        background:${bolehKonfirmasi ? "#28a745" : "#aaa"};
-        color:white;
-        cursor:${bolehKonfirmasi ? "pointer" : "not-allowed"};
-      ">
-      ${bolehKonfirmasi ? "Konfirmasi Kehadiran" : "Belum Aktif"}
-    </button>
-  `;
-}
-    /* ================= STATUS TENDA ================= */
-
-    if (statusHadir === "HADIR") {
-
-      if (statusTenda === "YA") {
-
-        tendaArea.innerHTML = `
-          <p style="color:#28a745;font-weight:bold;">
-            🏕 Anda mendapatkan jatah tenda
-          </p>
-        `;
-
-      } else {
-
-        tendaArea.innerHTML = `
-          <p style="color:#dc3545;font-weight:bold;">
-            ⚠ Kuota tenda sudah habis. Hubungi Call Center.
-          </p>
-        `;
+      if(data.status === "NOT_FOUND"){
+        alert("Nomor belum terdaftar");
+      }else{
+        tampilkanDashboard(data);
       }
 
-    } else {
-
-      tendaArea.innerHTML = `
-        <p style="color:#999;">
-          Konfirmasi kehadiran untuk mendapatkan jatah tenda
-        </p>
-      `;
+    }catch(err){
+      alert("Gagal koneksi server");
     }
 
-    /* ================= KUOTA TENDA ================= */
-
-    fetch(`${apiUrl}?mode=ambilKuotaTenda&t=` + Date.now())
-      .then(res => res.json())
-      .then(kuota => {
-
-        const kuotaInfo = document.createElement("p");
-        kuotaInfo.style.marginTop = "8px";
-        kuotaInfo.style.fontSize = "13px";
-        kuotaInfo.style.fontWeight = "bold";
-
-        kuotaInfo.innerHTML = `Sisa Kuota Tenda: ${kuota.sisa} / 200`;
-
-        tendaArea.appendChild(kuotaInfo);
-      });
-
+    btn.innerText = "Login";
+    btn.disabled = false;
   };
 
+  /* ================= DASHBOARD ================= */
+  function tampilkanDashboard(data){
+
+    isiDashboard.innerHTML = `
+      <h3>Halo, ${data.nama}</h3>
+      <table class="info-table">
+        <tr><td>No HP</td><td class="val">${data.nohp}</td></tr>
+        <tr><td>Keluarga</td><td class="val">${data.keluarga}</td></tr>
+        <tr><td>Status</td><td class="val">${data.statushadir || "BELUM KONFIRMASI"}</td></tr>
+      </table>
+      <div id="qrArea" style="margin-top:15px;"></div>
+    `;
+
+    popup.style.display="flex";
+
+    const qrArea = document.getElementById("qrArea");
+
+    const eventDate = new Date("2026-04-11T00:00:00+07:00");
+    const nowWIB = new Date(new Date().toLocaleString("en-US",{timeZone:"Asia/Jakarta"}));
+    const h7 = new Date(eventDate.getTime() - (7*24*60*60*1000));
+
+    if(data.qr_aktif === "YA"){
+      qrArea.innerHTML = `
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(data.qr)}">
+        <p>Tunjukkan QR saat registrasi</p>
+      `;
+    }else{
+      qrArea.innerHTML = `
+        <p style="color:red;">Konfirmasi dibuka 4 April 2026</p>
+        <button onclick="konfirmasiHadir('${data.nohp}')"
+        ${nowWIB >= h7 ? "" : "disabled"}>
+        Konfirmasi Kehadiran
+        </button>
+      `;
+    }
+  }
+
+  window.tutupDashboard = function(){
+    popup.style.display="none";
+  };
 
   /* ================= KONFIRMASI ================= */
+  window.konfirmasiHadir = async function(nohp){
 
-  window.konfirmasiHadir = function (nohp) {
-
-    fetch(`${apiUrl}?mode=konfirmasi&nohp=${encodeURIComponent(nohp)}`)
-      .then(res => res.json())
-      .then(data => {
-        alert(data.message);
-        loginPeserta();
-      })
-      .catch(() => alert("Gagal koneksi server"));
+    try{
+      const res = await fetch(apiUrl+"?mode=konfirmasi&nohp="+encodeURIComponent(nohp));
+      const data = await res.json();
+      alert(data.message);
+      loginPeserta();
+    }catch{
+      alert("Gagal koneksi");
+    }
   };
 
-
   /* ================= STATISTIK ================= */
+  async function loadStatistik(){
+    if(!statistikBox) return;
 
-  function loadStatistik() {
+    try{
+      const res = await fetch(apiUrl+"?mode=statistik&t="+Date.now());
+      const data = await res.json();
 
-    const statistikBox = document.getElementById("statistikBox");
-    if (!statistikBox) return;
-
-    fetch(apiUrl + "?mode=statistik&t=" + Date.now())
-      .then(res => res.json())
-      .then(data => {
-
-        statistikBox.innerHTML = `
-          <div class="statistik-premium">
-            <div class="stat-item">
-              <small>Total Pendaftar</small>
-              <span>${data.totalPeserta ?? 0}</span>
-            </div>
-            <div class="stat-item">
-              <small>Sudah Konfirmasi</small>
-              <span>${data.totalHadir ?? 0}</span>
-            </div>
+      statistikBox.innerHTML = `
+        <div class="statistik-premium">
+          <div class="stat-item">
+            <small>Total Pendaftar</small>
+            <span>${data.totalPeserta || 0}</span>
           </div>
-        `;
-      });
+          <div class="stat-item">
+            <small>Sudah Konfirmasi</small>
+            <span>${data.totalHadir || 0}</span>
+          </div>
+        </div>
+      `;
+    }catch{}
   }
 
   loadStatistik();
-  setInterval(loadStatistik, 10000);
+  setInterval(loadStatistik,30000);
 
 });
-
-
-/* ================= TUTUP DASHBOARD ================= */
-
-window.tutupDashboard = function () {
-  document.getElementById("popupDashboard").style.display = "none";
-};
-
-
-/* ================= LINK FORM ================= */
-
-function bukaPeserta() {
-  window.open("https://forms.gle/VudgYiKRNVWU9zsG8", "_blank");
-}
-
-function bukaUMKM() {
-  window.open("https://forms.gle/sUyoZ34bRnDrp2xW6", "_blank");
-}
-
-
-
-
