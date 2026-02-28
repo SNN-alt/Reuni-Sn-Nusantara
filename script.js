@@ -113,9 +113,9 @@ window.loginPeserta = function () {
    DASHBOARD PESERTA
 ================================================= */
 window.tampilkanDashboard = function (data) {
-   
-   nohpAktif = data.nohp;
-   namaAktif = data.nama;
+
+  nohpAktif = data.nohp;
+  namaAktif = data.nama;
 
   document.getElementById("isiDashboard").innerHTML = `
     <h3>👋 Halo, ${data.nama}</h3>
@@ -140,9 +140,11 @@ window.tampilkanDashboard = function (data) {
      QR / KONFIRMASI H-7
   ========================== */
 
+  const qrArea = document.getElementById("qrArea");
+
   if (String(data.qr_aktif).toUpperCase() === "YA") {
 
-    document.getElementById("qrArea").innerHTML = `
+    qrArea.innerHTML = `
       <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(data.qr)}">
       <p style="font-size:13px">Tunjukkan QR saat registrasi</p>
     `;
@@ -160,7 +162,7 @@ window.tampilkanDashboard = function (data) {
 
     const aktif = todayWIB >= h7;
 
-    document.getElementById("qrArea").innerHTML = `
+    qrArea.innerHTML = `
       <p style="color:red;font-weight:bold">
         QR aktif mulai H-7 sebelum acara
       </p>
@@ -181,20 +183,22 @@ window.tampilkanDashboard = function (data) {
       </button>
     `;
   }
+
   /* =========================
-     TOMBOL TENDA
+     TENDA
   ========================== */
 
   const tendaArea = document.getElementById("tendaArea");
 
-  if (String(data.tenda).toUpperCase() === "YA") {
+  if (String(data.tenda || "").toUpperCase() === "YA") {
 
     tendaArea.innerHTML = `
       <p style="font-weight:bold;color:#28a745;">
         🏕 Anda sudah memesan tenda
       </p>
+
       <button
-        onclick="toggleTenda('${data.nohp}', '${data.tenda || ""}')"
+        onclick="toggleTenda('${data.nohp}', 'YA')"
         style="
           margin-top:8px;
           padding:10px 16px;
@@ -223,71 +227,69 @@ window.tampilkanDashboard = function (data) {
     `;
   }
 
-  /* =========================
-     TAMPILKAN KUOTA TENDA
-  ========================== */
-
+  // tampilkan kuota tenda
   fetch(`${apiUrl}?mode=ambilKuotaTenda&t=` + Date.now())
     .then(res => res.json())
     .then(kuota => {
-
       const kuotaInfo = document.createElement("p");
       kuotaInfo.style.marginTop = "8px";
       kuotaInfo.style.fontSize = "13px";
       kuotaInfo.style.fontWeight = "bold";
       kuotaInfo.innerHTML = `Sisa Kuota Tenda: ${kuota.sisa} / 200`;
-
       tendaArea.appendChild(kuotaInfo);
     });
 
-};   // ← function baru ditutup di sini
+  /* =========================
+     KAMAR
+  ========================== */
 
-   /* =========================
-   TOMBOL KAMAR
-========================== */
+  const kamarArea = document.getElementById("kamarArea");
 
-const kamarArea = document.getElementById("kamarArea");
+  const statusKamar = String(data.status_kamar || "").toUpperCase();
+  const tipeKamar = data.tipe_kamar || "";
 
-if (String(data.status_kamar || "").toUpperCase() === "LUNAS") {
+  if (statusKamar === "LUNAS") {
 
-  kamarArea.innerHTML = `
-    <p style="font-weight:bold;color:#28a745;">
-      🏨 Status Kamar: LUNAS
-    </p>
-    <p>${data.tipe_kamar || ""}</p>
-  `;
+    kamarArea.innerHTML = `
+      <p style="font-weight:bold;color:#28a745;">
+        🏨 Status Kamar: LUNAS
+      </p>
+      <p>${tipeKamar}</p>
+    `;
 
-} else if (String(data.status_kamar || "").toUpperCase() === "MENUNGGU") {
+  } else if (statusKamar === "MENUNGGU") {
 
-  kamarArea.innerHTML = `
-    <p style="font-weight:bold;color:#ffc107;">
-      🏨 Status: MENUNGGU PEMBAYARAN
-    </p>
-    <p>${data.tipe_kamar || ""}</p>
+    kamarArea.innerHTML = `
+      <p style="font-weight:bold;color:#ffc107;">
+        🏨 Status: MENUNGGU PEMBAYARAN
+      </p>
+      <p>${tipeKamar}</p>
 
-    <button
-      onclick="redirectPembayaran('${data.nohp}','${data.nama}','${data.tipe_kamar}')"
-      style="margin-top:8px;padding:10px 16px;border:none;border-radius:8px;background:#28a745;color:white;">
-      Lakukan Pembayaran
-    </button>
+      <button
+        onclick="redirectPembayaran('${data.nohp}','${data.nama}','${tipeKamar}')"
+        style="margin-top:8px;padding:10px 16px;border:none;border-radius:8px;background:#28a745;color:white;">
+        Lakukan Pembayaran
+      </button>
 
-    <button
-      onclick="toggleKamarFrontend('${data.nohp}','${data.tipe_kamar}')"
-      style="margin-top:8px;margin-left:8px;padding:10px 16px;border:none;border-radius:8px;background:#dc3545;color:white;">
-      Batalkan
-    </button>
-  `;
+      <button
+        onclick="toggleKamarFrontend('${data.nohp}','${tipeKamar}')"
+        style="margin-top:8px;margin-left:8px;padding:10px 16px;border:none;border-radius:8px;background:#dc3545;color:white;">
+        Batalkan
+      </button>
+    `;
 
-} else {
+  } else {
 
-  kamarArea.innerHTML = `
-    <button
-      onclick="pilihKamar('${data.nohp}')"
-      style="margin-top:8px;padding:10px 16px;border:none;border-radius:8px;background:#007bff;color:white;">
-      Pesan Kamar
-    </button>
-  `;
-}
+    kamarArea.innerHTML = `
+      <button
+        onclick="pilihKamar('${data.nohp}')"
+        style="margin-top:8px;padding:10px 16px;border:none;border-radius:8px;background:#007bff;color:white;">
+        Pesan Kamar
+      </button>
+    `;
+  }
+
+};
    
 /* =================================================
    TUTUP DASHBOARD PESERTA
@@ -499,6 +501,7 @@ function redirectPembayaran(nohp, nama, tipe) {
 
   window.open(formUrl, "_blank");
 }
+
 
 
 
