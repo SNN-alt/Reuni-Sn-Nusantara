@@ -478,11 +478,42 @@ main{
 ===================================================== */
 @media(max-width:600px){
 
+  /* ================= STATISTIK FIX MOBILE ================= */
+
+.statistik-premium{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:20px;
+  padding:18px 20px;
+}
+
+.stat-item{
+  flex:1;
+  text-align:center;
+}
+
+.stat-item span{
+  font-size:28px;
+}
+
+/* Mobile tetap kanan-kiri */
+@media(max-width:600px){
+
   .statistik-premium{
-    flex-direction:column;
-    gap:15px;
+    flex-direction:row; /* tetap horizontal */
+    gap:10px;
+    padding:15px;
   }
 
+  .stat-item span{
+    font-size:22px; /* sedikit kecil supaya muat */
+  }
+
+  .stat-item small{
+    font-size:12px;
+  }
+}
   .btn{
     font-size:14px;
   }
@@ -495,6 +526,7 @@ main{
     padding:22px;
   }
 }
+
 
 
 
