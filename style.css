@@ -380,7 +380,8 @@ main{
 .sponsor-utama{
   display:grid;
   grid-template-columns:repeat(3,1fr);
-  gap:30px;
+  column-gap:30px;
+  row-gap:40px; /* spasi antar baris */
   max-width:720px;
   margin:40px auto 80px auto;
   padding:0 20px;
@@ -389,7 +390,7 @@ main{
 .sponsor-utama img{
   width:100%;
   background:#000;
-  padding:22px;
+  padding:28px;
   border-radius:20px;
   cursor:pointer;
   transition:all .3s ease;
