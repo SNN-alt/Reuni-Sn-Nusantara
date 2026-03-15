@@ -660,14 +660,18 @@ main{
 
 .sponsor-utama{
   grid-template-columns:repeat(3,1fr);
+  justify-content:center;
   justify-items:center;
-  gap:16px;
-  padding:0 10px;
+  align-items:center;
+  gap:14px;
+  max-width:320px; /* container lebih kecil supaya center */
+  margin:30px auto 60px auto;
 }
 
 .sponsor-utama img{
-  max-width:95px;
+  width:90px;
   padding:12px;
+  margin:auto;
 }
 
 }
