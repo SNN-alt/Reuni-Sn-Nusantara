@@ -113,16 +113,25 @@ function updateCountdown() {
   setInterval(loadStatistik, 30000);
 
 /* =====================================================
-   KUOTA TENDA (FIX PASTI MUNCUL)
+   KUOTA TENDA FINAL (PASTI MUNCUL)
 ===================================================== */
 async function loadKuota() {
 
   const box = document.getElementById("progressKuota");
-  if (!box) return; // kalau elemen tidak ada, stop
+
+  if (!box) {
+    console.warn("❌ progressKuota tidak ditemukan di HTML");
+    return;
+  }
+
+  // loading dulu
+  box.innerHTML = `<div style="color:#aaa;">Loading kuota...</div>`;
 
   try {
     const res = await fetch(`${apiUrl}?mode=ambilKuotaTenda&t=${Date.now()}`);
     const data = await res.json();
+
+    console.log("✅ DATA KUOTA:", data);
 
     const total = 160;
     const sisa = parseInt(data.sisa) || 0;
@@ -151,6 +160,8 @@ async function loadKuota() {
     `;
 
   } catch (err) {
+
+    console.error("❌ ERROR KUOTA:", err);
 
     box.innerHTML = `
       <div style="color:red;">Gagal load kuota</div>
