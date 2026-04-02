@@ -139,42 +139,43 @@ document.addEventListener("DOMContentLoaded", function () {
   ===================================================== */
   async function loadKuota() {
 
-    if (!progressKuota) return;
+  if (!progressKuota) return;
 
-    progressKuota.innerHTML = `<div style="color:#aaa;">Loading kuota...</div>`;
+  progressKuota.innerHTML = `<div style="color:#aaa;">Loading kuota...</div>`;
 
-    try {
-      const res = await fetch(`${apiUrl}?mode=ambilKuotaTenda&t=${Date.now()}`);
-      const data = await res.json();
+  try {
+    // ambil data statistik (sudah konfirmasi)
+    const res = await fetch(`${apiUrl}?mode=statistik&t=${Date.now()}`);
+    const data = await res.json();
 
-      const total = 160;
-      const sisa = parseInt(data.sisa) || 0;
-      const used = total - sisa;
+    const total = 160;
+    const hadir = parseInt(data.totalHadir) || 0;
 
-      const percent = Math.min(100, (used / total) * 100);
+    const sisa = Math.max(0, total - hadir);
+    const percent = Math.min(100, (hadir / total) * 100);
 
-      let warna = "#28a745";
-      if (percent > 60) warna = "#ffc107";
-      if (percent > 85) warna = "#dc3545";
+    let warna = "#28a745";
+    if (percent > 60) warna = "#ffc107";
+    if (percent > 85) warna = "#dc3545";
 
-      progressKuota.innerHTML = `
-        <div style="margin-bottom:8px;font-weight:600;">
-          Sisa Kuota Tenda: <strong>${sisa}</strong> / ${total}
-        </div>
+    progressKuota.innerHTML = `
+      <div style="margin-bottom:8px;font-weight:600;">
+        Sisa Kuota Tenda: <strong>${sisa}</strong> / ${total}
+      </div>
 
-        <div class="progress-bar">
-          <div class="progress-fill" style="width:${percent}%; background:${warna};"></div>
-        </div>
+      <div class="progress-bar">
+        <div class="progress-fill" style="width:${percent}%; background:${warna};"></div>
+      </div>
 
-        <div style="font-size:12px;margin-top:6px;color:#aaa;">
-          Lakukan konfirmasi untuk mendapatkan kuota tenda
-        </div>
-      `;
+      <div style="font-size:12px;margin-top:6px;color:#aaa;">
+        Berdasarkan jumlah peserta yang sudah konfirmasi
+      </div>
+    `;
 
-    } catch {
-      progressKuota.innerHTML = `<div style="color:red;">Gagal load kuota</div>`;
-    }
+  } catch {
+    progressKuota.innerHTML = `<div style="color:red;">Gagal load kuota</div>`;
   }
+}
 
   loadKuota();
   setInterval(loadKuota, 10000);
