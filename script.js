@@ -211,9 +211,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const qrArea = document.getElementById("qrArea");
     const tendaArea = document.getElementById("tendaArea");
 
-    const h7 = new Date(eventDate.getTime() - (7 * 24 * 60 * 60 * 1000));
-    const now = new Date();
-    const boleh = now >= h7;
+    const boleh = true;
 
     if ((data.qr_aktif || "").toUpperCase() === "YA") {
       qrArea.innerHTML = `
@@ -224,13 +222,20 @@ document.addEventListener("DOMContentLoaded", function () {
       `;
     } else {
       qrArea.innerHTML = `
-        <div class="konfirmasi-text">Konfirmasi dibuka H-7</div>
-        <button class="konfirmasi-btn"
-          onclick="konfirmasiHadir('${data.nohp}')"
-          ${boleh ? "" : "disabled"}>
-          ${boleh ? "Konfirmasi Kehadiran" : "Belum Aktif"}
-        </button>
-      `;
+  <div class="konfirmasi-text">
+    Konfirmasi sudah dibuka
+  </div>
+
+  <button 
+    class="konfirmasi-btn"
+    onclick="konfirmasiHadir('${data.nohp}')">
+    Konfirmasi Kehadiran
+  </button>
+
+  <div class="konfirmasi-info">
+    Lakukan konfirmasi untuk mendapatkan kuota tenda
+  </div>
+`;
     }
 
     try {
