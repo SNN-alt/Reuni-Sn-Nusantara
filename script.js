@@ -170,7 +170,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   };
 
-  /* ================= DASHBOARD ================= */
+   /* ================= DASHBOARD ================= */
   window.tampilkanDashboard = async function (data) {
 
     const statusBadge =
@@ -197,65 +197,76 @@ document.addEventListener("DOMContentLoaded", function () {
     /* ===== JIKA SUDAH HADIR ===== */
     if ((data.statushadir || "").toUpperCase() === "HADIR") {
 
-  const dapatTenda = (data.tenda || "").toUpperCase() === "YA";
+      const dapatTenda = (data.tenda || "").toUpperCase() === "YA";
 
-  const infoTenda = dapatTenda
-    ? `<div style="margin-top:10px;color:#28a745;font-weight:600;">
-         ✅ Anda mendapatkan kuota tenda
-       </div>`
-    : `<div style="margin-top:10px;color:#dc3545;font-weight:600;">
-         ⚠ Kuota tenda sudah habis, hubungi panitia
-       </div>`;
+      const infoTenda = dapatTenda
+        ? `<div style="margin-top:10px;color:#28a745;font-weight:600;">
+             ✅ Anda mendapatkan kuota tenda
+           </div>`
+        : `<div style="margin-top:10px;color:#dc3545;font-weight:600;">
+             ⚠ Kuota tenda sudah habis, hubungi panitia
+           </div>`;
 
-  qrArea.innerHTML = `
-    <div class="qr-frame">
-      <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${data.qr}">
-    </div>
+      qrArea.innerHTML = `
+        <div class="qr-frame">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${data.qr}">
+        </div>
 
-    <p style="margin-top:10px;font-weight:600;">
-      Tunjukkan QR ke panitia untuk scan
-    </p>
+        <p style="margin-top:10px;font-weight:600;">
+          Tunjukkan QR ke panitia untuk scan
+        </p>
 
-    ${infoTenda}
+        ${infoTenda}
 
-    <button 
-      class="konfirmasi-btn"
-      style="background:#dc3545;color:white;margin-top:15px;"
-      onclick="batalHadir('${data.nohp}')">
-      Batal Hadir
-    </button>
+        <button 
+          class="konfirmasi-btn"
+          style="background:#dc3545;color:white;margin-top:15px;"
+          onclick="batalHadir('${data.nohp}')">
+          Batal Hadir
+        </button>
 
-    <div style="font-size:12px;color:#888;margin-top:8px;">
-      Jika batal, kuota tenda akan diberikan ke peserta lain
-    </div>
-  `;
+        <div style="font-size:12px;color:#888;margin-top:8px;">
+          Jika batal, kuota tenda akan diberikan ke peserta lain
+        </div>
+      `;
 
-} else {
+    } else {
 
-  qrArea.innerHTML = `
-    <button 
-      class="konfirmasi-btn"
-      style="background:#198754;color:white;margin-top:15px;"
-      onclick="konfirmasiHadir('${data.nohp}')">
-      Konfirmasi Kehadiran
-    </button>
-  `;
-}
+      qrArea.innerHTML = `
+        <button 
+          class="konfirmasi-btn"
+          style="background:#198754;color:white;margin-top:15px;"
+          onclick="konfirmasiHadir('${data.nohp}')">
+          Konfirmasi Kehadiran
+        </button>
+      `;
+    }
 
-/* ================= AKSI ================= */
+  }; // ✅ PENUTUP FUNCTION DASHBOARD (INI YANG KEMARIN HILANG)
 
-window.konfirmasiHadir = async function (nohp) {
-  const res = await fetch(`${apiUrl}?mode=konfirmasi&nohp=${nohp}`);
-  const data = await res.json();
-  alert(data.message);
-  loginPeserta();
-};
 
-window.batalHadir = async function (nohp) {
-  if (!confirm("Yakin batal hadir?")) return;
+  /* ================= AKSI (HARUS DI LUAR) ================= */
 
-  const res = await fetch(`${apiUrl}?mode=konfirmasi&nohp=${nohp}`);
-  const data = await res.json();
-  alert(data.message);
-  loginPeserta();
-};
+  window.konfirmasiHadir = async function (nohp) {
+    try {
+      const res = await fetch(`${apiUrl}?mode=konfirmasi&nohp=${nohp}`);
+      const data = await res.json();
+      alert(data.message);
+      loginPeserta();
+    } catch {
+      alert("Gagal koneksi");
+    }
+  };
+
+  window.batalHadir = async function (nohp) {
+    if (!confirm("Yakin batal hadir?")) return;
+
+    try {
+      const res = await fetch(`${apiUrl}?mode=konfirmasi&nohp=${nohp}`);
+      const data = await res.json();
+      alert(data.message);
+      loginPeserta();
+    } catch {
+      alert("Gagal koneksi");
+    }
+  };
