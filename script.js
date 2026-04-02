@@ -120,12 +120,12 @@ function updateCountdown() {
       const res = await fetch(`${apiUrl}?mode=ambilKuotaTenda&t=${Date.now()}`);
       const data = await res.json();
 
-      const total = 160;
+      const total = 200;
       const used = total - data.sisa;
       const percent = (used / total) * 100;
 
       progressKuota.innerHTML = `
-        <div>Sisa Kuota Tenda: <strong>${data.sisa}</strong> / 160</div>
+        <div>Sisa Kuota Tenda: <strong>${data.sisa}</strong> / 200</div>
         <div class="progress-bar">
           <div class="progress-fill" style="width:${percent}%"></div>
         </div>
