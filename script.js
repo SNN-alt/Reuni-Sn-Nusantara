@@ -1,5 +1,5 @@
 /* =====================================================
-   REUNI SN NUSANTARA 2026 - FINAL CLEAN SCRIPT
+   REUNI SN NUSANTARA 2026 - FINAL STABLE SCRIPT
 ===================================================== */
 
 const apiUrl = "https://script.google.com/macros/s/AKfycbyyZnfx-ilQjNhAG0gP-rO_ctPne7HoxuREYerYXfrRTvJRiFYJReZkuT6kZC8dqop3/exec";
@@ -7,9 +7,7 @@ const eventDate = new Date("2026-04-11T00:00:00+07:00");
 
 document.addEventListener("DOMContentLoaded", function () {
 
-  /* =====================================================
-     ELEMENT INIT (ANTI ERROR)
-  ===================================================== */
+  /* ================= ELEMENT ================= */
   const statistikBox = document.getElementById("statistikBox");
   const countdownBox = document.getElementById("countdownBox");
   const progressKuota = document.getElementById("progressKuota");
@@ -28,9 +26,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const nohpLogin = document.getElementById("nohpLogin");
 
-  /* =====================================================
-     GLOBAL MODAL SYSTEM
-  ===================================================== */
+  /* ================= MODAL ================= */
   document.querySelectorAll(".modal, .popup-overlay, #sponsorOverlay")
     .forEach(modal => {
       modal.addEventListener("click", e => {
@@ -45,9 +41,6 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     });
 
-  /* =====================================================
-     OPEN MODAL
-  ===================================================== */
   window.bukaPanduan = () => modalPanduan.classList.add("active");
   window.bukaProposal = () => modalProposal.classList.add("active");
 
@@ -55,20 +48,11 @@ document.addEventListener("DOMContentLoaded", function () {
     btnCallCenter.onclick = () => modalCallCenter.classList.add("active");
   }
 
-  /* =====================================================
-     FORM LINK
-  ===================================================== */
-  window.bukaPeserta = () => {
-    window.open("https://forms.gle/VudgYiKRNVWU9zsG8", "_blank");
-  };
+  /* ================= LINK ================= */
+  window.bukaPeserta = () => window.open("https://forms.gle/VudgYiKRNVWU9zsG8", "_blank");
+  window.bukaUMKM = () => window.open("https://forms.gle/sUyoZ34bRnDrp2xW6", "_blank");
 
-  window.bukaUMKM = () => {
-    window.open("https://forms.gle/sUyoZ34bRnDrp2xW6", "_blank");
-  };
-
-  /* =====================================================
-     SPONSOR ZOOM
-  ===================================================== */
+  /* ================= SPONSOR ================= */
   document.querySelectorAll(".sponsor-img").forEach(img => {
     img.addEventListener("click", function () {
       sponsorPreview.src = this.src;
@@ -80,9 +64,7 @@ document.addEventListener("DOMContentLoaded", function () {
     closeSponsor.onclick = () => sponsorOverlay.classList.remove("active");
   }
 
-  /* =====================================================
-     COUNTDOWN
-  ===================================================== */
+  /* ================= COUNTDOWN ================= */
   function updateCountdown() {
     const now = new Date();
     const diff = eventDate - now;
@@ -108,9 +90,7 @@ document.addEventListener("DOMContentLoaded", function () {
   setInterval(updateCountdown, 1000);
   updateCountdown();
 
-  /* =====================================================
-     STATISTIK
-  ===================================================== */
+  /* ================= STATISTIK ================= */
   async function loadStatistik() {
     try {
       const res = await fetch(`${apiUrl}?mode=statistik&t=${Date.now()}`);
@@ -134,55 +114,49 @@ document.addEventListener("DOMContentLoaded", function () {
   loadStatistik();
   setInterval(loadStatistik, 30000);
 
-  /* =====================================================
-     KUOTA TENDA (FIX)
-  ===================================================== */
+  /* ================= KUOTA TENDA ================= */
   async function loadKuota() {
 
-  if (!progressKuota) return;
+    if (!progressKuota) return;
 
-  progressKuota.innerHTML = `<div style="color:#aaa;">Loading kuota...</div>`;
+    progressKuota.innerHTML = `<div style="color:#aaa;">Loading kuota...</div>`;
 
-  try {
-    // ambil data statistik (sudah konfirmasi)
-    const res = await fetch(`${apiUrl}?mode=statistik&t=${Date.now()}`);
-    const data = await res.json();
+    try {
+      const res = await fetch(`${apiUrl}?mode=statistik&t=${Date.now()}`);
+      const data = await res.json();
 
-    const total = 160;
-    const hadir = parseInt(data.totalHadir) || 0;
+      const total = 160;
+      const hadir = parseInt(data.totalHadir) || 0;
+      const sisa = Math.max(0, total - hadir);
+      const percent = Math.min(100, (hadir / total) * 100);
 
-    const sisa = Math.max(0, total - hadir);
-    const percent = Math.min(100, (hadir / total) * 100);
+      let warna = "#28a745";
+      if (percent > 60) warna = "#ffc107";
+      if (percent > 85) warna = "#dc3545";
 
-    let warna = "#28a745";
-    if (percent > 60) warna = "#ffc107";
-    if (percent > 85) warna = "#dc3545";
+      progressKuota.innerHTML = `
+        <div style="margin-bottom:8px;font-weight:600;">
+          Sisa Kuota Tenda: <strong>${sisa}</strong> / ${total}
+        </div>
 
-    progressKuota.innerHTML = `
-      <div style="margin-bottom:8px;font-weight:600;">
-        Sisa Kuota Tenda: <strong>${sisa}</strong> / ${total}
-      </div>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width:${percent}%; background:${warna};"></div>
+        </div>
 
-      <div class="progress-bar">
-        <div class="progress-fill" style="width:${percent}%; background:${warna};"></div>
-      </div>
+        <div style="font-size:12px;margin-top:6px;color:#aaa;">
+          Berdasarkan peserta yang sudah konfirmasi
+        </div>
+      `;
 
-      <div style="font-size:12px;margin-top:6px;color:#aaa;">
-        Berdasarkan jumlah peserta yang sudah konfirmasi
-      </div>
-    `;
-
-  } catch {
-    progressKuota.innerHTML = `<div style="color:red;">Gagal load kuota</div>`;
+    } catch {
+      progressKuota.innerHTML = `<div style="color:red;">Gagal load kuota</div>`;
+    }
   }
-}
 
   loadKuota();
   setInterval(loadKuota, 10000);
 
-  /* =====================================================
-     LOGIN
-  ===================================================== */
+  /* ================= LOGIN ================= */
   window.loginPeserta = async function () {
 
     let nohp = nohpLogin.value.replace(/\D/g, "");
@@ -208,9 +182,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   };
 
-  /* =====================================================
-     DASHBOARD
-  ===================================================== */
+  /* ================= DASHBOARD ================= */
   window.tampilkanDashboard = async function (data) {
 
     const statusBadge =
@@ -258,36 +230,29 @@ document.addEventListener("DOMContentLoaded", function () {
           ${boleh ? "" : "disabled"}>
           ${boleh ? "Konfirmasi Kehadiran" : "Belum Aktif"}
         </button>
-        <div class="konfirmasi-info">
-          Lakukan konfirmasi untuk mendapatkan kuota tenda
-        </div>
       `;
     }
 
     try {
-  const res = await fetch(`${apiUrl}?mode=statistik&t=${Date.now()}`);
-  const dataStat = await res.json();
+      const res = await fetch(`${apiUrl}?mode=statistik&t=${Date.now()}`);
+      const dataStat = await res.json();
 
-  const total = 160;
-  const hadir = parseInt(dataStat.totalHadir) || 0;
-  const sisa = Math.max(0, total - hadir);
+      const total = 160;
+      const hadir = parseInt(dataStat.totalHadir) || 0;
+      const sisa = Math.max(0, total - hadir);
 
-  tendaArea.innerHTML = `
-    <div class="tenda-box">
-      Sisa Kuota Tenda: <strong>${sisa}</strong> / ${total}
-    </div>
-  `;
-} catch {
-  tendaArea.innerHTML = `
-    <div class="tenda-box">
-      Gagal load kuota
-    </div>
-  `;
-}
+      tendaArea.innerHTML = `
+        <div class="tenda-box">
+          Sisa Kuota Tenda: <strong>${sisa}</strong> / ${total}
+        </div>
+      `;
+    } catch {
+      tendaArea.innerHTML = `<div class="tenda-box">Gagal load kuota</div>`;
+    }
 
-  /* =====================================================
-     KONFIRMASI
-  ===================================================== */
+  };
+
+  /* ================= KONFIRMASI ================= */
   window.konfirmasiHadir = async function (nohp) {
     try {
       const res = await fetch(`${apiUrl}?mode=konfirmasi&nohp=${nohp}`);
