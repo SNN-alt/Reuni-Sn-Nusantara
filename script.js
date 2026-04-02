@@ -265,16 +265,25 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     try {
-      const res = await fetch(`${apiUrl}?mode=ambilKuotaTenda&t=${Date.now()}`);
-      const kuota = await res.json();
+  const res = await fetch(`${apiUrl}?mode=statistik&t=${Date.now()}`);
+  const dataStat = await res.json();
 
-      tendaArea.innerHTML = `
-        <div class="tenda-box">
-          Sisa Kuota Tenda: <strong>${kuota.sisa}</strong> / 160
-        </div>
-      `;
-    } catch {}
-  };
+  const total = 160;
+  const hadir = parseInt(dataStat.totalHadir) || 0;
+  const sisa = Math.max(0, total - hadir);
+
+  tendaArea.innerHTML = `
+    <div class="tenda-box">
+      Sisa Kuota Tenda: <strong>${sisa}</strong> / ${total}
+    </div>
+  `;
+} catch {
+  tendaArea.innerHTML = `
+    <div class="tenda-box">
+      Gagal load kuota
+    </div>
+  `;
+}
 
   /* =====================================================
      KONFIRMASI
