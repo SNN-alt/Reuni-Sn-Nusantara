@@ -214,29 +214,29 @@ document.addEventListener("DOMContentLoaded", function () {
     const boleh = true;
 
     if ((data.qr_aktif || "").toUpperCase() === "YA") {
-      qrArea.innerHTML = `
-        <div class="qr-frame">
-          <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${data.qr}">
-        </div>
-        <p>Tunjukkan QR saat registrasi</p>
-      `;
-    } else {
-      qrArea.innerHTML = `
-  <div class="konfirmasi-text">
-    Konfirmasi sudah dibuka
-  </div>
+      if ((data.qr_aktif || "").toUpperCase() === "YA") {
 
-  <button 
-    class="konfirmasi-btn"
-    onclick="konfirmasiHadir('${data.nohp}')">
-    Konfirmasi Kehadiran
-  </button>
+  qrArea.innerHTML = `
+    <div class="qr-frame">
+      <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${data.qr}">
+    </div>
 
-  <div class="konfirmasi-info">
-    Lakukan konfirmasi untuk mendapatkan kuota tenda
-  </div>
-`;
-    }
+    <p style="margin-top:10px;font-weight:600;">
+      Tunjukkan QR saat registrasi
+    </p>
+
+    <button 
+      class="konfirmasi-btn"
+      style="background:#dc3545;color:white;margin-top:15px;"
+      onclick="batalHadir('${data.nohp}')">
+      Batal Hadir
+    </button>
+
+    <div class="konfirmasi-info">
+      Jika batal, kuota tenda akan diberikan ke peserta lain
+    </div>
+  `;
+}
 
     try {
       const res = await fetch(`${apiUrl}?mode=statistik&t=${Date.now()}`);
@@ -270,3 +270,19 @@ document.addEventListener("DOMContentLoaded", function () {
   };
 
 });
+window.batalHadir = async function (nohp) {
+
+  if (!confirm("Yakin ingin membatalkan kehadiran?")) return;
+
+  try {
+    const res = await fetch(`${apiUrl}?mode=konfirmasi&nohp=${nohp}`);
+    const data = await res.json();
+
+    alert(data.message);
+
+    loginPeserta(); // refresh dashboard
+
+  } catch {
+    alert("Gagal koneksi");
+  }
+};
