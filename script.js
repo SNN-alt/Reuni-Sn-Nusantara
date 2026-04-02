@@ -179,77 +179,140 @@ document.addEventListener("DOMContentLoaded", function () {
   };
 
   /* ================= DASHBOARD ================= */
-  window.tampilkanDashboard = function (data) {
+  window.tampilkanDashboard = async function (data) {
 
-    const statusBadge =
-      (data.statushadir || "").toUpperCase() === "HADIR"
-        ? `<span class="badge badge-green">HADIR</span>`
-        : `<span class="badge badge-gray">BELUM KONFIRMASI</span>`;
+  const statusBadge =
+    (data.statushadir || "").toUpperCase() === "HADIR"
+      ? `<span class="badge badge-green">HADIR</span>`
+      : `<span class="badge badge-gray">BELUM KONFIRMASI</span>`;
 
-    isiDashboard.innerHTML = `
-      <h3>Halo, ${data.nama}</h3>
+  isiDashboard.innerHTML = `
+    <h3 style="margin-bottom:10px;">Halo, ${data.nama}</h3>
 
-      <table class="info-table">
-        <tr><td>No HP</td><td class="val">${data.nohp}</td></tr>
-        <tr><td>Jumlah</td><td class="val">${data.jumlah}</td></tr>
-        <tr><td>Status</td><td class="val">${statusBadge}</td></tr>
-      </table>
+    <table class="info-table">
+      <tr><td>No HP</td><td class="val">${data.nohp}</td></tr>
+      <tr><td>Jumlah</td><td class="val">${data.jumlah}</td></tr>
+      <tr><td>Status</td><td class="val">${statusBadge}</td></tr>
+    </table>
 
-      <div id="qrArea"></div>
+    <div id="qrArea" style="margin-top:15px;"></div>
+    <div id="tendaGlobal" style="margin-top:20px;"></div>
+  `;
+
+  popupDashboard.classList.add("active");
+
+  const qrArea = document.getElementById("qrArea");
+  const tendaGlobal = document.getElementById("tendaGlobal");
+
+  /* ================= STATUS PESERTA ================= */
+  if ((data.statushadir || "").toUpperCase() === "HADIR") {
+
+    const dapatTenda = (data.tenda || "").toUpperCase() === "YA";
+
+    const infoTenda = dapatTenda
+      ? `<div style="margin-top:10px;color:#28a745;font-weight:600;">
+           ✅ Anda mendapatkan kuota tenda
+         </div>`
+      : `<div style="margin-top:10px;color:#dc3545;font-weight:600;">
+           ⚠ Kuota tenda sudah habis, hubungi panitia
+         </div>`;
+
+    qrArea.innerHTML = `
+      <div class="qr-frame">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${data.qr}">
+      </div>
+
+      <p style="margin-top:10px;font-weight:600;">
+        Tunjukkan QR ke panitia untuk scan
+      </p>
+
+      ${infoTenda}
+
+      <button 
+        class="konfirmasi-btn"
+        style="background:#dc3545;color:white;margin-top:15px;"
+        onclick="batalHadir('${data.nohp}')">
+        Batal Hadir
+      </button>
+
+      <div style="font-size:12px;color:#888;margin-top:8px;">
+        Jika batal, kuota tenda akan diberikan ke peserta lain
+      </div>
     `;
 
-    popupDashboard.classList.add("active");
+  } else {
 
-    const qrArea = document.getElementById("qrArea");
+    qrArea.innerHTML = `
+      <button 
+        class="konfirmasi-btn"
+        style="background:#198754;color:white;margin-top:15px;width:100%;"
+        onclick="konfirmasiHadir('${data.nohp}')">
+        Konfirmasi Kehadiran
+      </button>
 
-    if ((data.statushadir || "").toUpperCase() === "HADIR") {
+      <div style="font-size:12px;color:#888;margin-top:8px;text-align:center;">
+        Konfirmasi untuk mendapatkan kuota tenda
+      </div>
+    `;
+  }
 
-      const dapatTenda = (data.tenda || "").toUpperCase() === "YA";
+  /* ================= KUOTA GLOBAL ================= */
+  try {
+    const res = await fetch(`${apiUrl}?mode=statistik&t=${Date.now()}`);
+    const stat = await res.json();
 
-      const infoTenda = dapatTenda
-        ? `<div style="margin-top:10px;color:#28a745;font-weight:600;">
-             ✅ Anda mendapatkan kuota tenda
-           </div>`
-        : `<div style="margin-top:10px;color:#dc3545;font-weight:600;">
-             ⚠ Kuota tenda sudah habis, hubungi panitia
-           </div>`;
+    const total = 160;
+    const hadir = parseInt(stat.totalHadir) || 0;
+    const sisa = Math.max(0, total - hadir);
+    const percent = Math.min(100, (hadir / total) * 100);
 
-      qrArea.innerHTML = `
-        <div class="qr-frame">
-          <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${data.qr}">
+    let warna = "#28a745";
+    if (percent > 60) warna = "#ffc107";
+    if (percent > 85) warna = "#dc3545";
+
+    tendaGlobal.innerHTML = `
+      <div style="
+        background:#111;
+        padding:15px;
+        border-radius:12px;
+        text-align:center;
+        color:white;
+      ">
+
+        <div style="margin-bottom:8px;font-weight:600;">
+          🏕️ Sisa Kuota Tenda: ${sisa} / ${total}
         </div>
 
-        <p style="margin-top:10px;font-weight:600;">
-          Tunjukkan QR ke panitia untuk scan
-        </p>
-
-        ${infoTenda}
-
-        <button 
-          class="konfirmasi-btn"
-          style="background:#dc3545;color:white;margin-top:15px;"
-          onclick="batalHadir('${data.nohp}')">
-          Batal Hadir
-        </button>
-
-        <div style="font-size:12px;color:#888;margin-top:8px;">
-          Jika batal, kuota tenda akan diberikan ke peserta lain
+        <div style="
+          width:100%;
+          height:10px;
+          background:#333;
+          border-radius:10px;
+          overflow:hidden;
+        ">
+          <div style="
+            width:${percent}%;
+            height:100%;
+            background:${warna};
+          "></div>
         </div>
-      `;
 
-    } else {
+        <div style="font-size:12px;margin-top:6px;color:#aaa;">
+          Terisi ${hadir} peserta
+        </div>
 
-      qrArea.innerHTML = `
-        <button 
-          class="konfirmasi-btn"
-          style="background:#198754;color:white;margin-top:15px;"
-          onclick="konfirmasiHadir('${data.nohp}')">
-          Konfirmasi Kehadiran
-        </button>
-      `;
-    }
+      </div>
+    `;
 
-  };
+  } catch {
+    tendaGlobal.innerHTML = `
+      <div style="color:red;text-align:center;">
+        Gagal load kuota tenda
+      </div>
+    `;
+  }
+
+};
 
   /* ================= AKSI ================= */
 
