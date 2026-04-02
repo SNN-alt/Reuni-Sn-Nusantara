@@ -1,12 +1,15 @@
 /* =====================================================
-   REUNI SN NUSANTARA 2026 - FINAL FIXED
+   REUNI SN NUSANTARA 2026 - FINAL STABLE CLEAN
 ===================================================== */
 
 const apiUrl = "https://script.google.com/macros/s/AKfycbyyZnfx-ilQjNhAG0gP-rO_ctPne7HoxuREYerYXfrRTvJRiFYJReZkuT6kZC8dqop3/exec";
 const eventDate = new Date("2026-04-11T00:00:00+07:00");
 
+let lastNoHp = ""; // ✅ simpan login terakhir
+
 document.addEventListener("DOMContentLoaded", function () {
 
+  /* ================= ELEMENT ================= */
   const statistikBox = document.getElementById("statistikBox");
   const countdownBox = document.getElementById("countdownBox");
   const progressKuota = document.getElementById("progressKuota");
@@ -150,10 +153,15 @@ document.addEventListener("DOMContentLoaded", function () {
   setInterval(loadKuota, 10000);
 
   /* ================= LOGIN ================= */
-  window.loginPeserta = async function () {
+  window.loginPeserta = async function (manualNoHp = null) {
 
-    let nohp = nohpLogin.value.replace(/\D/g, "");
+    let nohp = manualNoHp 
+      ? manualNoHp 
+      : nohpLogin.value.replace(/\D/g, "");
+
     if (nohp.length < 10) return alert("Nomor HP tidak valid");
+
+    lastNoHp = nohp;
 
     try {
       const res = await fetch(`${apiUrl}?mode=login&nohp=${nohp}`);
@@ -170,8 +178,8 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   };
 
-   /* ================= DASHBOARD ================= */
-  window.tampilkanDashboard = async function (data) {
+  /* ================= DASHBOARD ================= */
+  window.tampilkanDashboard = function (data) {
 
     const statusBadge =
       (data.statushadir || "").toUpperCase() === "HADIR"
@@ -194,7 +202,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const qrArea = document.getElementById("qrArea");
 
-    /* ===== JIKA SUDAH HADIR ===== */
     if ((data.statushadir || "").toUpperCase() === "HADIR") {
 
       const dapatTenda = (data.tenda || "").toUpperCase() === "YA";
@@ -242,17 +249,16 @@ document.addEventListener("DOMContentLoaded", function () {
       `;
     }
 
-  }; // ✅ PENUTUP FUNCTION DASHBOARD (INI YANG KEMARIN HILANG)
+  };
 
-
-  /* ================= AKSI (HARUS DI LUAR) ================= */
+  /* ================= AKSI ================= */
 
   window.konfirmasiHadir = async function (nohp) {
     try {
       const res = await fetch(`${apiUrl}?mode=konfirmasi&nohp=${nohp}`);
       const data = await res.json();
       alert(data.message);
-      loginPeserta();
+      loginPeserta(lastNoHp);
     } catch {
       alert("Gagal koneksi");
     }
@@ -265,8 +271,10 @@ document.addEventListener("DOMContentLoaded", function () {
       const res = await fetch(`${apiUrl}?mode=konfirmasi&nohp=${nohp}`);
       const data = await res.json();
       alert(data.message);
-      loginPeserta();
+      loginPeserta(lastNoHp);
     } catch {
       alert("Gagal koneksi");
     }
   };
+
+});
