@@ -197,40 +197,50 @@ document.addEventListener("DOMContentLoaded", function () {
     /* ===== JIKA SUDAH HADIR ===== */
     if ((data.statushadir || "").toUpperCase() === "HADIR") {
 
-      qrArea.innerHTML = `
-  <div class="qr-frame">
-    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${data.qr}">
-  </div>
+  const dapatTenda = (data.tenda || "").toUpperCase() === "YA";
 
-  <p style="margin-top:10px;font-weight:600;">
-    Tunjukkan QR ke panitia untuk scan
-  </p>
+  const infoTenda = dapatTenda
+    ? `<div style="margin-top:10px;color:#28a745;font-weight:600;">
+         ✅ Anda mendapatkan kuota tenda
+       </div>`
+    : `<div style="margin-top:10px;color:#dc3545;font-weight:600;">
+         ⚠ Kuota tenda sudah habis, hubungi panitia
+       </div>`;
 
-  <button 
-    class="konfirmasi-btn"
-    style="background:#dc3545;color:white;margin-top:15px;"
-    onclick="batalHadir('${data.nohp}')">
-    Batal Hadir
-  </button>
+  qrArea.innerHTML = `
+    <div class="qr-frame">
+      <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${data.qr}">
+    </div>
 
-  <div style="font-size:12px;color:#888;margin-top:8px;">
-    Jika batal, kuota tenda akan diberikan ke peserta lain
-  </div>
-`;
-    } else {
+    <p style="margin-top:10px;font-weight:600;">
+      Tunjukkan QR ke panitia untuk scan
+    </p>
 
-      qrArea.innerHTML = `
-        <button 
-          class="konfirmasi-btn"
-          style="background:#198754;color:white;margin-top:15px;"
-          onclick="konfirmasiHadir('${data.nohp}')">
-          Konfirmasi Kehadiran
-        </button>
-      `;
-    }
-  };
+    ${infoTenda}
 
-});
+    <button 
+      class="konfirmasi-btn"
+      style="background:#dc3545;color:white;margin-top:15px;"
+      onclick="batalHadir('${data.nohp}')">
+      Batal Hadir
+    </button>
+
+    <div style="font-size:12px;color:#888;margin-top:8px;">
+      Jika batal, kuota tenda akan diberikan ke peserta lain
+    </div>
+  `;
+
+} else {
+
+  qrArea.innerHTML = `
+    <button 
+      class="konfirmasi-btn"
+      style="background:#198754;color:white;margin-top:15px;"
+      onclick="konfirmasiHadir('${data.nohp}')">
+      Konfirmasi Kehadiran
+    </button>
+  `;
+}
 
 /* ================= AKSI ================= */
 
