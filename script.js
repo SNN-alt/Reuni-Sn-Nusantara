@@ -112,29 +112,49 @@ function updateCountdown() {
   loadStatistik();
   setInterval(loadStatistik, 30000);
 
-  /* =====================================================
-     KUOTA TENDA PROGRESS BAR
-  ===================================================== */
-  async function loadKuota() {
-    try {
-      const res = await fetch(`${apiUrl}?mode=ambilKuotaTenda&t=${Date.now()}`);
-      const data = await res.json();
+/* =====================================================
+   KUOTA TENDA PROGRESS BAR (FINAL PREMIUM)
+===================================================== */
+async function loadKuota() {
+  try {
+    const res = await fetch(`${apiUrl}?mode=ambilKuotaTenda&t=${Date.now()}`);
+    const data = await res.json();
 
-      const total = 200;
-      const used = total - data.sisa;
-      const percent = (used / total) * 100;
+    const total = 160;
+    const sisa = parseInt(data.sisa) || 0;
 
-      progressKuota.innerHTML = `
-        <div>Sisa Kuota Tenda: <strong>${data.sisa}</strong> / 200</div>
-        <div class="progress-bar">
-          <div class="progress-fill" style="width:${percent}%"></div>
+    const used = total - sisa;
+
+    // hitung persen + anti lebih dari 100%
+    const percent = Math.min(100, (used / total) * 100);
+
+    // warna otomatis
+    let warna = "#28a745"; // hijau
+    if (percent > 60) warna = "#ffc107"; // kuning
+    if (percent > 85) warna = "#dc3545"; // merah
+
+    progressKuota.innerHTML = `
+      <div style="margin-bottom:8px;font-weight:600;">
+        Sisa Kuota Tenda: <strong>${sisa}</strong> / ${total}
+      </div>
+
+      <div class="progress-bar">
+        <div class="progress-fill" 
+             style="width:${percent}%; background:${warna};">
         </div>
-      `;
-    } catch {}
-  }
+      </div>
 
-  loadKuota();
-  setInterval(loadKuota, 30000);
+      <div style="font-size:12px;margin-top:6px;color:#666;">
+        Lakukan konfirmasi untuk mendapatkan kuota tenda
+      </div>
+    `;
+
+  } catch (err) {
+    progressKuota.innerHTML = `
+      <div style="color:red;">Gagal load kuota</div>
+    `;
+  }
+}
 
   /* =====================================================
      LOGIN SYSTEM
