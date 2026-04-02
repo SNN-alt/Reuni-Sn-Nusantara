@@ -289,5 +289,12 @@ if ((data.qr_aktif || "").toUpperCase() === "YA") {
   };
 
 });
+/* ================= LOAD AWAL ================= */
+document.addEventListener("DOMContentLoaded", function () {
 
+  // kuota tenda
+  loadKuota();
+  setInterval(loadKuota, 10000);
+
+});
 
