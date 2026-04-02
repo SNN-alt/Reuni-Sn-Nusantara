@@ -1,109 +1,190 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <title>Scan Kehadiran Panitia</title>
+<meta charset="UTF-8">
+<title>Scanner Panitia SN 2026</title>
 
-  <!-- Library QR Scanner -->
-  <script src="https://unpkg.com/html5-qrcode"></script>
+<script src="https://unpkg.com/html5-qrcode"></script>
 
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      padding: 20px;
-      background: #f2f2f2;
-    }
-    input, button {
-      padding: 10px;
-      font-size: 16px;
-      margin: 5px;
-    }
-    #reader {
-      width: 300px;
-      margin: auto;
-    }
-  </style>
+<style>
+body{
+  font-family: Arial, sans-serif;
+  background:#f5f5f5;
+  text-align:center;
+  padding:20px;
+}
+
+.card{
+  background:white;
+  padding:20px;
+  border-radius:15px;
+  max-width:400px;
+  margin:auto;
+  box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+#reader{
+  width:100%;
+  border-radius:10px;
+  overflow:hidden;
+}
+
+#hasilScan{
+  margin-top:15px;
+  font-size:18px;
+  font-weight:600;
+}
+
+.sukses{ color:#28a745; }
+.gagal{ color:#dc3545; }
+
+.badge{
+  display:inline-block;
+  padding:5px 10px;
+  border-radius:20px;
+  font-size:12px;
+  margin-top:5px;
+}
+
+.badge-green{ background:#28a745;color:white; }
+.badge-red{ background:#dc3545;color:white; }
+.badge-gray{ background:#6c757d;color:white; }
+
+button{
+  padding:10px;
+  border:none;
+  border-radius:8px;
+  background:#198754;
+  color:white;
+  font-size:16px;
+  cursor:pointer;
+}
+</style>
 </head>
+
 <body>
+
+<div class="card">
 
 <h2>Login Panitia</h2>
 
-<div id="loginPanitia">
-  <input type="password" id="kodePanitia" placeholder="Masukkan Kode Panitia">
-  <br>
+<div id="loginBox">
+  <input type="password" id="kodePanitia" placeholder="Kode Panitia">
+  <br><br>
   <button onclick="cekKode()">Masuk</button>
 </div>
 
-<div id="scannerSection" style="display:none;">
+<div id="scannerBox" style="display:none;">
   <h3>Scan QR Peserta</h3>
   <div id="reader"></div>
-  <p id="hasilScan"></p>
+  <div id="hasilScan"></div>
 </div>
 
+</div>
 
 <script>
-const KODE_BENAR = "PANITIASN";
 
-/* === GANTI dengan URL Web App Apps Script kamu === */
+const KODE = "PANITIASN";
 const apiUrl = "https://script.google.com/macros/s/AKfycbyyZnfx-ilQjNhAG0gP-rO_ctPne7HoxuREYerYXfrRTvJRiFYJReZkuT6kZC8dqop3/exec";
 
-let html5QrCode;
+let scanner;
+let lastScan = "";
 
+/* ================= LOGIN ================= */
 function cekKode(){
-  const input = document.getElementById("kodePanitia").value.trim();
-  if(input === KODE_BENAR){
-    document.getElementById("loginPanitia").style.display="none";
-    document.getElementById("scannerSection").style.display="block";
-    mulaiScan();
+  if(document.getElementById("kodePanitia").value === KODE){
+    document.getElementById("loginBox").style.display="none";
+    document.getElementById("scannerBox").style.display="block";
+    startScan();
   } else {
-    alert("Kode Panitia Salah!");
+    alert("Kode salah");
   }
 }
 
-function mulaiScan(){
-  html5QrCode = new Html5Qrcode("reader");
-  html5QrCode.start(
-    { facingMode: "environment" },
-    { fps: 10, qrbox: 250 },
-    qrCodeMessage => {
-      html5QrCode.stop();
-      prosesHadir(qrCodeMessage);
-    },
-    errorMessage => {}
+/* ================= START SCAN ================= */
+function startScan(){
+  scanner = new Html5Qrcode("reader");
+
+  scanner.start(
+    { facingMode:"environment" },
+    { fps:10, qrbox:250 },
+    handleScan
   );
 }
 
-function prosesHadir(kodeQR){
-  fetch(apiUrl + "?mode=scan&kode=" + encodeURIComponent(kodeQR))
-    .then(res => res.json())
-    .then(data => {
-      document.getElementById("hasilScan").innerHTML = data.message;
-      setTimeout(()=>mulaiScan(), 2000);
-    })
-    .catch(()=>{
-      document.getElementById("hasilScan").innerHTML="❌ Gagal koneksi server";
-      setTimeout(()=>mulaiScan(), 2000);
-    });
+/* ================= HANDLE SCAN ================= */
+async function handleScan(qr){
+
+  if(qr === lastScan) return;
+  lastScan = qr;
+
+  const hasil = document.getElementById("hasilScan");
+  hasil.innerHTML = "⏳ Memproses...";
+  hasil.className = "";
+
+  try {
+
+    // HIT API SCAN (update kehadiran)
+    const res = await fetch(apiUrl+"?mode=scan&kode="+encodeURIComponent(qr));
+    const data = await res.json();
+
+    // HIT API LOGIN (ambil detail peserta)
+    const res2 = await fetch(apiUrl+"?mode=login&kodeqr="+encodeURIComponent(qr));
+    const detail = await res2.json();
+
+    let nama = detail.nama || "-";
+    let tenda = (detail.tenda || "").toUpperCase() === "YA";
+    let hadir = (detail.statushadir || "").toUpperCase() === "HADIR";
+
+    let badgeTenda = tenda
+      ? `<div class="badge badge-green">Dapat Tenda</div>`
+      : `<div class="badge badge-red">Tanpa Tenda</div>`;
+
+    let badgeHadir = hadir
+      ? `<div class="badge badge-green">Hadir</div>`
+      : `<div class="badge badge-gray">Belum</div>`;
+
+    if(data.status === "SUCCESS"){
+
+      hasil.innerHTML = `
+        <div class="sukses">✅ ${data.message}</div>
+        <div style="margin-top:10px;font-size:20px;">${nama}</div>
+        ${badgeHadir}
+        ${badgeTenda}
+      `;
+
+      beep();
+      vibrate();
+
+    } else {
+
+      hasil.innerHTML = `
+        <div class="gagal">❌ ${data.message}</div>
+        <div>${nama}</div>
+        ${badgeHadir}
+      `;
+    }
+
+  } catch {
+    hasil.innerHTML = "❌ Gagal koneksi server";
+    hasil.className = "gagal";
+  }
+
+  setTimeout(()=>{
+    lastScan="";
+  },2000);
 }
+
+/* ================= EFEK ================= */
+function beep(){
+  new Audio("https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg").play();
+}
+
+function vibrate(){
+  if(navigator.vibrate) navigator.vibrate(200);
+}
+
 </script>
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
