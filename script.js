@@ -198,18 +198,25 @@ document.addEventListener("DOMContentLoaded", function () {
     if ((data.statushadir || "").toUpperCase() === "HADIR") {
 
       qrArea.innerHTML = `
-        <div class="qr-frame">
-          <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${data.qr}">
-        </div>
+  <div class="qr-frame">
+    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${data.qr}">
+  </div>
 
-        <button 
-          class="konfirmasi-btn"
-          style="background:#dc3545;color:white;margin-top:15px;"
-          onclick="batalHadir('${data.nohp}')">
-          Batal Hadir
-        </button>
-      `;
+  <p style="margin-top:10px;font-weight:600;">
+    Tunjukkan QR ke panitia untuk scan
+  </p>
 
+  <button 
+    class="konfirmasi-btn"
+    style="background:#dc3545;color:white;margin-top:15px;"
+    onclick="batalHadir('${data.nohp}')">
+    Batal Hadir
+  </button>
+
+  <div style="font-size:12px;color:#888;margin-top:8px;">
+    Jika batal, kuota tenda akan diberikan ke peserta lain
+  </div>
+`;
     } else {
 
       qrArea.innerHTML = `
