@@ -126,13 +126,13 @@ header{
   border-radius:20px;
   background:#2b2b2b;
   overflow:hidden;
-  margin-top:12px;
 }
 
 .progress-fill{
   height:100%;
-  background:#FFD700;
-  transition:width .5s ease;
+  border-radius:20px;
+  transition:width .6s ease, background .4s;
+  box-shadow:0 0 10px rgba(255,255,255,.2);
 }
 
 /* =====================================================
