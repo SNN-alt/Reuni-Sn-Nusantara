@@ -113,27 +113,28 @@ function updateCountdown() {
   setInterval(loadStatistik, 30000);
 
 /* =====================================================
-   KUOTA TENDA PROGRESS BAR (FINAL PREMIUM)
+   KUOTA TENDA (FIX PASTI MUNCUL)
 ===================================================== */
 async function loadKuota() {
+
+  const box = document.getElementById("progressKuota");
+  if (!box) return; // kalau elemen tidak ada, stop
+
   try {
     const res = await fetch(`${apiUrl}?mode=ambilKuotaTenda&t=${Date.now()}`);
     const data = await res.json();
 
     const total = 160;
     const sisa = parseInt(data.sisa) || 0;
-
     const used = total - sisa;
 
-    // hitung persen + anti lebih dari 100%
     const percent = Math.min(100, (used / total) * 100);
 
-    // warna otomatis
-    let warna = "#28a745"; // hijau
-    if (percent > 60) warna = "#ffc107"; // kuning
-    if (percent > 85) warna = "#dc3545"; // merah
+    let warna = "#28a745";
+    if (percent > 60) warna = "#ffc107";
+    if (percent > 85) warna = "#dc3545";
 
-    progressKuota.innerHTML = `
+    box.innerHTML = `
       <div style="margin-bottom:8px;font-weight:600;">
         Sisa Kuota Tenda: <strong>${sisa}</strong> / ${total}
       </div>
@@ -144,19 +145,18 @@ async function loadKuota() {
         </div>
       </div>
 
-      <div style="font-size:12px;margin-top:6px;color:#666;">
+      <div style="font-size:12px;margin-top:6px;color:#aaa;">
         Lakukan konfirmasi untuk mendapatkan kuota tenda
       </div>
     `;
 
   } catch (err) {
-    progressKuota.innerHTML = `
+
+    box.innerHTML = `
       <div style="color:red;">Gagal load kuota</div>
     `;
   }
 }
-loadKuota();
-setInterval(loadKuota, 30000);
   /* =====================================================
      LOGIN SYSTEM
   ===================================================== */
