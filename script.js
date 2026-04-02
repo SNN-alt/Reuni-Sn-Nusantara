@@ -1,5 +1,5 @@
 /* =====================================================
-   REUNI SN NUSANTARA 2026 - FINAL STABLE SCRIPT
+   REUNI SN NUSANTARA 2026 - FINAL FIXED
 ===================================================== */
 
 const apiUrl = "https://script.google.com/macros/s/AKfycbyyZnfx-ilQjNhAG0gP-rO_ctPne7HoxuREYerYXfrRTvJRiFYJReZkuT6kZC8dqop3/exec";
@@ -7,7 +7,6 @@ const eventDate = new Date("2026-04-11T00:00:00+07:00");
 
 document.addEventListener("DOMContentLoaded", function () {
 
-  /* ================= ELEMENT ================= */
   const statistikBox = document.getElementById("statistikBox");
   const countdownBox = document.getElementById("countdownBox");
   const progressKuota = document.getElementById("progressKuota");
@@ -119,8 +118,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (!progressKuota) return;
 
-    progressKuota.innerHTML = `<div style="color:#aaa;">Loading kuota...</div>`;
-
     try {
       const res = await fetch(`${apiUrl}?mode=statistik&t=${Date.now()}`);
       const data = await res.json();
@@ -142,10 +139,6 @@ document.addEventListener("DOMContentLoaded", function () {
         <div class="progress-bar">
           <div class="progress-fill" style="width:${percent}%; background:${warna};"></div>
         </div>
-
-        <div style="font-size:12px;margin-top:6px;color:#aaa;">
-          Berdasarkan peserta yang sudah konfirmasi
-        </div>
       `;
 
     } catch {
@@ -160,12 +153,7 @@ document.addEventListener("DOMContentLoaded", function () {
   window.loginPeserta = async function () {
 
     let nohp = nohpLogin.value.replace(/\D/g, "");
-    nohpLogin.value = nohp;
-
-    if (nohp.length < 10) {
-      alert("Nomor HP tidak valid");
-      return;
-    }
+    if (nohp.length < 10) return alert("Nomor HP tidak valid");
 
     try {
       const res = await fetch(`${apiUrl}?mode=login&nohp=${nohp}`);
@@ -195,94 +183,62 @@ document.addEventListener("DOMContentLoaded", function () {
 
       <table class="info-table">
         <tr><td>No HP</td><td class="val">${data.nohp}</td></tr>
-        <tr><td>Jenis Kelamin</td><td class="val">${data.jk}</td></tr>
-        <tr><td>Keluarga</td><td class="val">${data.keluarga}</td></tr>
         <tr><td>Jumlah</td><td class="val">${data.jumlah}</td></tr>
-        <tr><td>Parkir</td><td class="val">${data.parkir}</td></tr>
         <tr><td>Status</td><td class="val">${statusBadge}</td></tr>
       </table>
 
-      <div class="dashboard-section" id="qrArea"></div>
-      <div class="dashboard-section" id="tendaArea"></div>
+      <div id="qrArea"></div>
     `;
 
     popupDashboard.classList.add("active");
 
     const qrArea = document.getElementById("qrArea");
-    const tendaArea = document.getElementById("tendaArea");
 
-    const boleh = true;
+    /* ===== JIKA SUDAH HADIR ===== */
+    if ((data.statushadir || "").toUpperCase() === "HADIR") {
 
-    if ((data.qr_aktif || "").toUpperCase() === "YA") {
-      if ((data.qr_aktif || "").toUpperCase() === "YA") {
-
-  qrArea.innerHTML = `
-    <div class="qr-frame">
-      <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${data.qr}">
-    </div>
-
-    <p style="margin-top:10px;font-weight:600;">
-      Tunjukkan QR saat registrasi
-    </p>
-
-    <button 
-      class="konfirmasi-btn"
-      style="background:#dc3545;color:white;margin-top:15px;"
-      onclick="batalHadir('${data.nohp}')">
-      Batal Hadir
-    </button>
-
-    <div class="konfirmasi-info">
-      Jika batal, kuota tenda akan diberikan ke peserta lain
-    </div>
-  `;
-}
-
-    try {
-      const res = await fetch(`${apiUrl}?mode=statistik&t=${Date.now()}`);
-      const dataStat = await res.json();
-
-      const total = 160;
-      const hadir = parseInt(dataStat.totalHadir) || 0;
-      const sisa = Math.max(0, total - hadir);
-
-      tendaArea.innerHTML = `
-        <div class="tenda-box">
-          Sisa Kuota Tenda: <strong>${sisa}</strong> / ${total}
+      qrArea.innerHTML = `
+        <div class="qr-frame">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${data.qr}">
         </div>
+
+        <button 
+          class="konfirmasi-btn"
+          style="background:#dc3545;color:white;margin-top:15px;"
+          onclick="batalHadir('${data.nohp}')">
+          Batal Hadir
+        </button>
       `;
-    } catch {
-      tendaArea.innerHTML = `<div class="tenda-box">Gagal load kuota</div>`;
-    }
 
-  };
+    } else {
 
-  /* ================= KONFIRMASI ================= */
-  window.konfirmasiHadir = async function (nohp) {
-    try {
-      const res = await fetch(`${apiUrl}?mode=konfirmasi&nohp=${nohp}`);
-      const data = await res.json();
-      alert(data.message);
-      loginPeserta();
-    } catch {
-      alert("Gagal koneksi");
+      qrArea.innerHTML = `
+        <button 
+          class="konfirmasi-btn"
+          style="background:#198754;color:white;margin-top:15px;"
+          onclick="konfirmasiHadir('${data.nohp}')">
+          Konfirmasi Kehadiran
+        </button>
+      `;
     }
   };
 
 });
+
+/* ================= AKSI ================= */
+
+window.konfirmasiHadir = async function (nohp) {
+  const res = await fetch(`${apiUrl}?mode=konfirmasi&nohp=${nohp}`);
+  const data = await res.json();
+  alert(data.message);
+  loginPeserta();
+};
+
 window.batalHadir = async function (nohp) {
+  if (!confirm("Yakin batal hadir?")) return;
 
-  if (!confirm("Yakin ingin membatalkan kehadiran?")) return;
-
-  try {
-    const res = await fetch(`${apiUrl}?mode=konfirmasi&nohp=${nohp}`);
-    const data = await res.json();
-
-    alert(data.message);
-
-    loginPeserta(); // refresh dashboard
-
-  } catch {
-    alert("Gagal koneksi");
-  }
+  const res = await fetch(`${apiUrl}?mode=konfirmasi&nohp=${nohp}`);
+  const data = await res.json();
+  alert(data.message);
+  loginPeserta();
 };
