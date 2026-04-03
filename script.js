@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /* =====================================================
-   ELEMENT HELPER
+   HELPER
 ===================================================== */
 const el = id => document.getElementById(id);
 
@@ -55,7 +55,7 @@ function initModal() {
 }
 
 /* =====================================================
-   BUTTON LINK
+   BUTTON
 ===================================================== */
 function initButtons() {
   window.bukaPeserta = () => window.open("https://forms.gle/VudgYiKRNVWU9zsG8");
@@ -138,7 +138,7 @@ async function loadStatistik() {
 }
 
 /* =====================================================
-   KUOTA TENDA (FIX)
+   KUOTA TENDA (SUPER FIX)
 ===================================================== */
 async function loadKuota() {
 
@@ -149,11 +149,15 @@ async function loadKuota() {
     const res = await fetch(`${apiUrl}?mode=ambilKuotaTenda&t=${Date.now()}`);
     const data = await res.json();
 
-    const total = data.kapasitas;
-    const terpakai = data.totalTenda;
-    const sisa = data.sisa;
+    const total = Number(data.kapasitas) || 160;
+    const terpakai = Number(data.totalTenda) || 0;
+    const sisa = (data.sisa !== undefined)
+      ? Number(data.sisa)
+      : Math.max(0, total - terpakai);
 
-    const percent = Math.min(100, (terpakai / total) * 100);
+    const percent = total > 0
+      ? Math.min(100, (terpakai / total) * 100)
+      : 0;
 
     let warna = "#28a745";
     if (percent > 60) warna = "#ffc107";
@@ -165,7 +169,9 @@ async function loadKuota() {
       </div>
 
       <div class="progress-bar">
-        <div class="progress-fill" style="width:${percent}%; background:${warna};"></div>
+        <div class="progress-fill"
+             style="width:${percent}%; background:${warna};">
+        </div>
       </div>
     `;
 
@@ -213,7 +219,6 @@ async function tampilkanDashboard(data) {
 
   isi.innerHTML = `
     <h3>Halo, ${data.nama}</h3>
-
     <p>${data.nohp}</p>
     <p>Jumlah: ${data.jumlah}</p>
     <p>Status: ${hadir ? "HADIR" : "BELUM"}</p>
@@ -243,13 +248,18 @@ async function tampilkanDashboard(data) {
     `;
   }
 
-  /* LOAD KUOTA DALAM DASHBOARD */
+  /* LOAD KUOTA */
   try {
     const res = await fetch(`${apiUrl}?mode=ambilKuotaTenda`);
     const k = await res.json();
 
+    const total = Number(k.kapasitas) || 160;
+    const sisa = (k.sisa !== undefined)
+      ? Number(k.sisa)
+      : total;
+
     el("kuotaBox").innerHTML = `
-      <p>🏕️ Sisa Kuota: ${k.sisa} / ${k.kapasitas}</p>
+      <p>🏕️ Sisa Kuota: ${sisa} / ${total}</p>
     `;
   } catch {}
 }
