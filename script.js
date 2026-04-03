@@ -1,7 +1,6 @@
 /* =====================================================
-   REUNI SN NUSANTARA 2026 - CLEAN VERSION
+   CONFIG
 ===================================================== */
-
 const apiUrl = "https://script.google.com/macros/s/AKfycbyyZnfx-ilQjNhAG0gP-rO_ctPne7HoxuREYerYXfrRTvJRiFYJReZkuT6kZC8dqop3/exec";
 const eventDate = new Date("2026-04-11T00:00:00+07:00");
 
@@ -11,10 +10,12 @@ let lastNoHp = "";
    INIT
 ===================================================== */
 document.addEventListener("DOMContentLoaded", () => {
+
   initModal();
+  initButtons();
   initSponsor();
-  initLinks();
-  initCountdown();
+
+  startCountdown();
   loadStatistik();
   loadKuota();
 
@@ -23,30 +24,15 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /* =====================================================
-   UTIL
+   ELEMENT HELPER
 ===================================================== */
-function safe(val) {
-  return val || "";
-}
-
-function showError(err) {
-  console.error(err);
-}
-
-function escapeHTML(str = "") {
-  return str.replace(/[&<>"']/g, m => ({
-    "&":"&amp;",
-    "<":"&lt;",
-    ">":"&gt;",
-    '"':"&quot;",
-    "'":"&#039;"
-  }[m]));
-}
+const el = id => document.getElementById(id);
 
 /* =====================================================
    MODAL
 ===================================================== */
 function initModal() {
+
   document.querySelectorAll(".modal, .popup-overlay, #sponsorOverlay")
     .forEach(modal => {
       modal.addEventListener("click", e => {
@@ -56,52 +42,51 @@ function initModal() {
 
   document.querySelectorAll(".close, .close-x")
     .forEach(btn => {
-      btn.addEventListener("click", () => {
+      btn.onclick = () => {
         btn.closest(".modal, .popup-overlay")?.classList.remove("active");
-      });
+      };
     });
 
-  window.bukaPanduan = () => document.getElementById("modalPanduan").classList.add("active");
-  window.bukaProposal = () => document.getElementById("modalProposal").classList.add("active");
+  window.bukaPanduan = () => el("modalPanduan").classList.add("active");
+  window.bukaProposal = () => el("modalProposal").classList.add("active");
 
-  const btnCallCenter = document.getElementById("btnCallCenter");
-  if (btnCallCenter) {
-    btnCallCenter.onclick = () => document.getElementById("modalCallCenter").classList.add("active");
-  }
+  const btnCall = el("btnCallCenter");
+  if (btnCall) btnCall.onclick = () => el("modalCallCenter").classList.add("active");
 }
 
 /* =====================================================
-   LINK
+   BUTTON LINK
 ===================================================== */
-function initLinks() {
-  window.bukaPeserta = () => window.open("https://forms.gle/VudgYiKRNVWU9zsG8", "_blank");
-  window.bukaUMKM = () => window.open("https://forms.gle/sUyoZ34bRnDrp2xW6", "_blank");
+function initButtons() {
+  window.bukaPeserta = () => window.open("https://forms.gle/VudgYiKRNVWU9zsG8");
+  window.bukaUMKM = () => window.open("https://forms.gle/sUyoZ34bRnDrp2xW6");
 }
 
 /* =====================================================
    SPONSOR
 ===================================================== */
 function initSponsor() {
-  const overlay = document.getElementById("sponsorOverlay");
-  const preview = document.getElementById("sponsorPreview");
+
+  const overlay = el("sponsorOverlay");
+  const preview = el("sponsorPreview");
+  const close = el("closeSponsor");
 
   document.querySelectorAll(".sponsor-img").forEach(img => {
-    img.addEventListener("click", () => {
+    img.onclick = () => {
       preview.src = img.src;
       overlay.classList.add("active");
-    });
+    };
   });
 
-  document.getElementById("closeSponsor")?.addEventListener("click", () => {
-    overlay.classList.remove("active");
-  });
+  if (close) close.onclick = () => overlay.classList.remove("active");
 }
 
 /* =====================================================
    COUNTDOWN
 ===================================================== */
-function initCountdown() {
-  const box = document.getElementById("countdownBox");
+function startCountdown() {
+
+  const box = el("countdownBox");
 
   function update() {
     const diff = eventDate - new Date();
@@ -112,33 +97,32 @@ function initCountdown() {
     }
 
     const d = Math.floor(diff / 86400000);
-    const h = Math.floor((diff / 3600000) % 24);
-    const m = Math.floor((diff / 60000) % 60);
-    const s = Math.floor((diff / 1000) % 60);
+    const h = Math.floor(diff / 3600000 % 24);
+    const m = Math.floor(diff / 60000 % 60);
+    const s = Math.floor(diff / 1000 % 60);
 
     box.innerHTML = `
       ⏳ ${d} Hari 
-      ${String(h).padStart(2,"0")} Jam 
-      ${String(m).padStart(2,"0")} Menit 
-      ${String(s).padStart(2,"0")} Detik
+      ${String(h).padStart(2,'0')} Jam 
+      ${String(m).padStart(2,'0')} Menit 
+      ${String(s).padStart(2,'0')} Detik
     `;
   }
 
-  setInterval(update, 1000);
   update();
+  setInterval(update, 1000);
 }
 
 /* =====================================================
    STATISTIK
 ===================================================== */
 async function loadStatistik() {
-  const box = document.getElementById("statistikBox");
 
   try {
     const res = await fetch(`${apiUrl}?mode=statistik&t=${Date.now()}`);
     const data = await res.json();
 
-    box.innerHTML = `
+    el("statistikBox").innerHTML = `
       <div class="statistik-premium">
         <div class="stat-item">
           <small>Total Pendaftar</small>
@@ -150,26 +134,26 @@ async function loadStatistik() {
         </div>
       </div>
     `;
-  } catch (err) {
-    showError(err);
-  }
+  } catch {}
 }
 
 /* =====================================================
-   KUOTA TENDA (FIXED)
+   KUOTA TENDA (FIX)
 ===================================================== */
 async function loadKuota() {
-  const box = document.getElementById("progressKuota");
+
+  const box = el("progressKuota");
   if (!box) return;
 
   try {
     const res = await fetch(`${apiUrl}?mode=ambilKuotaTenda&t=${Date.now()}`);
     const data = await res.json();
 
-    const total = data.kapasitas || 0;
-    const sisa = data.sisa || 0;
-    const terpakai = data.totalTenda || 0;
-    const percent = total ? Math.min(100, (terpakai / total) * 100) : 0;
+    const total = data.kapasitas;
+    const terpakai = data.totalTenda;
+    const sisa = data.sisa;
+
+    const percent = Math.min(100, (terpakai / total) * 100);
 
     let warna = "#28a745";
     if (percent > 60) warna = "#ffc107";
@@ -184,8 +168,8 @@ async function loadKuota() {
         <div class="progress-fill" style="width:${percent}%; background:${warna};"></div>
       </div>
     `;
-  } catch (err) {
-    showError(err);
+
+  } catch {
     box.innerHTML = `<div style="color:red;">Gagal load kuota</div>`;
   }
 }
@@ -193,17 +177,12 @@ async function loadKuota() {
 /* =====================================================
    LOGIN
 ===================================================== */
-window.loginPeserta = async function (manualNoHp = null) {
-  const input = document.getElementById("nohpLogin");
+window.loginPeserta = async function () {
 
-  let nohp = manualNoHp 
-    ? manualNoHp 
-    : input.value.replace(/\D/g, "");
+  const input = el("nohpLogin");
+  const nohp = input.value.replace(/\D/g, "");
 
-  if (nohp.length < 10) {
-    alert("Nomor HP tidak valid");
-    return;
-  }
+  if (nohp.length < 10) return alert("Nomor HP tidak valid");
 
   lastNoHp = nohp;
 
@@ -217,8 +196,7 @@ window.loginPeserta = async function (manualNoHp = null) {
       tampilkanDashboard(data);
     }
 
-  } catch (err) {
-    showError(err);
+  } catch {
     alert("Gagal koneksi server");
   }
 };
@@ -226,121 +204,75 @@ window.loginPeserta = async function (manualNoHp = null) {
 /* =====================================================
    DASHBOARD
 ===================================================== */
-window.tampilkanDashboard = async function (data) {
+async function tampilkanDashboard(data) {
 
-  const popup = document.getElementById("popupDashboard");
-  const isi = document.getElementById("isiDashboard");
+  const popup = el("popupDashboard");
+  const isi = el("isiDashboard");
 
-  const statusHadir = safe(data.statushadir).toUpperCase();
-  const qrAktif = safe(data.qr_aktif);
-
-  const statusBadge =
-    statusHadir === "HADIR"
-      ? `<span class="badge badge-green">HADIR</span>`
-      : `<span class="badge badge-gray">BELUM KONFIRMASI</span>`;
+  const hadir = (data.statushadir || "").toUpperCase() === "HADIR";
 
   isi.innerHTML = `
-    <h3>Halo, ${escapeHTML(data.nama)}</h3>
+    <h3>Halo, ${data.nama}</h3>
 
-    <table class="info-table">
-      <tr><td>No HP</td><td class="val">${data.nohp}</td></tr>
-      <tr><td>Jumlah</td><td class="val">${data.jumlah}</td></tr>
-      <tr><td>Status</td><td class="val">${statusBadge}</td></tr>
-    </table>
+    <p>${data.nohp}</p>
+    <p>Jumlah: ${data.jumlah}</p>
+    <p>Status: ${hadir ? "HADIR" : "BELUM"}</p>
 
     <div id="qrArea"></div>
-    <div id="tendaGlobal"></div>
+    <div id="kuotaBox"></div>
   `;
 
   popup.classList.add("active");
 
-  const qrArea = document.getElementById("qrArea");
-  const tendaGlobal = document.getElementById("tendaGlobal");
+  const qrArea = el("qrArea");
 
-  /* ===== STATUS ===== */
-  if (statusHadir === "HADIR" && qrAktif === "YA") {
-
-    const dapatTenda = safe(data.tenda).toUpperCase() === "YA";
+  if (hadir) {
 
     qrArea.innerHTML = `
-      <div class="qr-frame">
-        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${data.qr}">
-      </div>
-
-      <p>Tunjukkan QR ke panitia</p>
-
-      <div style="color:${dapatTenda ? "#28a745" : "#dc3545"};font-weight:600;">
-        ${dapatTenda ? "✅ Dapat tenda" : "⚠ Tenda habis"}
-      </div>
-
-      <button class="konfirmasi-btn" onclick="batalHadir('${data.nohp}')">
-        Batal Hadir
-      </button>
-    `;
-
-  } else if (statusHadir === "HADIR") {
-
-    qrArea.innerHTML = `
-      <div style="color:#ffc107;">QR belum aktif</div>
+      <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${data.qr}">
+      <br><br>
+      <button onclick="batalHadir('${data.nohp}')">Batal Hadir</button>
     `;
 
   } else {
 
     qrArea.innerHTML = `
-      <button class="konfirmasi-btn" onclick="konfirmasiHadir('${data.nohp}')">
+      <button onclick="konfirmasiHadir('${data.nohp}')">
         Konfirmasi Kehadiran
       </button>
     `;
   }
 
-  /* ===== KUOTA GLOBAL ===== */
+  /* LOAD KUOTA DALAM DASHBOARD */
   try {
-    const res = await fetch(`${apiUrl}?mode=ambilKuotaTenda&t=${Date.now()}`);
-    const stat = await res.json();
+    const res = await fetch(`${apiUrl}?mode=ambilKuotaTenda`);
+    const k = await res.json();
 
-    const total = stat.kapasitas || 0;
-    const sisa = stat.sisa || 0;
-    const terpakai = stat.totalTenda || 0;
-    const percent = total ? Math.min(100, (terpakai / total) * 100) : 0;
-
-    tendaGlobal.innerHTML = `
-      <div style="background:#111;padding:15px;border-radius:12px;color:white;">
-        🏕️ Sisa: ${sisa} / ${total}
-        <div style="height:10px;background:#333;margin-top:8px;">
-          <div style="width:${percent}%;height:100%;background:#28a745;"></div>
-        </div>
-      </div>
+    el("kuotaBox").innerHTML = `
+      <p>🏕️ Sisa Kuota: ${k.sisa} / ${k.kapasitas}</p>
     `;
-
-  } catch (err) {
-    showError(err);
-  }
-};
+  } catch {}
+}
 
 /* =====================================================
    AKSI
 ===================================================== */
 window.konfirmasiHadir = async function (nohp) {
 
-  const btn = document.querySelector(".konfirmasi-btn");
-  if (btn) btn.disabled = true;
-
   try {
     const res = await fetch(`${apiUrl}?mode=konfirmasi&nohp=${nohp}`);
     const data = await res.json();
 
     alert(data.message);
-    loginPeserta(lastNoHp);
+    loginPeserta();
 
-  } catch (err) {
-    showError(err);
+  } catch {
     alert("Gagal koneksi");
-  } finally {
-    if (btn) btn.disabled = false;
   }
 };
 
 window.batalHadir = async function (nohp) {
+
   if (!confirm("Yakin batal hadir?")) return;
 
   try {
@@ -348,10 +280,9 @@ window.batalHadir = async function (nohp) {
     const data = await res.json();
 
     alert(data.message);
-    loginPeserta(lastNoHp);
+    loginPeserta();
 
-  } catch (err) {
-    showError(err);
+  } catch {
     alert("Gagal koneksi");
   }
 };
