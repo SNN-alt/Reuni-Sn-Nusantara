@@ -212,58 +212,149 @@ window.loginPeserta = async function () {
 /* =====================================================
    DASHBOARD
 ===================================================== */
+/* =====================================================
+   DASHBOARD PESERTA (FINAL FIX UI + KUOTA)
+===================================================== */
 async function tampilkanDashboard(data) {
 
   const popup = el("popupDashboard");
   const isi = el("isiDashboard");
 
   const hadir = (data.statushadir || "").toUpperCase() === "HADIR";
+  const dapatTenda = (data.tenda || "").toUpperCase() === "YA";
+
+  const badge = hadir
+    ? `<span class="badge badge-green">HADIR</span>`
+    : `<span class="badge badge-gray">BELUM KONFIRMASI</span>`;
 
   isi.innerHTML = `
-    <h3>Halo, ${data.nama}</h3>
-    <p>${data.nohp}</p>
-    <p>Jumlah: ${data.jumlah}</p>
-    <p>Status: ${hadir ? "HADIR" : "BELUM"}</p>
+    <h3 style="margin-bottom:15px;">Halo, ${data.nama}</h3>
 
-    <div id="qrArea"></div>
-    <div id="kuotaBox"></div>
+    <table class="info-table">
+      <tr><td>No HP</td><td class="val">${data.nohp}</td></tr>
+      <tr><td>Jumlah</td><td class="val">${data.jumlah}</td></tr>
+      <tr><td>Status</td><td class="val">${badge}</td></tr>
+    </table>
+
+    <div id="qrArea" style="margin-top:15px;"></div>
+    <div id="kuotaBox" style="margin-top:20px;"></div>
   `;
 
   popup.classList.add("active");
 
   const qrArea = el("qrArea");
 
+  /* ================= JIKA SUDAH HADIR ================= */
   if (hadir) {
 
+    const infoTenda = dapatTenda
+      ? `<div style="color:#28a745;font-weight:600;margin-top:10px;">
+           ✅ Anda mendapatkan kuota tenda
+         </div>`
+      : `<div style="color:#dc3545;font-weight:600;margin-top:10px;">
+           ⚠ Kuota tenda sudah habis
+         </div>`;
+
     qrArea.innerHTML = `
-      <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${data.qr}">
-      <br><br>
-      <button onclick="batalHadir('${data.nohp}')">Batal Hadir</button>
+      <div class="qr-frame">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${data.qr}">
+      </div>
+
+      <p style="margin-top:10px;font-weight:600;">
+        Tunjukkan QR ke panitia
+      </p>
+
+      ${infoTenda}
+
+      <button 
+        class="konfirmasi-btn"
+        style="background:#dc3545;color:white;margin-top:15px;"
+        onclick="batalHadir('${data.nohp}')">
+        Batal Hadir
+      </button>
+
+      <div style="font-size:12px;color:#888;margin-top:8px;">
+        Jika batal, kuota tenda akan diberikan ke peserta lain
+      </div>
     `;
 
-  } else {
+  } 
+  /* ================= BELUM HADIR ================= */
+  else {
 
     qrArea.innerHTML = `
-      <button onclick="konfirmasiHadir('${data.nohp}')">
+      <button 
+        class="konfirmasi-btn"
+        style="background:#198754;color:white;width:100%;"
+        onclick="konfirmasiHadir('${data.nohp}')">
         Konfirmasi Kehadiran
       </button>
+
+      <div style="font-size:12px;color:#888;margin-top:8px;">
+        Konfirmasi untuk mendapatkan kuota tenda
+      </div>
     `;
   }
 
-  /* LOAD KUOTA */
+  /* ================= KUOTA GLOBAL FIX ================= */
   try {
-    const res = await fetch(`${apiUrl}?mode=ambilKuotaTenda`);
+    const res = await fetch(`${apiUrl}?mode=ambilKuotaTenda&t=${Date.now()}`);
     const k = await res.json();
 
-    const total = Number(k.kapasitas) || 160;
-    const sisa = (k.sisa !== undefined)
-      ? Number(k.sisa)
-      : total;
+    const kapasitas = parseInt(k.kapasitas) || 160;
+    let terpakai = parseInt(k.totalTenda) || 0;
+
+    if (terpakai < 0) terpakai = 0;
+    if (terpakai > kapasitas) terpakai = kapasitas;
+
+    const sisa = Math.max(0, kapasitas - terpakai);
+    const percent = Math.min(100, (terpakai / kapasitas) * 100);
+
+    let warna = "#28a745";
+    if (percent > 60) warna = "#ffc107";
+    if (percent > 85) warna = "#dc3545";
 
     el("kuotaBox").innerHTML = `
-      <p>🏕️ Sisa Kuota: ${sisa} / ${total}</p>
+      <div style="
+        background:#111;
+        padding:15px;
+        border-radius:12px;
+        text-align:center;
+        color:white;
+      ">
+
+        <div style="margin-bottom:8px;font-weight:600;">
+          🏕️ Sisa Kuota Tenda: ${sisa} / ${kapasitas}
+        </div>
+
+        <div style="
+          width:100%;
+          height:10px;
+          background:#333;
+          border-radius:10px;
+          overflow:hidden;
+        ">
+          <div style="
+            width:${percent}%;
+            height:100%;
+            background:${warna};
+          "></div>
+        </div>
+
+        <div style="font-size:12px;margin-top:6px;color:#aaa;">
+          Terisi ${terpakai} orang
+        </div>
+
+      </div>
     `;
-  } catch {}
+
+  } catch {
+    el("kuotaBox").innerHTML = `
+      <div style="color:red;text-align:center;">
+        Gagal load kuota tenda
+      </div>
+    `;
+  }
 }
 
 /* =====================================================
