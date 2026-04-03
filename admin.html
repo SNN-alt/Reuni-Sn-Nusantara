@@ -124,33 +124,20 @@ async function handleScan(qr){
 
   try {
 
-    // HIT API SCAN (update kehadiran)
     const res = await fetch(apiUrl+"?mode=scan&kode="+encodeURIComponent(qr));
     const data = await res.json();
 
-    // HIT API LOGIN (ambil detail peserta)
-    const res2 = await fetch(apiUrl+"?mode=login&kodeqr="+encodeURIComponent(qr));
-    const detail = await res2.json();
-
-    let nama = detail.nama || "-";
-    let tenda = (detail.tenda || "").toUpperCase() === "YA";
-    let hadir = (detail.statushadir || "").toUpperCase() === "HADIR";
-
-    let badgeTenda = tenda
-      ? `<div class="badge badge-green">Dapat Tenda</div>`
-      : `<div class="badge badge-red">Tanpa Tenda</div>`;
-
-    let badgeHadir = hadir
-      ? `<div class="badge badge-green">Hadir</div>`
-      : `<div class="badge badge-gray">Belum</div>`;
-
     if(data.status === "SUCCESS"){
 
+      let tenda = (data.tenda || "").toUpperCase() === "YA";
+
       hasil.innerHTML = `
-        <div class="sukses">✅ ${data.message}</div>
-        <div style="margin-top:10px;font-size:20px;">${nama}</div>
-        ${badgeHadir}
-        ${badgeTenda}
+        <div class="sukses">${data.message}</div>
+        <div style="margin-top:10px;font-size:20px;">${data.nama}</div>
+        <div class="badge badge-green">Hadir</div>
+        <div class="badge ${tenda ? 'badge-green':'badge-red'}">
+          ${tenda ? 'Dapat Tenda':'Tanpa Tenda'}
+        </div>
       `;
 
       beep();
@@ -159,9 +146,7 @@ async function handleScan(qr){
     } else {
 
       hasil.innerHTML = `
-        <div class="gagal">❌ ${data.message}</div>
-        <div>${nama}</div>
-        ${badgeHadir}
+        <div class="gagal">${data.message}</div>
       `;
     }
 
@@ -170,9 +155,7 @@ async function handleScan(qr){
     hasil.className = "gagal";
   }
 
-  setTimeout(()=>{
-    lastScan="";
-  },2000);
+  setTimeout(()=>{ lastScan=""; },3000);
 }
 
 /* ================= EFEK ================= */
