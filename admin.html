@@ -7,7 +7,7 @@
 
   <style>
     body{
-      font-family: 'Segoe UI', sans-serif;
+      font-family:'Segoe UI', sans-serif;
       background:#0a0f25;
       color:#fff;
       text-align:center;
@@ -15,13 +15,12 @@
     }
 
     h2{
-      margin-bottom:10px;
-      letter-spacing:1px;
+      margin-bottom:5px;
     }
 
     .scanner-box{
       background:#111c3f;
-      padding:25px;
+      padding:20px;
       border-radius:20px;
       max-width:400px;
       margin:20px auto;
@@ -52,7 +51,6 @@
       font-size:12px;
       color:#aaa;
     }
-
   </style>
 </head>
 
@@ -67,87 +65,88 @@
   </div>
 
   <div class="footer">
-    Admin Panel – 1 Akun untuk semua panitia
+    Admin Panel – 1 akun untuk semua panitia
   </div>
 
   <!-- QR LIBRARY -->
   <script src="https://unpkg.com/html5-qrcode"></script>
 
-  <!-- SCRIPT -->
   <script>
-
     const apiUrl = "https://script.google.com/macros/s/AKfycbyyZnfx-ilQjNhAG0gP-rO_ctPne7HoxuREYerYXfrRTvJRiFYJReZkuT6kZC8dqop3/exec";
+
+    let html5QrCode;
 
     function startScanner(){
 
       const hasil = document.getElementById("hasilScan");
 
-      const html5QrCode = new Html5Qrcode("reader");
+      html5QrCode = new Html5Qrcode("reader");
 
-      Html5Qrcode.getCameras().then(devices => {
+      html5QrCode.start(
+        { facingMode: "environment" }, // 🔥 paksa kamera belakang
+        {
+          fps: 10,
+          qrbox: 250
+        },
 
-        if (!devices.length){
-          hasil.innerHTML = "<span class='error'>❌ Kamera tidak ditemukan</span>";
-          return;
-        }
+        async (decodedText) => {
 
-        html5QrCode.start(
-          devices[0].id,
-          { fps:10, qrbox:250 },
+          await html5QrCode.stop();
 
-          async (decodedText) => {
+          hasil.innerHTML = "⏳ Memproses...";
 
-            await html5QrCode.stop();
+          try {
 
-            hasil.innerHTML = "⏳ Memproses...";
+            const res = await fetch(`${apiUrl}?mode=scan&kode=${decodedText}`);
+            const data = await res.json();
 
-            try{
+            if (data.status === "SUCCESS"){
 
-              const res = await fetch(`${apiUrl}?mode=scan&kode=${decodedText}`);
-              const data = await res.json();
+              hasil.innerHTML = `
+                <div class="success">
+                  ✅ ${data.nama}<br>
+                  HADIR<br>
+                  Tenda: ${data.tenda}
+                </div>
+              `;
 
-              if (data.status === "SUCCESS"){
+              navigator.vibrate?.(200);
 
-                hasil.innerHTML = `
-                  <div class="success">
-                    ✅ ${data.nama}<br>
-                    HADIR<br>
-                    Tenda: ${data.tenda}
-                  </div>
-                `;
+            } 
+            else if (data.status === "ALREADY_USED"){
 
-                navigator.vibrate?.(200);
+              hasil.innerHTML = `<div class="warning">⚠ Sudah pernah scan</div>`;
 
-              } 
-              else if (data.status === "ALREADY_USED"){
+            } 
+            else if (data.status === "NOT_ACTIVE"){
 
-                hasil.innerHTML = `<div class="warning">⚠ Sudah pernah scan</div>`;
+              hasil.innerHTML = `<div class="error">❌ QR belum aktif</div>`;
 
-              } 
-              else if (data.status === "NOT_ACTIVE"){
+            } 
+            else{
 
-                hasil.innerHTML = `<div class="error">❌ QR belum aktif</div>`;
-
-              } 
-              else{
-
-                hasil.innerHTML = `<div class="error">❌ QR tidak ditemukan</div>`;
-              }
-
-            }catch{
-              hasil.innerHTML = `<div class="error">Gagal koneksi server</div>`;
+              hasil.innerHTML = `<div class="error">❌ QR tidak ditemukan</div>`;
             }
 
-            setTimeout(startScanner, 2500);
+          } catch {
+            hasil.innerHTML = `<div class="error">Gagal koneksi server</div>`;
           }
 
-        );
+          // 🔁 scan ulang otomatis
+          setTimeout(() => {
+            startScanner();
+          }, 2000);
+        },
 
+        (errorMessage) => {
+          // optional log
+        }
+      ).catch(err => {
+        hasil.innerHTML = `<div class="error">❌ Kamera tidak bisa dibuka</div>`;
       });
     }
 
     document.addEventListener("DOMContentLoaded", startScanner);
-
   </script>
 
 </body>
