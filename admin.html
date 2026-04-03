@@ -1,173 +1,154 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<title>Scanner Panitia SN 2026</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Scanner - Reuni SN 2026</title>
 
-<script src="https://unpkg.com/html5-qrcode"></script>
+  <style>
+    body{
+      font-family: 'Segoe UI', sans-serif;
+      background:#0a0f25;
+      color:#fff;
+      text-align:center;
+      padding:20px;
+    }
 
-<style>
-body{
-  font-family: Arial, sans-serif;
-  background:#f5f5f5;
-  text-align:center;
-  padding:20px;
-}
+    h2{
+      margin-bottom:10px;
+      letter-spacing:1px;
+    }
 
-.card{
-  background:white;
-  padding:20px;
-  border-radius:15px;
-  max-width:400px;
-  margin:auto;
-  box-shadow:0 5px 15px rgba(0,0,0,0.1);
-}
+    .scanner-box{
+      background:#111c3f;
+      padding:25px;
+      border-radius:20px;
+      max-width:400px;
+      margin:20px auto;
+      box-shadow:0 20px 60px rgba(0,0,0,.6);
+    }
 
-#reader{
-  width:100%;
-  border-radius:10px;
-  overflow:hidden;
-}
+    #reader{
+      width:100%;
+      border-radius:15px;
+      overflow:hidden;
+    }
 
-#hasilScan{
-  margin-top:15px;
-  font-size:18px;
-  font-weight:600;
-}
+    #hasilScan{
+      margin-top:20px;
+      padding:15px;
+      border-radius:12px;
+      background:#000;
+      font-weight:600;
+      min-height:60px;
+    }
 
-.sukses{ color:#28a745; }
-.gagal{ color:#dc3545; }
+    .success{color:#28a745;}
+    .warning{color:#ffc107;}
+    .error{color:#dc3545;}
 
-.badge{
-  display:inline-block;
-  padding:5px 10px;
-  border-radius:20px;
-  font-size:12px;
-  margin-top:5px;
-}
+    .footer{
+      margin-top:30px;
+      font-size:12px;
+      color:#aaa;
+    }
 
-.badge-green{ background:#28a745;color:white; }
-.badge-red{ background:#dc3545;color:white; }
-.badge-gray{ background:#6c757d;color:white; }
-
-button{
-  padding:10px;
-  border:none;
-  border-radius:8px;
-  background:#198754;
-  color:white;
-  font-size:16px;
-  cursor:pointer;
-}
-</style>
+  </style>
 </head>
 
 <body>
 
-<div class="card">
+  <h2>📷 SCAN QR PESERTA</h2>
+  <p>Reuni SN Nusantara 2026</p>
 
-<h2>Login Panitia</h2>
+  <div class="scanner-box">
+    <div id="reader"></div>
+    <div id="hasilScan">Menunggu scan...</div>
+  </div>
 
-<div id="loginBox">
-  <input type="password" id="kodePanitia" placeholder="Kode Panitia">
-  <br><br>
-  <button onclick="cekKode()">Masuk</button>
-</div>
+  <div class="footer">
+    Admin Panel – 1 Akun untuk semua panitia
+  </div>
 
-<div id="scannerBox" style="display:none;">
-  <h3>Scan QR Peserta</h3>
-  <div id="reader"></div>
-  <div id="hasilScan"></div>
-</div>
+  <!-- QR LIBRARY -->
+  <script src="https://unpkg.com/html5-qrcode"></script>
 
-</div>
+  <!-- SCRIPT -->
+  <script>
 
-<script>
+    const apiUrl = "https://script.google.com/macros/s/AKfycbyyZnfx-ilQjNhAG0gP-rO_ctPne7HoxuREYerYXfrRTvJRiFYJReZkuT6kZC8dqop3/exec";
 
-const KODE = "PANITIASN";
-const apiUrl = "https://script.google.com/macros/s/AKfycbyyZnfx-ilQjNhAG0gP-rO_ctPne7HoxuREYerYXfrRTvJRiFYJReZkuT6kZC8dqop3/exec";
+    function startScanner(){
 
-let scanner;
-let lastScan = "";
+      const hasil = document.getElementById("hasilScan");
 
-/* ================= LOGIN ================= */
-function cekKode(){
-  if(document.getElementById("kodePanitia").value === KODE){
-    document.getElementById("loginBox").style.display="none";
-    document.getElementById("scannerBox").style.display="block";
-    startScan();
-  } else {
-    alert("Kode salah");
-  }
-}
+      const html5QrCode = new Html5Qrcode("reader");
 
-/* ================= START SCAN ================= */
-function startScan(){
-  scanner = new Html5Qrcode("reader");
+      Html5Qrcode.getCameras().then(devices => {
 
-  scanner.start(
-    { facingMode:"environment" },
-    { fps:10, qrbox:250 },
-    handleScan
-  );
-}
+        if (!devices.length){
+          hasil.innerHTML = "<span class='error'>❌ Kamera tidak ditemukan</span>";
+          return;
+        }
 
-/* ================= HANDLE SCAN ================= */
-async function handleScan(qr){
+        html5QrCode.start(
+          devices[0].id,
+          { fps:10, qrbox:250 },
 
-  if(qr === lastScan) return;
-  lastScan = qr;
+          async (decodedText) => {
 
-  const hasil = document.getElementById("hasilScan");
-  hasil.innerHTML = "⏳ Memproses...";
-  hasil.className = "";
+            await html5QrCode.stop();
 
-  try {
+            hasil.innerHTML = "⏳ Memproses...";
 
-    const res = await fetch(apiUrl+"?mode=scan&kode="+encodeURIComponent(qr));
-    const data = await res.json();
+            try{
 
-    if(data.status === "SUCCESS"){
+              const res = await fetch(`${apiUrl}?mode=scan&kode=${decodedText}`);
+              const data = await res.json();
 
-      let tenda = (data.tenda || "").toUpperCase() === "YA";
+              if (data.status === "SUCCESS"){
 
-      hasil.innerHTML = `
-        <div class="sukses">${data.message}</div>
-        <div style="margin-top:10px;font-size:20px;">${data.nama}</div>
-        <div class="badge badge-green">Hadir</div>
-        <div class="badge ${tenda ? 'badge-green':'badge-red'}">
-          ${tenda ? 'Dapat Tenda':'Tanpa Tenda'}
-        </div>
-      `;
+                hasil.innerHTML = `
+                  <div class="success">
+                    ✅ ${data.nama}<br>
+                    HADIR<br>
+                    Tenda: ${data.tenda}
+                  </div>
+                `;
 
-      beep();
-      vibrate();
+                navigator.vibrate?.(200);
 
-    } else {
+              } 
+              else if (data.status === "ALREADY_USED"){
 
-      hasil.innerHTML = `
-        <div class="gagal">${data.message}</div>
-      `;
+                hasil.innerHTML = `<div class="warning">⚠ Sudah pernah scan</div>`;
+
+              } 
+              else if (data.status === "NOT_ACTIVE"){
+
+                hasil.innerHTML = `<div class="error">❌ QR belum aktif</div>`;
+
+              } 
+              else{
+
+                hasil.innerHTML = `<div class="error">❌ QR tidak ditemukan</div>`;
+              }
+
+            }catch{
+              hasil.innerHTML = `<div class="error">Gagal koneksi server</div>`;
+            }
+
+            setTimeout(startScanner, 2500);
+          }
+
+        );
+
+      });
     }
 
-  } catch {
-    hasil.innerHTML = "❌ Gagal koneksi server";
-    hasil.className = "gagal";
-  }
+    document.addEventListener("DOMContentLoaded", startScanner);
 
-  setTimeout(()=>{ lastScan=""; },3000);
-}
-
-/* ================= EFEK ================= */
-function beep(){
-  new Audio("https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg").play();
-}
-
-function vibrate(){
-  if(navigator.vibrate) navigator.vibrate(200);
-}
-
-</script>
+  </script>
 
 </body>
 </html>
