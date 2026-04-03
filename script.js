@@ -140,6 +140,9 @@ async function loadStatistik() {
 /* =====================================================
    KUOTA TENDA (SUPER FIX)
 ===================================================== */
+/* =====================================================
+   KUOTA TENDA (SUPER FIX - ANTI ERROR 181/160)
+===================================================== */
 async function loadKuota() {
 
   const box = el("progressKuota");
@@ -149,15 +152,17 @@ async function loadKuota() {
     const res = await fetch(`${apiUrl}?mode=ambilKuotaTenda&t=${Date.now()}`);
     const data = await res.json();
 
-    const total = Number(data.kapasitas) || 160;
-    const terpakai = Number(data.totalTenda) || 0;
-    const sisa = (data.sisa !== undefined)
-      ? Number(data.sisa)
-      : Math.max(0, total - terpakai);
+    /* ================= VALIDASI ANGKA ================= */
+    const kapasitas = parseInt(data.kapasitas) || 160;
+    let terpakai = parseInt(data.totalTenda) || 0;
 
-    const percent = total > 0
-      ? Math.min(100, (terpakai / total) * 100)
-      : 0;
+    // ❗ Anti error negatif / NaN / lebih dari kapasitas
+    if (terpakai < 0) terpakai = 0;
+    if (terpakai > kapasitas) terpakai = kapasitas;
+
+    const sisa = Math.max(0, kapasitas - terpakai);
+
+    const percent = Math.min(100, (terpakai / kapasitas) * 100);
 
     let warna = "#28a745";
     if (percent > 60) warna = "#ffc107";
@@ -165,13 +170,11 @@ async function loadKuota() {
 
     box.innerHTML = `
       <div style="margin-bottom:8px;font-weight:600;">
-        Sisa Kuota Tenda: <strong>${sisa}</strong> / ${total}
+        Sisa Kuota Tenda: <strong>${sisa}</strong> / ${kapasitas}
       </div>
 
       <div class="progress-bar">
-        <div class="progress-fill"
-             style="width:${percent}%; background:${warna};">
-        </div>
+        <div class="progress-fill" style="width:${percent}%; background:${warna};"></div>
       </div>
     `;
 
@@ -179,7 +182,6 @@ async function loadKuota() {
     box.innerHTML = `<div style="color:red;">Gagal load kuota</div>`;
   }
 }
-
 /* =====================================================
    LOGIN
 ===================================================== */
