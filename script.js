@@ -389,3 +389,80 @@ window.batalHadir = async function (nohp) {
     alert("Gagal koneksi");
   }
 };
+/* =====================================================
+   QR SCANNER ADMIN (1 USER UNTUK SEMUA)
+===================================================== */
+
+function startScanner() {
+
+  const hasil = document.getElementById("hasilScan");
+
+  const html5QrCode = new Html5Qrcode("reader");
+
+  Html5Qrcode.getCameras().then(devices => {
+
+    if (devices && devices.length) {
+
+      html5QrCode.start(
+        devices[0].id,
+        {
+          fps: 10,
+          qrbox: 250
+        },
+        async (decodedText) => {
+
+          // STOP SCAN SEMENTARA
+          await html5QrCode.stop();
+
+          hasil.innerHTML = "⏳ Memproses...";
+
+          try {
+            const res = await fetch(`${apiUrl}?mode=scan&kode=${decodedText}`);
+            const data = await res.json();
+
+            /* ================= HASIL ================= */
+
+            if (data.status === "SUCCESS") {
+
+              hasil.innerHTML = `
+                <div style="color:#28a745;">
+                  ✅ ${data.nama}<br>
+                  Status: HADIR<br>
+                  Tenda: ${data.tenda}
+                </div>
+              `;
+
+            } else if (data.status === "ALREADY_USED") {
+
+              hasil.innerHTML = `<div style="color:#ffc107;">⚠ Sudah pernah scan</div>`;
+
+            } else if (data.status === "NOT_ACTIVE") {
+
+              hasil.innerHTML = `<div style="color:#dc3545;">❌ QR belum aktif</div>`;
+
+            } else {
+
+              hasil.innerHTML = `<div style="color:#dc3545;">❌ QR tidak ditemukan</div>`;
+            }
+
+          } catch {
+            hasil.innerHTML = `<div style="color:red;">Gagal koneksi server</div>`;
+          }
+
+          /* ================= AUTO SCAN LAGI ================= */
+          setTimeout(() => {
+            startScanner();
+          }, 2500);
+
+        }
+      );
+    }
+  });
+}
+
+/* AUTO START */
+document.addEventListener("DOMContentLoaded", () => {
+  if (document.getElementById("reader")) {
+    startScanner();
+  }
+});
