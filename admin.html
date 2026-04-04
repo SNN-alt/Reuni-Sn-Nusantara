@@ -7,15 +7,11 @@
 
 <style>
 body{
-  font-family:Arial,sans-serif;
+  font-family:Arial;
   background:#0a0f25;
   color:#fff;
   text-align:center;
   padding:20px;
-}
-
-h2{
-  margin-bottom:10px;
 }
 
 .box{
@@ -23,21 +19,20 @@ h2{
   padding:20px;
   border-radius:20px;
   max-width:380px;
-  margin:20px auto;
+  margin:auto;
 }
 
 #reader{
   width:100%;
   border-radius:12px;
-  overflow:hidden;
 }
 
 #hasil{
-  margin-top:20px;
+  margin-top:15px;
   padding:15px;
   border-radius:12px;
   background:#000;
-  font-size:20px;
+  font-size:18px;
   font-weight:bold;
 }
 
@@ -62,8 +57,8 @@ h2{
 const apiUrl = "https://script.google.com/macros/s/AKfycbyyZnfx-ilQjNhAG0gP-rO_ctPne7HoxuREYerYXfrRTvJRiFYJReZkuT6kZC8dqop3/exec";
 
 let scanner;
+let isScanning = false;
 
-/* ================= START SCANNER ================= */
 function startScanner(){
 
   const hasil = document.getElementById("hasil");
@@ -71,10 +66,13 @@ function startScanner(){
   scanner = new Html5Qrcode("reader");
 
   scanner.start(
-    { facingMode: "environment" }, // 🔥 kamera belakang
+    { facingMode: "environment" }, // kamera belakang
     { fps: 10, qrbox: 250 },
 
     async (text) => {
+
+      if (isScanning) return; // 🔒 anti double trigger
+      isScanning = true;
 
       await scanner.stop();
 
@@ -82,19 +80,16 @@ function startScanner(){
 
       try{
 
-        /* ================= FIX QR ================= */
         let kode = text.trim();
 
-        // kalau QR berupa URL → ambil datanya
+        // 🔥 FIX kalau QR berupa URL
         if (kode.includes("data=")) {
           kode = kode.split("data=")[1];
         }
 
-        /* ================= HIT API ================= */
         const res = await fetch(`${apiUrl}?mode=scan&kode=${kode}`);
         const data = await res.json();
 
-        /* ================= HASIL ================= */
         if (data.status === "SUCCESS"){
           hasil.innerHTML = `<div class="ok">✅ SCAN SUKSES</div>`;
           navigator.vibrate?.(150);
@@ -110,11 +105,12 @@ function startScanner(){
         }
 
       }catch{
-        hasil.innerHTML = `<div class="err">❌ GAGAL KONEKSI</div>`;
+        hasil.innerHTML = `<div class="err">❌ ERROR SERVER</div>`;
       }
 
-      /* ================= AUTO SCAN ULANG ================= */
+      // ⏱ delay biar tidak tabrakan
       setTimeout(() => {
+        isScanning = false;
         startScanner();
       }, 2000);
 
@@ -122,7 +118,6 @@ function startScanner(){
   );
 }
 
-/* ================= AUTO START ================= */
 document.addEventListener("DOMContentLoaded", startScanner);
 </script>
 
