@@ -1,48 +1,50 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Scan QR Admin</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scan QR Admin</title>
 
-  <style>
-    body{
-      font-family:Arial,sans-serif;
-      background:#0a0f25;
-      color:#fff;
-      text-align:center;
-      padding:20px;
-    }
+<style>
+body{
+  font-family:Arial,sans-serif;
+  background:#0a0f25;
+  color:#fff;
+  text-align:center;
+  padding:20px;
+}
 
-    h2{margin-bottom:10px;}
+h2{
+  margin-bottom:10px;
+}
 
-    .box{
-      background:#111c3f;
-      padding:20px;
-      border-radius:20px;
-      max-width:380px;
-      margin:20px auto;
-    }
+.box{
+  background:#111c3f;
+  padding:20px;
+  border-radius:20px;
+  max-width:380px;
+  margin:20px auto;
+}
 
-    #reader{
-      width:100%;
-      border-radius:12px;
-      overflow:hidden;
-    }
+#reader{
+  width:100%;
+  border-radius:12px;
+  overflow:hidden;
+}
 
-    #hasil{
-      margin-top:20px;
-      padding:15px;
-      border-radius:10px;
-      background:#000;
-      font-size:18px;
-      font-weight:bold;
-    }
+#hasil{
+  margin-top:20px;
+  padding:15px;
+  border-radius:12px;
+  background:#000;
+  font-size:20px;
+  font-weight:bold;
+}
 
-    .ok{color:#28a745;}
-    .warn{color:#ffc107;}
-    .err{color:#dc3545;}
-  </style>
+.ok{color:#28a745;}
+.warn{color:#ffc107;}
+.err{color:#dc3545;}
+</style>
 </head>
 
 <body>
@@ -61,14 +63,15 @@ const apiUrl = "https://script.google.com/macros/s/AKfycbyyZnfx-ilQjNhAG0gP-rO_c
 
 let scanner;
 
-function start(){
+/* ================= START SCANNER ================= */
+function startScanner(){
 
   const hasil = document.getElementById("hasil");
 
   scanner = new Html5Qrcode("reader");
 
   scanner.start(
-    { facingMode: "environment" },
+    { facingMode: "environment" }, // 🔥 kamera belakang
     { fps: 10, qrbox: 250 },
 
     async (text) => {
@@ -79,30 +82,48 @@ function start(){
 
       try{
 
-        const res = await fetch(`${apiUrl}?mode=scan&kode=${text}`);
+        /* ================= FIX QR ================= */
+        let kode = text.trim();
+
+        // kalau QR berupa URL → ambil datanya
+        if (kode.includes("data=")) {
+          kode = kode.split("data=")[1];
+        }
+
+        /* ================= HIT API ================= */
+        const res = await fetch(`${apiUrl}?mode=scan&kode=${kode}`);
         const data = await res.json();
 
+        /* ================= HASIL ================= */
         if (data.status === "SUCCESS"){
-          hasil.innerHTML = `<div class="ok">✅ Scan sukses</div>`;
+          hasil.innerHTML = `<div class="ok">✅ SCAN SUKSES</div>`;
           navigator.vibrate?.(150);
         }
         else if (data.status === "ALREADY_USED"){
-          hasil.innerHTML = `<div class="warn">⚠ Sudah scan</div>`;
+          hasil.innerHTML = `<div class="warn">⚠ SUDAH SCAN</div>`;
+        }
+        else if (data.status === "NOT_ACTIVE"){
+          hasil.innerHTML = `<div class="err">❌ QR BELUM AKTIF</div>`;
         }
         else{
-          hasil.innerHTML = `<div class="err">❌ Gagal</div>`;
+          hasil.innerHTML = `<div class="err">❌ QR TIDAK DITEMUKAN</div>`;
         }
 
       }catch{
-        hasil.innerHTML = `<div class="err">❌ Error</div>`;
+        hasil.innerHTML = `<div class="err">❌ GAGAL KONEKSI</div>`;
       }
 
-      setTimeout(start, 1500);
+      /* ================= AUTO SCAN ULANG ================= */
+      setTimeout(() => {
+        startScanner();
+      }, 2000);
+
     }
   );
 }
 
-document.addEventListener("DOMContentLoaded", start);
+/* ================= AUTO START ================= */
+document.addEventListener("DOMContentLoaded", startScanner);
 </script>
 
 </body>
