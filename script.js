@@ -252,7 +252,7 @@ async function tampilkanDashboard(data) {
            ✅ Anda mendapatkan kuota tenda
          </div>`
       : `<div style="color:#dc3545;font-weight:600;margin-top:10px;">
-           ⚠ Kuota tenda sudah habis
+           ⚠ Kuota tenda sudah habis,Hubungi Call Canter
          </div>`;
 
     qrArea.innerHTML = `
